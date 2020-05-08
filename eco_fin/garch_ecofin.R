@@ -54,6 +54,29 @@ plot(ret**2)
 
 
 
+
+#--- GARCH
+
+spec2 = ugarchspec(variance.model=list(model="sGARCH", 
+                                       garchOrder=c(1,1)), 
+                   mean.model=list(armaOrder=c(0,0), include.mean=TRUE),
+                   distribution.model="norm")
+
+
+
+
+garch3 = ugarchfit(spec = spec2, data= ret)
+
+garch3
+
+
+
+
+
+
+
+
+
 windows()
 for(i in 1:1000){
   hist(ret[1:(100+i)], breaks = 30, col = 'lightblue')
@@ -112,6 +135,14 @@ plot(abs(rnorm(30,0,1)), col='gray', lwd=19)
 curve((0.1*x), add=T, col='red')
 
 curve(dnorm(x), xlim=c(-8,8))
+
+
+
+
+
+library(xlsx)
+write.xlsx(ret,"C:/Users/user/Documents/ret.xlsx")
+
 
 
 
