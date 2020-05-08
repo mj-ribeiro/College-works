@@ -37,15 +37,19 @@ ret = ret[is.na(ret)==F]  # Drop na to work
 
 #---- GARCH Model
 
-spec1 = ugarchspec(variance.model=list(model="fGARCH", 
-                    garchOrder=c(1,1), submodel='TGARCH'), 
-                    mean.model=list(armaOrder=c(0,0), include.mean=TRUE, archm=T),
-                    distribution.model="norm")
+spec1 = ugarchspec(variance.model=list(model="sGARCH", 
+                    garchOrder=c(1,1)), 
+                    mean.model=list(armaOrder=c(0,0), archm=T),
+                   fixed.pars=list(mu=0), 
+                   distribution.model="norm")
 
 
 garch2 = ugarchfit(spec = spec1, data= ret)
 
+
+
 garch2
+
 
 ts.plot(sigma(garch2))
 
