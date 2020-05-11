@@ -120,28 +120,6 @@ plot(irf(vfit))
 vfit
 
 
-N <- 40
-x1 <- 10
-x2 <- 20
-b1 <- 100
-b2 <- 10
-mu <- 0
-sig2e <- 2500
-sde <- sqrt(sig2e)
-yhat1 <- b1+b2*x1
-yhat2 <- b1+b2*x2
-curve(dnorm(x, mean=yhat1, sd=sde), 0, 500, col="blue")
-
-
-
-
-plot(abs(rnorm(30,0,1)), col='gray', lwd=19)
-curve((0.1*x), add=T, col='red')
-
-curve(dnorm(x), xlim=c(-8,8))
-
-
-
 
 
 library(xlsx)
