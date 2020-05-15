@@ -127,5 +127,11 @@ write.xlsx(ret,"C:/Users/user/Documents/ret.xlsx")
 
 
 
+curve(x^0.2, ylim = c(0, 1))
+curve(x^0.4, ylim = c(0, 1), add=T)
+
+
+
+
 
 
