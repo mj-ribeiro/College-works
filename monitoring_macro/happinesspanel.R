@@ -2,7 +2,7 @@
 #                                  Happiness panel
 #---------------------------------------------------------------------------------------------
 
-
+# see: http://www.sthda.com/english/wiki/be-awesome-in-ggplot2-a-practical-guide-to-be-highly-effective-r-software-and-data-visualization
 
 
 setwd("D:/Git projects/college_works/monitoring_macro")
@@ -41,11 +41,11 @@ g2
 
 
 
+## Happiness and GPD
 
 
 
-
-f2 = df[year==2014, ]
+f2 = df[year==2011, ]
 
 g3 = ggplot(data = f2, aes(x=ppc/10000, y=lld, 
                     alpha=I(0.5)))+
@@ -54,7 +54,7 @@ g3 = ggplot(data = f2, aes(x=ppc/10000, y=lld,
 
                         
 g4 = g3 + geom_smooth(method = 'lm',formula = y~x, color='black', se=F) +
-          ggtitle('Happiness and Economic Growth') + 
+          ggtitle('Happiness and GPD per capita') + 
           xlab('GPD per capita') +
           ylab('Cantrill Ladder') +
           theme(axis.title.x = element_text(colour = 'black', size=13),
@@ -63,6 +63,99 @@ g4 = g3 + geom_smooth(method = 'lm',formula = y~x, color='black', se=F) +
 
 windows()
 g4
+
+
+##### using gini
+
+f3 = df[year==2011 & ginigallup <=0.5, ]
+
+
+g5 = ggplot(data = f3, aes(x=ginigallup, y=lld, 
+                           alpha=I(0.5)))+
+  geom_text(aes(label=CountryCode), size=4)
+
+
+
+g6 = g5 + geom_smooth(method = 'lm',formula = y~x, color='black', se=F) +
+  ggtitle('Happiness and Gini') + 
+  xlab('Gini') +
+  ylab('Cantrill Ladder') +
+  theme(axis.title.x = element_text(colour = 'black', size=13),
+        axis.title.y = element_text(colour = 'black', size=13),
+        plot.title = element_text(hjust = 0.5))
+
+windows()
+g6
+
+
+
+
+##### using HC
+
+
+
+f2 = df[year==2011, ]
+
+
+g7 = ggplot(data = f3, aes(x=hc, y=lld, 
+                           alpha=I(0.5)))+
+  geom_text(aes(label=CountryCode), size=4)
+
+
+
+g8 = g7 + geom_smooth(method = 'lm',formula = y~x, color='black', se=F) +
+  ggtitle('Happiness and HC') + 
+  xlab('HC') +
+  ylab('Cantrill Ladder') +
+  theme(axis.title.x = element_text(colour = 'black', size=13),
+        axis.title.y = element_text(colour = 'black', size=13),
+        plot.title = element_text(hjust = 0.5))
+
+windows()
+g8
+
+
+### PPC
+
+
+
+f2 = df[year==2011, ]
+
+
+g9 = ggplot(data = f3, aes(x=hc, y=ppc/10000, 
+              colour=factor(rendacod)))+
+              geom_text(aes(label=CountryCode), size=4)
+
+
+
+g10 = g9 + 
+  ggtitle('PPC and HC') + 
+  xlab('HC') +
+  ylab('PPC') +
+  theme(axis.title.x = element_text(colour = 'black', size=13),
+        axis.title.y = element_text(colour = 'black', size=13),
+        plot.title = element_text(hjust = 0.5))
+
+windows()
+g10
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
