@@ -49,11 +49,15 @@ des = xts(des, order.by = data1)
 
 library(ggplot2)
 
+plot(des)
+
+
 df = data.frame(des, dinf[index(des)],inf[index(des)])
 
 
 data3 = index(inf)
 dfinf = data.frame(data3, inf)
+
 ggplot(data=dfinf, aes(y=`inf`, x=`data3`), alpha=0.5)+geom_line()
 
 
