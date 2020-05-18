@@ -70,7 +70,6 @@ naive_marcos = function(k, df){
   }
   dimnames(M1) = list(rownames(prop.table(table(df[ ,col_n[1]]))),rownames( prop.table(table(df[ ,col_n[2]]))), nm )
   cat('Conditional Probabilities: \n')
-  print(M1)
   
   return(M1) 
 }
@@ -207,6 +206,41 @@ cc = naive_marcos2('sex', teste)
 
 
 cc
+
+
+
+
+#############################################################################################
+#                                        Single function
+#############################################################################################
+
+
+
+
+naivef = function(k, df, cd=1){
+    if(cd == 1){
+      naive_marcos(k, df)
+    }else if (cd == 0){
+      naive_marcos2(k, df)
+    }else{
+      print('Digite um cd válido')
+    }
+    
+  } 
+
+
+naivef('risco', df)
+  
+naive_marcos('risco', df)
+
+
+
+
+
+
+
+
+
 
 
 

@@ -30,7 +30,12 @@ naive_marcos2 = function(k, df){
   a = prop.table(table(df[ ,k]))
   ta = length(a)
   nm = rownames(a)
+  print(strrep('=-', 30))
+  
   print('Marcos Naive Bayes Classifier for Discrete Predictors')
+  
+  print(strrep('=-', 30))
+  
   cat('A-priori probabilities:\n')
   
   #df2 = df[ , k]
