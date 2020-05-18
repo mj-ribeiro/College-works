@@ -15,8 +15,9 @@ df$garantias =NULL
 df$renda =NULL
 
 
-#------ create function
-
+#------------------------------------------------------------------------------------------
+#                            categorical dataset
+#------------------------------------------------------------------------------------------
 
 
 naive_marcos = function(k, df){
@@ -89,32 +90,30 @@ cl
 historia = c('boa',    'boa',  'ruim', 'ruim', 'desconhecida', 'desconhecida')
 divida = c('baixa', 'alta', 'baixa', 'alta',    'baixa', 'alta')
 
-df_c = data.frame(historia, divida)
+df_teste = data.frame(historia, divida)
 
 
 
 
-pred_marcos = function(k, df, df_c, cclas=0, cl){
+pred_marcos = function(k, df, df_n, cl, cclas=0){
   # k -> class
   # df -> data to training algorithm
   # df_c -> new data vectors
   # cclas -> to get classification (1) or probabilities (0)
   # cl -> classifier
   
-  
   a = prop.table(table(df[,k]))
   ta = length(a)
   nm = rownames(a)
   
-  tvv = length(df_c[,1])
+  tvv = length(df_n[,1])
   cnewd = c()
   pmax = c()
-
   
   v = matrix(0, tvv, ta)
   for(i in 1:tvv){
   
-    v[i, ] =  cl[df_c[i, 1], df_c[i, 2],  ]
+    v[i, ] =  cl[df_c[i, 1], df_n[i, 2],  ]
     
     v[i, ] = v[i, ]/sum(v[i, ])
     
@@ -131,7 +130,7 @@ pred_marcos = function(k, df, df_c, cclas=0, cl){
 
 
 
-d = pred_marcos('risco',  df, df_c, cclas = 0, cl)
+d = pred_marcos('risco',  df, df_teste, cl, cclas = 1)
 d
 
 
@@ -158,9 +157,8 @@ print(prev2)
 
 
 ###########################################################################################
-#                              Non Categorical dataset
+#                     Non Categorical independent variables
 ###########################################################################################
-
 
 
 
@@ -171,7 +169,12 @@ naive_marcos2 = function(k, df){
   a = prop.table(table(df[ ,k]))
   ta = length(a)
   nm = rownames(a)
+  print(strrep('=-', 30))
+  
   print('Marcos Naive Bayes Classifier for Discrete Predictors')
+  
+  print(strrep('=-', 30))
+  
   cat('A-priori probabilities:\n')
   
   #df2 = df[ , k]
@@ -194,20 +197,100 @@ naive_marcos2 = function(k, df){
     
     m = matrix(c(m1, m2, v1, v2)  )
     M[, ,g] = m
-    cat(nm[g], '\n')
+    #cat(nm[g], '\n')
     
-    print(M[, ,g])
   }
+  dimnames(M) = list(c(), c('mean', 'variance'), nm)
   return(M)
 }
 
 
-cc = naive_marcos2('sex', teste)
+
+################  predict function
 
 
-cc
+# essa função serve apenas para uma linha. Então tenho que expandir para um dataframe (prev)
+
+p = function(k, df, cl, b, c, cclas=0){
+  t = prop.table(table(df[,k]))
+  ta = length(t)
+  nm = rownames(t)
+  
+  P = array(0, dim = c(2, 1, ta))
+  
+  pm = matrix(0, nrow = ta, ncol = 1)
+  
+  for(i in 1:ta){
+    a =dnorm(b, mean=cl[1, 1 ,i] , sd=cl[1, 2 ,i]) 
+    d = dnorm(c, mean=cl[2, 1 ,i] , sd=cl[2, 2 ,i])
+    m = matrix(c(a,d))
+    P[, ,i] = m
+    
+    pm[i] = t[i]*P[1,1,i]*P[2,1,i]
+    
+  }
+  pm = pm/sum(pm) 
+  pm = t(pm)
+  colnames(pm) = nm
+  
+  paa = which.max(pm)
+  cnewd = colnames(pm)[paa]
+  
+  if(cclas==0){
+    return(pm)
+  }else{
+    return(cnewd)
+  }
+  
+}
 
 
+o = p('sex', teste, cc, 5, 188, cclas = 0)
+o
+
+
+
+# --- prev
+
+pred_marcos2 = function(k, df, df_n, cl, cclas=1){  
+  t = prop.table(table(df[,k]))
+  ta = length(t)
+  nm = rownames(t)
+  
+  if(cclas==1){
+    p_new = matrix(0, nrow = length(df_n[,1]))
+    
+    for(i in 1:length(df_n[,1])){
+      p_new[i] = p(k, df, cl, df_n[i, 1], df_n[i, 2], cclas=1) 
+      
+    }
+    
+  }else if(cclas==0){
+    p_new = matrix(0, nrow = length(df_n[ , 1]), ncol=2)
+    
+    for(i in 1:length(df_n[,1])){
+      
+      p_new[i, ] = p(k, df, cl, df_n[i, 1], df_n[i, 2], cclas=0) 
+      
+    }
+    colnames(p_new) = nm
+  }
+  
+  return(p_new)
+}
+
+
+
+
+
+height = c(5.4, 5.8, 6, 5)
+weight = c(170, 183, 188, 188)
+
+dfn = data.frame(height, weight)
+
+
+oo = pred_marcos2('sex', teste, dfn, cc, cclas = 0)
+oo
 
 
 #############################################################################################
@@ -215,7 +298,7 @@ cc
 #############################################################################################
 
 
-
+#----- single inductor
 
 naivef = function(k, df, cd=1){
     if(cd == 1){
@@ -234,8 +317,18 @@ naivef('sex',teste, cd=9)
   
 
 
-naive_marcos2(k, teste)
+#----- single predict
 
+
+predf = function(k, df, df_n, cl, cclas=0, cd=1){
+  if(cd == 1){
+    pred_marcos(k, df, df_n, cl, cclas)
+  }else if (cd == 0){
+    pred_marcos2(k, df, df_n, cl, cclas)
+  }else{
+    cat('Type cd = 1 for categorical dependent variables, \n and cd = 0 for non-categorical dependent variables.')
+  }
+} 
 
 
 
