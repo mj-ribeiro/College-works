@@ -4,7 +4,7 @@
 
 # Defining my work diretory
 
-setwd("C:/Users/user/Downloads/ML_work/Algorithm")
+setwd("D:/Git projects/college_works/ML_1")
 
 
 # import data
@@ -43,27 +43,29 @@ naive_marcos = function(k, df){
   t_c1 =length( prop.table(table(df[ ,col_n[2]])))
   
   
+  
   # probabilities array
   
   M1 = array(0, dim=c(t_b1, t_c1, ta) )
   
+  
   for (k in 1:ta) {
     f1 = df['k'] == nm[k]
+
     b1 = prop.table(table(df[f1,col_n[1]]))
     c1 = prop.table(table(df[f1,col_n[2]]))
     
-    
-    rownames(M1) =  rownames(b1) 
-    colnames(M1) = rownames(c1)
     
     for(j in 1:length(c1)){
       for ( i in 1:length(b1) ) {
         
         M1[i, j, k] = a[k]*b1[i]*c1[j] 
+        
       }
     }
     
   }
+  dimnames(M1) = list(rownames(prop.table(table(df[ ,col_n[1]]))),rownames( prop.table(table(df[ ,col_n[2]]))), nm )
   return(M1) 
 }
 
@@ -71,6 +73,7 @@ naive_marcos = function(k, df){
 
 
 cl = naive_marcos('risco', df)
+cl
 
 
 #-------- Classifier new data
@@ -124,7 +127,7 @@ pred_marcos = function(k, df, df_c, cclas=0, cl){
 
 
 
-d = pred_marcos('risco',  df, df_c, cclas = 1, cl)
+d = pred_marcos('risco',  df, df_c, cclas = 0, cl)
 d
 
 

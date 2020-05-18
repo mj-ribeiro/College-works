@@ -4,7 +4,7 @@
 
 # Defining my work diretory
 
-setwd("C:/Users/user/Downloads/ML_work/Algorithm")
+setwd("D:/Git projects/college_works/ML_1")
 
 
 
@@ -23,7 +23,7 @@ teste = data.frame(teste)
 #--- function
 
 
-naive_marcos = function(k, df){
+naive_marcos2 = function(k, df){
   df = as.data.frame(df)
   #fator =  factor(df[,k])
   
@@ -60,7 +60,7 @@ naive_marcos = function(k, df){
 }
 
 
-cc = naive_marcos('sex', teste)
+cc = naive_marcos2('sex', teste)
 
 
 cc
