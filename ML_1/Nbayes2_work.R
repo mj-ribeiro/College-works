@@ -223,18 +223,18 @@ naivef = function(k, df, cd=1){
     }else if (cd == 0){
       naive_marcos2(k, df)
     }else{
-      print('Digite um cd válido')
+      cat('Type cd = 1 for categorical dependent variables, \n and cd = 0 for non-categorical dependent variables.')
+      
     }
     
   } 
 
 
-naivef('risco', df)
+naivef('sex',teste, cd=9)
   
-naive_marcos('risco', df)
 
 
-
+naive_marcos2(k, teste)
 
 
 
