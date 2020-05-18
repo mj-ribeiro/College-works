@@ -19,14 +19,17 @@ df$renda =NULL
 
 
 
-#--- correct function
-
 naive_marcos = function(k, df){
   
   a = prop.table(table(df[ ,k]))
   ta = length(a)
   nm = rownames(a)
+  print(strrep('=-', 30))
+  
   print('Marcos Naive Bayes Classifier for Discrete Predictors')
+  
+  print(strrep('=-', 30))
+  
   cat('A-priori probabilities:\n')
   print(a)
   # simple trick to get names of variables without class variable
@@ -66,6 +69,9 @@ naive_marcos = function(k, df){
     
   }
   dimnames(M1) = list(rownames(prop.table(table(df[ ,col_n[1]]))),rownames( prop.table(table(df[ ,col_n[2]]))), nm )
+  cat('Conditional Probabilities: \n')
+  print(M1)
+  
   return(M1) 
 }
 
@@ -85,7 +91,6 @@ historia = c('boa',    'boa',  'ruim', 'ruim', 'desconhecida', 'desconhecida')
 divida = c('baixa', 'alta', 'baixa', 'alta',    'baixa', 'alta')
 
 df_c = data.frame(historia, divida)
-
 
 
 
@@ -152,42 +157,56 @@ print(prev2)
 
 
 
-#------------- remake
 
-
-# Aplying in other data set
-
-# I will try predict financial crisis
-
-
-
-dfc = readRDS('df.rds')
-
-dfc$x = ifelse(dfc$x==2, 0, dfc$x)
-
-
-dfc$ret = NULL
-dfc$cb = NULL 
-dfc$cdi = NULL
-dfc$gold = NULL
+###########################################################################################
+#                              Non Categorical dataset
+###########################################################################################
 
 
 
 
+naive_marcos2 = function(k, df){
+  df = as.data.frame(df)
+  #fator =  factor(df[,k])
+  
+  a = prop.table(table(df[ ,k]))
+  ta = length(a)
+  nm = rownames(a)
+  print('Marcos Naive Bayes Classifier for Discrete Predictors')
+  cat('A-priori probabilities:\n')
+  
+  #df2 = df[ , k]
+  print(a)
+  
+  #df[ ,k] = NULL 
+  #col_n = colnames(df)
+  #df[,k] = df2
+  
+  M = array(0, dim = c(2,2, ta))
+  m = matrix(0, 2, 2)
+  
+  
+  for(g in 1:ta){
+    m1 = as.matrix(tapply(df[,1], df[,k], mean)[g])
+    v1 = as.matrix(tapply(df[,1], df[,k], sd)[g])
+    
+    m2 = tapply(df[,2], df[,k], mean)[g]
+    v2 = tapply(df[,2], df[,k], sd)[g]
+    
+    m = matrix(c(m1, m2, v1, v2)  )
+    M[, ,g] = m
+    cat(nm[g], '\n')
+    
+    print(M[, ,g])
+  }
+  return(M)
+}
 
-g1 = ggplot(data = dfc, aes(x =`vix`, y = `oil`, colour=x)) 
-g1 +  geom_point(size=5) + geom_vline(xintercept = c(25, 65)) +
-  geom_hline(yintercept = c(110, 10))
+
+cc = naive_marcos2('sex', teste)
 
 
-
-vix = c(100, 130, 133)
-oil = c(20, 50, 18)
-
-df_c2 = data.frame(vix, oil)
-
-
-naive_marcos('x', dfc)
+cc
 
 
 
@@ -196,19 +215,11 @@ naive_marcos('x', dfc)
 
 
 
-library(e1071) # library to work with naive bayes
-
-clas3 = naiveBayes(x=dfc[-2], y = dfc$x)
-
-print(clas3)
-
-
-
-prev2 = predict(clas2, newdata = df_c, 'raw') 
-print(prev2) 
 
 
 
 
-#####################
+
+
+
 
