@@ -16,7 +16,7 @@ df$renda =NULL
 
 
 #------------------------------------------------------------------------------------------
-#                            categorical dataset
+#                            categorical independent variable
 #------------------------------------------------------------------------------------------
 
 
@@ -82,16 +82,7 @@ cl = naive_marcos('risco', df)
 cl
 
 
-#-------- Classifier new data
-
-
-# new data
-
-historia = c('boa',    'boa',  'ruim', 'ruim', 'desconhecida', 'desconhecida')
-divida = c('baixa', 'alta', 'baixa', 'alta',    'baixa', 'alta')
-
-df_teste = data.frame(historia, divida)
-
+#-------- Classifying new data
 
 
 
@@ -128,6 +119,13 @@ pred_marcos = function(k, df, df_n, cl, cclas=0){
 }
 }
 
+
+# new data
+
+historia = c('boa',    'boa',  'ruim', 'ruim', 'desconhecida', 'desconhecida')
+divida = c('baixa', 'alta', 'baixa', 'alta',    'baixa', 'alta')
+
+df_teste = data.frame(historia, divida)
 
 
 d = pred_marcos('risco',  df, df_teste, cl, cclas = 1)
@@ -177,12 +175,7 @@ naive_marcos2 = function(k, df){
   
   cat('A-priori probabilities:\n')
   
-  #df2 = df[ , k]
   print(a)
-  
-  #df[ ,k] = NULL 
-  #col_n = colnames(df)
-  #df[,k] = df2
   
   M = array(0, dim = c(2,2, ta))
   m = matrix(0, 2, 2)
@@ -313,7 +306,7 @@ naivef = function(k, df, cd=1){
   } 
 
 
-naivef('sex',teste, cd=9)
+naivef('risco', df, cd=1)
   
 
 

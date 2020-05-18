@@ -75,7 +75,7 @@ cc
 
 #--------  predict
 
-
+# essa função serve apenas para uma linha. Então tenho que expandir para um dataframe (prev)
 
 p = function(k, df, cl, b, c, cclas=0){
     t = prop.table(table(df[,k]))
@@ -83,10 +83,8 @@ p = function(k, df, cl, b, c, cclas=0){
     nm = rownames(t)
     
     P = array(0, dim = c(2, 1, ta))
-    #print('Conditional Probabilities')
     
     pm = matrix(0, nrow = ta, ncol = 1)
-        
         
     for(i in 1:ta){
       a =dnorm(b, mean=cl[1, 1 ,i] , sd=cl[1, 2 ,i]) 
@@ -113,15 +111,17 @@ p = function(k, df, cl, b, c, cclas=0){
 }
 
 
-o = p('sex', teste, cc, 5, 188, cclas = 1)
+o = p('sex', teste, cc, 5, 188, cclas = 0)
 o
 
 
 
 # --- prev
 
-pred_marcos2 = function(k, df, df_n, cl, cclas=1){   
-
+pred_marcos2 = function(k, df, df_n, cl, cclas=1){  
+  t = prop.table(table(df[,k]))
+  ta = length(t)
+  nm = rownames(t)
   
   if(cclas==1){
     p_new = matrix(0, nrow = length(df_n[,1]))
@@ -139,7 +139,7 @@ pred_marcos2 = function(k, df, df_n, cl, cclas=1){
         p_new[i, ] = p(k, df, cl, df_n[i, 1], df_n[i, 2], cclas=0) 
       
     }
-    
+    colnames(p_new) = nm
   }
 
   return(p_new)
@@ -155,8 +155,6 @@ weight = c(170, 183, 188, 188)
 
 dfn = data.frame(height, weight)
 
-o = p('sex', teste, cc, 5, 188, cclas = 1)
-o
 
 oo = pred_marcos2('sex', teste, dfn, cc, cclas = 0)
 oo
