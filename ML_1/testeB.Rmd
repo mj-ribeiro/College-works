@@ -1,0 +1,226 @@
+
+---
+title: "Naive Bayes in R language"
+author: "Marcos J Ribeiro"  
+institute: 'FEARP-USP'  
+date: "18/05/2020"
+fontsize: 10pt
+output:
+  beamer_presentation:
+    theme: "AnnArbor"
+    colortheme: "dolphin"
+    fonttheme: "structurebold"
+    slide_level: 2
+urlcolor: blue
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+
+setwd("D:/Git projects/college_works/ML_1")
+
+df = read.csv('naive_base.csv')
+df$garantias =NULL
+df$renda =NULL
+```
+
+
+## My Machine Learning work
+
+- I  built Naive Bayes algorithm to solve classification problems
+
+- I used R language, version 4.0, to do this
+
+- This presentation was built using Beamer Rmarkdown
+
+- My Naive Bayes algorithm can be view in my [Github](https://github.com/mj-ribeiro/College-works/tree/master/ML_1)
+
+- There are two types of independent variables: Categorical and non-categorical 
+
+- The approach to classification in this context is diferent
+
+- So, I built two functions to solve this
+
+
+
+## Naive Bayes function
+
+- I created two functions: one to be used in datasets with categorical independent variables and the other to be used in datasets with non-categorical independent variables
+
+```{r echo=TRUE}
+naivef = function(k, df, cd=1){
+    if(cd == 1){
+      naive_marcos(k, df)
+    }else if (cd == 0){
+      naive_marcos2(k, df)
+    }else{
+      cat('Type cd = 1 for categorical dependent variables, \n
+      and cd = 0 for non-categorical dependent variables.')
+    }} 
+```
+
+- If cd=1 the algorithm can be used in classification problems with categorical dependent variables (naive_marcos)
+- If cd=0 the algorithm can be used in classification problems with non-categorical dependent variables (naive_marcos2)
+
+
+## Naive Bayes function
+
+- k is the class
+- df is the data frame that contains the dataset of interest
+- My predict function can be see below
+
+```{r echo=TRUE}
+predf = function(k, df, df_n, cl, cclas=0, cd=1){
+  if(cd == 1){
+    pred_marcos(k, df, df_n, cl, cclas)
+  }else if (cd == 0){
+    pred_marcos2(k, df, df_n, cl, cclas)
+  }else{
+    cat('Type cd = 1 for categorical dependent variables, 
+    \n and cd = 0 for non-categorical dependent variables.')
+  }} 
+```
+
+- df_n is the new data set that we want to predict the class
+- cl is the inductor
+- cclas gives the class if cclas=1, and probabilities if cclas=0 
+
+
+
+## My first example (default risk)
+
+- There are three classes in dependent variable (risco) and two independents variables. The independent variables (historia, divida) are categoricals as you can see in head table of my data set:
+```{r echo=FALSE}
+
+df = read.csv('naive_base.csv')
+df$garantias =NULL
+df$renda =NULL
+knitr::kable(head(df), caption = 'My dataset', label = 'Elaborate by author.')
+```
+
+- Risco is a default risk that the bank runs when lending money.
+- Historia is customer credit history and divida is customer debt in market.  
+- So, I will predict if the new customer is a good customer.
+
+```{r include=FALSE}
+
+naive_marcos = function(k, df){
+  
+  a = prop.table(table(df[ ,k]))
+  ta = length(a)
+  nm = rownames(a)
+  print(strrep('=-', 30))
+  
+  print('Marcos Naive Bayes Classifier for Discrete Predictors')
+  
+  print(strrep('=-', 30))
+  
+  cat('A-priori probabilities:\n')
+  print(a)
+  # simple trick to get names of variables without class variable
+  
+  df2 = df[ , k]
+  df[ , k] = NULL 
+  
+  col_n = colnames(df)
+  df$k = df2
+  
+  # defining lengths
+  
+  t_b1 =length( prop.table(table(df[ ,col_n[1]])))
+  t_c1 =length( prop.table(table(df[ ,col_n[2]])))
+  
+  # probabilities array
+  
+  M1 = array(0, dim=c(t_b1, t_c1, ta) )
+  
+  for (k in 1:ta) {
+    f1 = df['k'] == nm[k]
+
+    b1 = prop.table(table(df[f1,col_n[1]]))
+    c1 = prop.table(table(df[f1,col_n[2]]))
+    
+    
+    for(j in 1:length(c1)){
+      for ( i in 1:length(b1) ) {
+        
+        M1[i, j, k] = a[k]*b1[i]*c1[j] 
+        
+      }
+    }
+    
+  }
+  dimnames(M1) = list(rownames(prop.table(table(df[ ,col_n[1]]))),rownames( prop.table(table(df[ ,col_n[2]]))), nm )
+  cat('Conditional Probabilities: \n')
+  
+  return(M1) 
+}
+
+
+
+naivef = function(k, df, cd=1){
+    if(cd == 1){
+      naive_marcos(k, df)
+    }else if (cd == 0){
+      naive_marcos2(k, df)
+    }else{
+      cat('Type cd = 1 for categorical dependent variables, \n and cd = 0 for non-categorical dependent variables.')
+      
+    }
+    
+  } 
+
+```
+
+
+
+## Inductor to categorical dependet variables
+
+- I used naivef function in my dataset
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=TRUE}
+cl = naivef('risco', df, cd=1)
+
+```
+- This function return a table that contains conditional probabilities 
+- This table was save in cl object
+
+
+## Inductor to categorical dependet variables
+
+- cl object is a tensor
+- The tensor has a dimension equal to the number of class attributes
+- In this case three
+- You can see below the first dimension of this tensor 
+- The first row of first column is: $$P(alta, boa|alto)= 0.04761$$
+
+```{r}
+head(cl[, ,1])
+```
+
+## Predict
+
+
+```{r}
+source("D:/Git projects/college_works/ML_1/Nbayes2_work.R")
+```
+
+```{r echo=TRUE}
+predf('risco', df, df_teste, cl, cclas = 0, cd=1)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

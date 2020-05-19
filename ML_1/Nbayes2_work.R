@@ -15,6 +15,8 @@ df$garantias =NULL
 df$renda =NULL
 
 
+
+
 #------------------------------------------------------------------------------------------
 #                            categorical independent variable
 #------------------------------------------------------------------------------------------
@@ -46,12 +48,9 @@ naive_marcos = function(k, df){
   t_b1 =length( prop.table(table(df[ ,col_n[1]])))
   t_c1 =length( prop.table(table(df[ ,col_n[2]])))
   
-  
-  
   # probabilities array
   
   M1 = array(0, dim=c(t_b1, t_c1, ta) )
-  
   
   for (k in 1:ta) {
     f1 = df['k'] == nm[k]
