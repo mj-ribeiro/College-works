@@ -30,7 +30,13 @@ teste$sex = df2
 
 teste = data.frame(teste)
 
+## Import financial data
 
+
+find = readRDS('findata.rds')
+
+keep = c('x', 'oil', 'pca')
+find = find[,keep]
 
 #------------------------------------------------------------------------------------------
 #                            categorical independent variable
@@ -173,11 +179,17 @@ print(prev2)
 ###########################################################################################
 
 
+namedf = colnames(find)
+
 
 naive_marcos2 = function(k, df){
   df = as.data.frame(df)
-  #fator =  factor(df[,k])
   
+  namedf = colnames(df)
+  n1= which(namedf!= k)[1]
+  n2 = which(namedf!= k)[2]
+  n3 = which(namedf== k)
+    
   a = prop.table(table(df[ ,k]))
   ta = length(a)
   nm = rownames(a)
@@ -321,8 +333,14 @@ naivef = function(k, df, cd=1){
   } 
 
 
-naivef('risco', df, cd=1)
-  
+library(fGarch)
+basicStats(find$oil)
+
+find  = find[,c(2,3,1)]
+
+naivef('x', find, cd=0)
+
+
 
 
 #----- single predict

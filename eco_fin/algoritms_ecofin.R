@@ -2,7 +2,7 @@
 #                                   Algorithms
 #***********************************************************************************************
 
-setwd("D:/Git projects/Finance/Finance_R")
+setwd("D:/Git projects/college_works/eco_fin")
 
 library(caret)
 library(ROSE)
@@ -35,7 +35,7 @@ df2$x = ifelse(df2$x==2, 0, df2$x )
 
 table(df2$x)
 
-
+saveRDS(df2, 'findata.rds')
 #--- Rose library
 
 library(ROSE)
