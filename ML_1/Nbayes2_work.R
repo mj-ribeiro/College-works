@@ -7,7 +7,7 @@
 setwd("D:/Git projects/college_works/ML_1")
 
 
-# import data categorical
+# import data
 
 df = read.csv('naive_base.csv')
 
@@ -16,7 +16,7 @@ df$renda =NULL
 
 
 
-## import data  non-categorical
+## import data to non-categorical independent variable
 
 library(readxl)
 teste <- read_excel("teste.xlsx")
@@ -210,6 +210,7 @@ naive_marcos2 = function(k, df){
   return(M)
 }
 
+cc = naive_marcos2('sex', teste)
 
 
 ################  predict function
