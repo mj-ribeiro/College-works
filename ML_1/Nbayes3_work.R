@@ -8,8 +8,8 @@ setwd("D:/Git projects/college_works/ML_1")
 
 
 
-library(readxl)
-teste <- read_excel("teste.xlsx")
+teste <- read.csv("teste.csv")
+
 
 teste$foot = NULL
 df2 = teste[,'sex'] 
@@ -18,7 +18,6 @@ teste$sex = df2
 
 
 teste = data.frame(teste)
-
 
 #--- function
 
@@ -156,7 +155,7 @@ weight = c(170, 183, 188, 188)
 dfn = data.frame(height, weight)
 
 
-oo = pred_marcos2('sex', teste, dfn, cc, cclas = 0)
+oo = pred_marcos2('sex', teste, dfn, cc, cclas = 1)
 oo
 
 

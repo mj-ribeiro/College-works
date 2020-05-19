@@ -36,7 +36,7 @@ teste = data.frame(teste)
 find = readRDS('findata.rds')
 
 keep = c('x', 'oil', 'pca')
-find = find[,keep]
+find2 = find[,keep]
 
 #------------------------------------------------------------------------------------------
 #                            categorical independent variable
@@ -185,11 +185,12 @@ namedf = colnames(find)
 naive_marcos2 = function(k, df){
   df = as.data.frame(df)
   
-  namedf = colnames(df)
+  namedf = colnames(df)        #reorder columns
   n1= which(namedf!= k)[1]
   n2 = which(namedf!= k)[2]
   n3 = which(namedf== k)
-    
+  df = df[ ,c(n1, n2, n3)]  
+  
   a = prop.table(table(df[ ,k]))
   ta = length(a)
   nm = rownames(a)
@@ -205,7 +206,6 @@ naive_marcos2 = function(k, df){
   
   M = array(0, dim = c(2,2, ta))
   m = matrix(0, 2, 2)
-  
   
   for(g in 1:ta){
     m1 = as.matrix(tapply(df[,1], df[,k], mean)[g])
@@ -336,9 +336,9 @@ naivef = function(k, df, cd=1){
 library(fGarch)
 basicStats(find$oil)
 
-find  = find[,c(2,3,1)]
 
-naivef('x', find, cd=0)
+
+cl3 = naivef('x', find2[1:231, ], cd=0)
 
 
 
@@ -355,6 +355,14 @@ predf = function(k, df, df_n, cl, cclas=0, cd=1){
     cat('Type cd = 1 for categorical dependent variables, \n and cd = 0 for non-categorical dependent variables.')
   }
 } 
+
+
+tr = find2[1:231, ]
+tst = find2[232:241, ]
+
+predf('x', tr, tst, cl3, cclas=0, cd=0)
+
+
 
 
 
