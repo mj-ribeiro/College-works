@@ -32,6 +32,7 @@ CMAX = function(w, n, s){
 
 
 
+
 # Libraries
 
 library(tseries)

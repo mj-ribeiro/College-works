@@ -18,8 +18,9 @@ df$renda =NULL
 
 ## import data to non-categorical independent variable
 
-library(readxl)
-teste <- read_excel("teste.xlsx")
+
+teste <- read.csv("teste.csv")
+
 
 teste$foot = NULL
 df2 = teste[,'sex'] 
