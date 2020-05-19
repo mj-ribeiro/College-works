@@ -7,13 +7,27 @@
 setwd("D:/Git projects/college_works/ML_1")
 
 
-# import data
+# import data categorical
 
 df = read.csv('naive_base.csv')
 
 df$garantias =NULL
 df$renda =NULL
 
+
+
+## import data  non-categorical
+
+library(readxl)
+teste <- read_excel("teste.xlsx")
+
+teste$foot = NULL
+df2 = teste[,'sex'] 
+teste[,'sex']=NULL
+teste$sex = df2
+
+
+teste = data.frame(teste)
 
 
 
@@ -88,7 +102,7 @@ cl
 pred_marcos = function(k, df, df_n, cl, cclas=0){
   # k -> class
   # df -> data to training algorithm
-  # df_c -> new data vectors
+  # df_n -> new data vectors
   # cclas -> to get classification (1) or probabilities (0)
   # cl -> classifier
   
@@ -103,7 +117,7 @@ pred_marcos = function(k, df, df_n, cl, cclas=0){
   v = matrix(0, tvv, ta)
   for(i in 1:tvv){
   
-    v[i, ] =  cl[df_c[i, 1], df_n[i, 2],  ]
+    v[i, ] =  cl[df_n[i, 1], df_n[i, 2],  ]
     
     v[i, ] = v[i, ]/sum(v[i, ])
     
@@ -143,7 +157,7 @@ clas2 = naiveBayes(x=df[-3], y = df$risco)
 print(clas2)
 
 
-prev2 = predict(clas2, newdata = df_c, 'raw') 
+prev2 = predict(clas2, newdata = df_teste, 'raw') 
 print(prev2) 
 
 
