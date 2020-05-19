@@ -360,10 +360,10 @@ predf = function(k, df, df_n, cl, cclas=0, cd=1){
 tr = find2[1:231, ]
 tst = find2[232:241, ]
 
-predf('x', tr, tst, cl3, cclas=0, cd=0)
+prev = predf('x', tr, tst, cl3, cclas=1, cd=0)
 
-
-
+accuracy = (sum((prev == tst[,1])*1)/length(tst[,1]) )*100
+accuracy
 
 
 
