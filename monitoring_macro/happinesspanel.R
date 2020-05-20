@@ -115,23 +115,22 @@ windows()
 g8
 
 
-### PPC
+### PPC and HC
 
 
+f2 = df[year==2015, ]
 
-f2 = df[year==2011, ]
 
-
-g9 = ggplot(data = f3, aes(x=hc, y=ppc/10000, 
-              colour=factor(rendacod)))+
-              geom_text(aes(label=CountryCode), size=4)
-
+g9 = ggplot(data = f2, aes(x=hc, y=ppc/10000))+
+          ylim(-0.001, 10.2) +
+          geom_smooth(method = 'lm',formula = y~x, color='black', se=F) +
+          geom_text(aes(label=CountryCode), size=4)
 
 
 g10 = g9 + 
-  ggtitle('PPC and HC') + 
-  xlab('HC') +
-  ylab('PPC') +
+  ggtitle('PIB per capita and HC') + 
+  xlab('Human capital') +
+  ylab('PIB per capita') +
   theme(axis.title.x = element_text(colour = 'black', size=13),
         axis.title.y = element_text(colour = 'black', size=13),
         plot.title = element_text(hjust = 0.5))
@@ -139,6 +138,73 @@ g10 = g9 +
 windows()
 g10
 
+
+##### PPC and Institutional quality
+
+
+g11 = ggplot(data = f2, aes(x=qinst, y=ppc/10000))+
+  geom_smooth(method = 'lm',formula = y~x, color='black', se=F) +
+  geom_text(aes(label=CountryCode), size=4)
+
+
+g12 = g11 + 
+  ggtitle('PIB per capita and Institutional Quality') + 
+  xlab('Institutional Quality') +
+  ylab('PIB per capita') +
+  theme(axis.title.x = element_text(colour = 'black', size=13),
+        axis.title.y = element_text(colour = 'black', size=13),
+        plot.title = element_text(hjust = 0.5))
+
+windows()
+g12
+
+
+##### PPC and population growth
+
+
+g13 = ggplot(data = f2, aes(x=crespop, y=ppc/10000))+
+  xlim(-0.009, 0.04) +
+  geom_smooth(method = 'lm',formula = y~x, color='black', se=F) +
+  geom_text(aes(label=CountryCode), size=4)
+
+
+g14 = g13 + 
+  ggtitle('PIB per capita and Population Growth') + 
+  xlab('Population Growth') +
+  ylab('PIB per capita') +
+  theme(axis.title.x = element_text(colour = 'black', size=13),
+        axis.title.y = element_text(colour = 'black', size=13),
+        plot.title = element_text(hjust = 0.5))
+
+windows()
+g14
+
+
+##### PPC and FBCF
+
+
+
+g15 = ggplot(data = f2, aes(x=lld, y=ppc/10000))+
+  ylim(-0.001, 10.2) +
+  geom_smooth(method = 'lm',formula = y~x, color='black', se=F) +
+  geom_text(aes(label=CountryCode), size=4)
+
+
+g16 = g15 + 
+  ggtitle('PIB per capita and Life Satisfaction') + 
+  xlab('Life Satisfaction') +
+  ylab('PIB per capita') +
+  theme(axis.title.x = element_text(colour = 'black', size=13),
+        axis.title.y = element_text(colour = 'black', size=13),
+        plot.title = element_text(hjust = 0.5))
+
+windows()
+g16
+
+library("ggpubr")
+
+
+ggarrange(g10, g12, g14, g16)
 
 
 
