@@ -19,7 +19,7 @@ u = un
 pi = np.zeros(n)
 
 for i in range(0,n):
-    print(i)
+    
     if i>=2:
         u = 0.04
         theta = 1
@@ -28,5 +28,19 @@ for i in range(0,n):
     pi[i] = theta*pi[i-1] + (mu + z) - 1.5*u
 
 plt.plot(pi)
+
+pi
+
+
+
+
+0.16/(0.01+0.01+0.02)
+2**0.5
+
+np.exp(1)*1.41
+
+
+
+
 
 

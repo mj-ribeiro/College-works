@@ -118,7 +118,8 @@ g8
 ### PPC and HC
 
 
-f2 = df[year==2015, ]
+f2 = df[(year==2015)&(ppc/10000>=0.08)&(rendacod==1|rendacod==4), ]
+
 
 
 g9 = ggplot(data = f2, aes(x=hc, y=ppc/10000))+
