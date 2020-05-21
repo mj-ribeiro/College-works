@@ -32,11 +32,46 @@ teste = data.frame(teste)
 
 ## Import financial data
 
-
 find = readRDS('findata.rds')
 
 keep = c('x', 'oil', 'pca')
 find2 = find[,keep]
+
+
+## census data
+
+census = readRDS('census.rds')
+
+keep2 = c('education', 'occupation', 'income')
+census = census[ ,keep2]
+
+addToDF <- function(df, v){
+  nRow <- nrow(df)
+  lngth <- length(v)
+  if(nRow > lngth){
+    length(v) <- nRow
+  }else if(nRow < lngth){
+    df[(nRow+1):lngth, ] <- NA
+  }
+  cbind(df,v)
+}
+
+
+a = levels(as.factor(census$education))
+a = data.frame(a)
+
+
+b = levels(as.factor(census$occupation))
+a = addToDF(a, b)
+
+
+c = levels(as.factor(census$income))
+a = addToDF(a, c)
+
+a[is.na(a)] = ' '
+names = c('education', 'occupation', 'income')
+colnames(a) = names
+
 
 #------------------------------------------------------------------------------------------
 #                            categorical independent variable
