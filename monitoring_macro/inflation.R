@@ -1,5 +1,5 @@
 #==============================================================================================
-#                             Phillips Curve
+#                                  Phillips Curve
 #==============================================================================================
 
 setwd("D:/Git projects/college_works/monitoring_macro")
@@ -23,11 +23,14 @@ colnames(inf) = 'inf'
 inf = xts(inf, order.by = data)
 
 
+plot(inf)
+
 # diff inflation
 
 dinf = diff(inf)
 colnames(dinf) = 'dinf'
 
+plot(dinf)
 
 
 # unemployment  - Taxa de desocupação - PNADC
@@ -43,7 +46,7 @@ colnames(des) = 'des'
 des = xts(des, order.by = data1)
 
 
-
+plot(des)
 
 ## plots
 
