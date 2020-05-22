@@ -112,7 +112,7 @@ sf()
 
 #----------------------------------------- Human capital of teachers
 
-#Numpy parece não permite potências fracionárias de números negativos,
+#Numpy parece não permitir potências fracionárias de números negativos,
 #mesmo que a potência não resulte em um número complexo.
 
 
@@ -249,7 +249,6 @@ def simul():
 
 
 
-
     
 def taus2():
     global x1, tau_h, tau_w, w
@@ -277,7 +276,6 @@ def taus2():
 
 def obj(tau):
     global D, tau_w, tau_h, w
-    #taus()
     
     tau = tau.reshape((3, i, r))
     tau_w = tau[0]
@@ -292,16 +290,7 @@ def obj(tau):
     Wf()
     simul()
     
-    f1 = np.zeros((i, r))
-    f2 = np.zeros((i, r))    
-    
-    for c in range(i):
-        for j in range(r):
-            f1[c, j] = ( (W[c, j] - W_t[c, j]) / W_t[c, j] ) ** 2
-            f2[c, j] = ( (p_ir[c, j] - p_t[c, j])  /  p_t[c, j] ) ** 2
-    d1 = np.sum(f1)
-    d2 = np.sum(f2)
-    D = d1 + d2
+    D = np.sum((W/W_t - 1)**2 + (p_ir/p_t - 1)**2)
 
     return D
 
@@ -310,13 +299,9 @@ def obj(tau):
 #----------------------------- OPTIMIZATION Scipy
 
 taus2()
-
 obj(x1)
 
 
-(W/W_t - 1)**2 + (p_ir/p_t - 1)**2
-
-np.sum((W/W_t - 1)**2 + (p_ir/p_t - 1)**2)
 
 
 def calibration(v):

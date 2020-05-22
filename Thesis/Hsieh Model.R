@@ -224,11 +224,6 @@ obj = function(x1){
 obj(x1)
 
 
-sum(g)
-
-
-
-
 #-------------------------- Solve
 
 library('Rsolnp')
@@ -271,20 +266,24 @@ UB = array(c(ub_tau_h, ub_tau_w, ub_w), dim = c(i, r, 3))
 x1 = array( c(tau_w, tau_h, w), dim = c(i, r, 3))
 
 
+
 eeq = function(x1){
-  x1[1, ,1]
+  k1 = x1[1, ,1] 
+  return(k1)
   # x1[1, ,2], x1[ ,r,3] )   
 }
+
 
 r1 = rep(x1[1, 1 ,1], r)
 r2 = matrix(0, nrow = 1, ncol = r)
 r3 = matrix(1, nrow = i, ncol = 1)
  
-
+r1 = matrix(0, nrow = 1, ncol = r) 
+  
 res = solnp(x1,      
             obj,
             eqfun = eeq,
-            eqB = c(r1),
+            eqB = r1,
             UB=UB,
             LB=LB)
 
@@ -295,6 +294,5 @@ res = solnp(x1,
 res$values
 
 res$pars
-
 
 
