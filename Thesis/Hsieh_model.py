@@ -206,7 +206,7 @@ def p_irf( ):
     
     for c in range(i):
         for j in range(r):
-            p_ir[c, j] = (( w_til[c, j] )) ** theta / w_r[c]
+            p_ir[c, j] = (( w_til[c, j] )) ** theta / w_r[j]
              #p_ir[c, j] = ((np.sign(w_til[c, j])* np.abs(w_til[c, j])**theta) ) / w_r[j]            
     #p_i = np.sum(p_ir)
 
@@ -310,10 +310,13 @@ def obj(tau):
 #----------------------------- OPTIMIZATION Scipy
 
 taus2()
+
 obj(x1)
 
 
+(W/W_t - 1)**2 + (p_ir/p_t - 1)**2
 
+np.sum((W/W_t - 1)**2 + (p_ir/p_t - 1)**2)
 
 
 def calibration(v):
@@ -347,7 +350,7 @@ def calibration(v):
     print('{:*^50}'.format('End of calibration'))
 
 
-calibration(100)
+calibration(3000)
 
 
 
