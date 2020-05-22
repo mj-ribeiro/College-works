@@ -169,12 +169,13 @@ def H_trf():
 
 #----------------------------------------- w tilde  (Proposition 1)
 
+x1
 
 def w_tilf( ):
     
     par( )
     taus2( )
-    H_trf( )
+    H_trf = np.ones((i, r))
     
     global w_til
     
@@ -182,12 +183,13 @@ def w_tilf( ):
     
     for c in range(i):
         for j in range(r):
-            w_til[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * H_tr[j]**varphi * x1[2, c, j] * s[c]**phi[c] * (1 - s[c]) ** ( (1- eta) /beta )           
+            w_til[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * 1**varphi * x1[2, c, j] * s[c]**phi[c] * (1 - s[c]) ** ( (1- eta) /beta )           
             #w_til[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * (np.sign(H_tr[j])* np.abs(H_tr[j])**varphi)  * x1[2, c, j] * s[c]**phi[c] * (1 - s[c]) ** ( (1- eta) /beta )           
 
     return w_til 
 
-
+taus2()
+w_tilf()
 
 #------------------------------------------ p_ir  (eq 19)
     
@@ -199,26 +201,19 @@ def p_irf( ):
     #w_r = np.sign(w_til)*np.abs(w_til)**theta
     w_r = w_til**theta
     w_r = w_r.sum(axis = 0) 
-
      
     p_ir = np.zeros((i, r))
     
     for c in range(i):
         for j in range(r):
-           # p_ir[c, j] = (( w_til[c, j] )) ** theta / w_r[c]
-             p_ir[c, j] = ((np.sign(w_til[c, j])* np.abs(w_til[c, j])**theta) ) / w_r[j]            
+            p_ir[c, j] = (( w_til[c, j] )) ** theta / w_r[c]
+             #p_ir[c, j] = ((np.sign(w_til[c, j])* np.abs(w_til[c, j])**theta) ) / w_r[j]            
     #p_i = np.sum(p_ir)
 
     p_i = np.sum(p_ir, axis =0)  
     return p_ir
 
 
-for c in range(i):
-        for j in range(r):
-            print(f'p_ir= {(( w_til[c, j] )) ** theta / w_r[c] }')
-
-
-#(np.sign(w_til[0, 1])* np.abs(w_til[0, 1])**theta)
 
 #---------------------------------------  W (eq 27)
 
@@ -261,7 +256,7 @@ def taus2():
     par()
     
     
-    tau_h = np.random.uniform(low=-100, high=100, size=(i,r))
+    tau_h = np.random.uniform(low=-1, high=1, size=(i,r))
     tau_h[0, :] = 0
 
     tau_w = np.random.uniform(low=-1, high=1, size=(i,r))
@@ -288,12 +283,12 @@ def obj(tau):
     tau_w = tau[0]
     tau_h = tau[1]
     w = tau[2]
-
     
     sf()
     w_tilf()
     p_irf()
-    H_trf()
+#    H_trf()
+    H_trf = np.ones((i, r))
     Wf()
     simul()
     
@@ -353,6 +348,31 @@ def calibration(v):
 
 
 calibration(100)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
