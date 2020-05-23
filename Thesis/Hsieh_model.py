@@ -207,7 +207,7 @@ taus2()
 
 def obj(x1):
     global D
-    
+    x1 = taus2()
     x1 = x1.reshape((3, i, r))    
     
     sf()
@@ -226,6 +226,7 @@ def obj(x1):
 #----------------------------- OPTIMIZATION Scipy
 
 taus2()
+
 obj(x1)
 
 
@@ -262,8 +263,8 @@ def calibration(v):
     print('{:*^50}'.format('End of calibration'))
 
 
-calibration(20000)
-
+calibration(2000)
+obj(x1)
 
 np.seterr(all='ignore')
 
