@@ -45,29 +45,10 @@ def par():
 
 par()
 
-#------------------------ h_til
-
-
-
-def h_tilf( ):
-    global h_til
-    
-    sf( )
-
-    h_til = np.zeros((i, r))
-    for c in range(i):
-        for j in range(r):    
-            h_til[c, j] = ( 1 ** varphi * s[c]**phi[c] * eta**eta )**(1 - eta)**(-1) 
-
-    return h_til
-
-
 
 
 
 #----------------------------------------- s - time spent at school   (eq 14)
-
-
 
 
 def sf( ):
@@ -80,36 +61,39 @@ def sf( ):
 
 sf()
 
-#----------------------------------------- Human capital of teachers
+#-------------------------------------- Human capital of teachers - eq 31
 
-#Numpy parece não permitir potências fracionárias de números negativos,
-#mesmo que a potência não resulte em um número complexo.
+#x1 = np.array( [tau_w, tau_h, w] )
 
 
 
 
 def H_trf():
     global H_tr
-        
-    
-    
+    C = sf()[i-1]**phi[i-1]*eta**eta *gamma1**(-z)
+    A = np.zeros(r)         
+    B = np.zeros(r)
+    H_tr = np.zeros(r)
+    for j in range(r):
+        A[j] = ( (1 - x1[0, i-1 , j]) /( (1 + x1[1, i-1 , j])**eta) * x1[2, i-1 , j] )**omg  
+        B[j] = ((1 + np.sum(x1[1], axis=0)[j] ) **eta / (1 - np.sum(x1[0], axis=0)[j] ) * ( 1/x1[2, i-1 , j] ) )** mu
+        H_tr[j] = A[j]*B[j]*C      
+   
     return H_tr
 
 
+H_trf()
 
-x1 = np.array( [tau_w, tau_h, w] )
 
 
-x1[2, : , :]
 
-np.sum(x1[2], axis=0)
+
 
 
 
 
 #----------------------------------------- w tilde  (Proposition 1)
 
-x1
 
 def w_tilf( ):
     
@@ -124,7 +108,6 @@ def w_tilf( ):
     for c in range(i):
         for j in range(r):
             w_til[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * 1**varphi * x1[2, c, j] * s[c]**phi[c] * (1 - s[c]) ** ( (1- eta) /beta )           
-            #w_til[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * (np.sign(H_tr[j])* np.abs(H_tr[j])**varphi)  * x1[2, c, j] * s[c]**phi[c] * (1 - s[c]) ** ( (1- eta) /beta )           
 
     return w_til 
 
