@@ -65,23 +65,29 @@ sf()
 #x1 = np.array( [tau_w, tau_h, w] )
 
 
+from time import sleep as sl
 
 
-def H_trf():
+def H_trf(x1):
     global H_tr
+#    taus2( )
     C = sf()[i-1]**phi[i-1]*eta**eta *gamma1**(-z)
     A = np.zeros(r)         
     B = np.zeros(r)
     H_tr = np.zeros(r)
     for j in range(r):
         A[j] = ( (1 - x1[0, i-1 , j]) /( (1 + x1[1, i-1 , j])**eta) * x1[2, i-1 , j] )**omg  
-        B[j] = ((1 + np.sum(x1[1], axis=0)[j] ) **eta / (1 - np.sum(x1[0], axis=0)[j] ) * ( 1/x1[2, i-1 , j] ) )** mu
+        B[j] = ((1 + np.sum(x1[1], axis=0)[j] ) **eta / (1 - np.sum(x1[0], axis=0)[j] ) * ( 1/x1[2, i-1 , j] ) )**mu
+  
         H_tr[j] = A[j]*B[j]*C      
    
     return H_tr
+ 
 
+taus2()
 
 H_trf()
+
 
 
 
@@ -89,12 +95,11 @@ H_trf()
 #----------------------------------------- w tilde  (Proposition 1)
 
 
-def w_tilf( ):
+def w_tilf(x1):
     global w_til
-
+    
     par( )
-    taus2( )
-    H_tr = H_trf()     
+    H_trf(x1)     
         
     w_til = np.zeros((i, r))
     A = np.zeros((i, r))
@@ -117,36 +122,34 @@ w_tilf()
 #------------------------------------------ p_ir  (eq 19)
     
         
-def p_irf( ):
-    global p_ir, w_r
-    w_tilf( )
- 
-    w_r = w_til.sum(axis = 0) 
-    w_r = w_r ** theta
+def p_irf(x1):
+    global p_ir, w_r, w_til
+    w_tilf(x1)
+    
+    w_til = w_til ** theta
+    w_r = w_til.sum(axis = 0)    
     
     p_ir = np.zeros((i, r))
     
     for c in range(i):
         for j in range(r):
-            p_ir[c, j] = w_til[c, j] **theta  / w_r[j] 
+            p_ir[c, j] = w_til[c, j] / w_r[j] 
              
     return p_ir
+
 
 taus2()
 w_tilf()
 p_irf( )
 w_r
 
-w_r
- 
+
 #---------------------------------------  W (eq 27)
 
 
-
-
-def Wf():
-    p_irf( )
-    taus2( )
+def Wf(x1):
+    p_irf(x1)
+    #taus2( )
     global W
     W = np.zeros((i, r))
     A = np.zeros((i, r))
@@ -154,14 +157,11 @@ def Wf():
     
     for c in range(i):
         for j in range(r):
-             = ((1 - s[c])**(-1/beta))/( 1 - x1[0, c, j] )
-            *gamma1*eta*(w_r[j])**(1/(theta*(1 - eta)))     #        (eq 27)
-            A[c, j]
-            B[c, j]
-              
-            W[c, j]
+                       
+            A[c, j] = ((1 - s[c])**(-1/beta))/( 1 - x1[0, c, j] )
+            B[c, j] = gamma1*eta*w_r[j]**(1/(theta*(1 - eta)))                    
+            W[c, j] = A[c, j]*B[c, j]
     return W
-
 
 
 #--------- Simulated data 
@@ -184,8 +184,7 @@ def simul():
 def taus2():
     global x1, tau_h, tau_w, w
     par()
-    
-    
+        
     tau_h = np.random.uniform(low=-1, high=1, size=(i,r))
     tau_h[0, :] = 0
 
@@ -206,20 +205,16 @@ taus2()
 
  
 
-def obj(tau):
-    global D, tau_w, tau_h, w
+def obj(x1):
+    global D
     
-    tau = tau.reshape((3, i, r))
-    tau_w = tau[0]
-    tau_h = tau[1]
-    w = tau[2]
+    x1 = x1.reshape((3, i, r))    
     
     sf()
-    w_tilf()
-    p_irf()
-#    H_trf()
-    H_trf = np.ones((i, r))
-    Wf()
+    H_trf(x1)
+    w_tilf(x1)
+    p_irf(x1)
+    Wf(x1)
     simul()
     
     D = np.sum((W/W_t - 1)**2 + (p_ir/p_t - 1)**2)
@@ -267,9 +262,10 @@ def calibration(v):
     print('{:*^50}'.format('End of calibration'))
 
 
-calibration(3000)
+calibration(20000)
 
 
+np.seterr(all='ignore')
 
 
 
