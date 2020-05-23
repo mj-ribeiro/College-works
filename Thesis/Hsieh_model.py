@@ -5,8 +5,7 @@ Created on Tue Mar  3 10:18:22 2020
 @author: Marcos J Ribeiro
 """
 # see this: https://pastebin.com/cvYBvW3B
-# The model can be viewed in:  https://drive.google.com/drive/u/0/folders/1MOOHg2woM6B2MCLohTPk-kbIgO5RLbVZ
-
+# The model can be viewed in:  https://mj-ribeiro.github.io/blog/hsieh_model/
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -87,30 +86,31 @@ H_trf()
 
 
 
-
-
-
-
-
 #----------------------------------------- w tilde  (Proposition 1)
 
 
 def w_tilf( ):
-    
+    global w_til
+
     par( )
     taus2( )
-    H_trf = np.ones((i, r))
-    
-    global w_til
-    
+    H_tr = H_trf()     
+        
     w_til = np.zeros((i, r))
+    A = np.zeros((i, r))
+    B = np.zeros((i, r))
+    C = np.zeros((i, r))
     
     for c in range(i):
         for j in range(r):
-            w_til[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * 1**varphi * x1[2, c, j] * s[c]**phi[c] * (1 - s[c]) ** ( (1- eta) /beta )           
-
+            A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
+            B[c, j] = x1[2, c, j]*H_tr[j]**varphi*s[c]**phi[c]
+            C[c, j] = (1 - s[c])**((1-eta)/beta)
+            
+            w_til[c, j] = A[c, j]*B[c, j]*C[c, j] 
+             
     return w_til 
-
+ 
 taus2()
 w_tilf()
 
@@ -118,26 +118,27 @@ w_tilf()
     
         
 def p_irf( ):
-    global p_ir, p_i, w_r
+    global p_ir, w_r
     w_tilf( )
-        
-    #w_r = np.sign(w_til)*np.abs(w_til)**theta
-    w_r = w_til**theta
-    w_r = w_r.sum(axis = 0) 
-     
+ 
+    w_r = w_til.sum(axis = 0) 
+    w_r = w_r ** theta
+    
     p_ir = np.zeros((i, r))
     
     for c in range(i):
         for j in range(r):
-            p_ir[c, j] = (( w_til[c, j] )) ** theta / w_r[j]
-             #p_ir[c, j] = ((np.sign(w_til[c, j])* np.abs(w_til[c, j])**theta) ) / w_r[j]            
-    #p_i = np.sum(p_ir)
-
-    p_i = np.sum(p_ir, axis =0)  
+            p_ir[c, j] = w_til[c, j] **theta  / w_r[j] 
+             
     return p_ir
 
+taus2()
+w_tilf()
+p_irf( )
+w_r
 
-
+w_r
+ 
 #---------------------------------------  W (eq 27)
 
 
@@ -148,10 +149,17 @@ def Wf():
     taus2( )
     global W
     W = np.zeros((i, r))
+    A = np.zeros((i, r))
+    B = np.zeros((i, r))
     
     for c in range(i):
         for j in range(r):
-            W[c, j] = ((1 - s[c])**(-1/beta))/( 1 - x1[0, c, j] )*gamma1*eta*(w_r[j])**(1/(theta*(1 - eta)))     #        (eq 27)
+             = ((1 - s[c])**(-1/beta))/( 1 - x1[0, c, j] )
+            *gamma1*eta*(w_r[j])**(1/(theta*(1 - eta)))     #        (eq 27)
+            A[c, j]
+            B[c, j]
+              
+            W[c, j]
     return W
 
 
