@@ -25,7 +25,7 @@ import time
 
 
 def par():
-    global beta, eta, varphi, theta, rho, i, r, gamma1, phi, kappa
+    global beta, eta, varphi, theta, rho, i, r, gamma1, phi, kappa, z, alfa, omg, mu, sig
     beta = 0.69
     eta = 0.25
     varphi = 0.25
@@ -35,12 +35,15 @@ def par():
     i = 2
     r = 4
     gamma1 = gamma(1 - ( 1/(theta*(1-rho)) * 1/(1 - eta) ) )   
+    z = 1 - (varphi/(1 - eta))    
+    alfa = 1 - 1/(theta*(1-eta))
+    omg = ( theta*alfa + eta*kappa )/ z
     phi = [0.138, 0.174]
-
+    mu = (theta*alfa)/ z
+    sig = kappa/z
 
 
 par()
-
 
 #------------------------ h_til
 
@@ -59,39 +62,6 @@ def h_tilf( ):
     return h_til
 
 
-
-
-
-#------------------------ Agregate Human capital   (eq 23)
-
- 
-#
-#def Hf( ):
-#    taus2()
-#    global H, E, c1, g, b, a 
-#    h_tilf( )
-#    
-#    a = 1/ theta* ( 1 - rho )
-#    b = 1/ ( 1 - eta )
-#    
-#    g = gamma(1 - a * b)
-#                  
-#    H = np.zeros((i, r))
-#    #c1 = np.zeros(i)
-#    c1 = ( 1/1 )**(b / eta)
-#    #E = np.zeros(i)
-#    E = c1 * g
-#    
-#    for c in range(i):               
-#            
-#        #c1[c] = ( 1/p_i[c] )**(b / eta)
-#        
-#            
-#        for j in range(r): 
-#            
-#            H[c, j] = p_ir[c, j]*h_til[c, j] * ( ( (1 - x1[0, c, j])/(1 + x1[1, c, j]) ) * x1[2, c, j] ) ** (eta/(1 - eta)) * E
-#          
-#    return H
 
 
 
@@ -119,7 +89,7 @@ sf()
 
 
 def H_trf():
-    global H_tr, T, P, S, N, H
+    global H_tr
         
     
     
@@ -127,26 +97,15 @@ def H_trf():
 
 
 
-#---------------- p_ir (other aproach)
-#
-#def pf2():
-#    global ps
-#    
-#    #taus2()
-#    q1 = np.zeros((i, r))
-#    q2 = np.zeros(r)
-#    ps = np.zeros((i, r))
-#    for c in range(i):
-#        for j in range(r):
-#            q1[c, j] = ( ( (1 - x1[0, c, j]) / (1 + x1[1, c, j])**eta ) * (x1[2, c, j]) ) **theta 
-#            q2[j] = ( ( (1 - x1[0].sum(axis=0)[j]) / (1 + x1[1].sum(axis=0)[j] )**eta ) * ( x1[2].sum(axis=0)[j] ) ) ** theta
-#            ps[c, j] = ( (q1[c, j] ) / (q2[j] ) ) 
-#    return ps
-#
-#
-#pf2() 
-#
-#ps.sum(axis=0)
+x1 = np.array( [tau_w, tau_h, w] )
+
+
+x1[2, : , :]
+
+np.sum(x1[2], axis=0)
+
+
+
 
 #----------------------------------------- w tilde  (Proposition 1)
 
@@ -248,7 +207,8 @@ def taus2():
     x1 = np.array( [tau_w, tau_h, w] )
     
     return x1
-   
+
+taus2()   
 
 
 #--------------------- OBJECTIVE FUNCTION
