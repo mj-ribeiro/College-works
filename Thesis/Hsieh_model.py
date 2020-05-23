@@ -34,13 +34,13 @@ def par():
     kappa = 1/(1- eta)
     i = 2
     r = 4
-    gamma1 = gamma(1 - ( (theta*(1-rho)) **(-1) )   * (1 - eta)**(-1)  )    
+    gamma1 = gamma(1 - ( 1/(theta*(1-rho)) * 1/(1 - eta) ) )   
     phi = [0.138, 0.174]
 
 
 
 par()
-gamma1
+
 
 #------------------------ h_til
 
@@ -121,27 +121,8 @@ sf()
 def H_trf():
     global H_tr, T, P, S, N, H
         
-    par( )
-    taus2()    
-    sf()
     
-    P = np.zeros(r)
-    T = np.zeros((i, r))
-    S = np.zeros(i)
-    N = np.zeros((i, r))
-    H = np.zeros((i, r))
-        
-    for c in range(i):
-        for j in range(r):
-            
-            S[c] = ( s[c]**phi[c]*eta**eta ) ** kappa
-            P[j] = ( ( ( 1 - x1[0].sum(axis=0)[j] ) / ( ( 1 + x1[1].sum(axis=0)[j] )**eta) ) * ( x1[2].sum(axis=0)[j] ) ) ** (theta - kappa)
-            T[c, j] = ( ( 1 - x1[0, c, j] ) * x1[2, c, j] ) ** ( theta - kappa +kappa*eta) 
-            N[c, j] = ( 1 + x1[1, c, j]) ** (eta*theta) 
-            
-            H[c, j] = ( ( T[c, j] * S[c] * gamma1 ) / ( N[c, j] * P[j]) ** (1/(1-varphi*kappa)))  
-
-    H_tr = H[i-1, :]
+    
     return H_tr
 
 
