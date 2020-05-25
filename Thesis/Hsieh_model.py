@@ -60,6 +60,39 @@ def sf( ):
 
 sf()
 
+
+
+
+
+#-------------------------------------- p_tr (eq 29)
+
+def p_trf(x1):
+    global  k
+    
+    A = np.zeros((i,r))
+    B = np.zeros((i,r))
+    C = np.zeros((i,r))
+    k = np.zeros((i,r))
+    
+    for c in range(i):
+        for j in range(r):
+            A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
+            B[c, j] = x1[2, c, j]*s[c]**phi[c]
+            C[c, j] = (1 - s[c])**((1-eta)/beta)
+            k[c, j] = (B[c, j]*B[c, j]*C[c, j] )**theta
+    
+    p_tr = k[i-1]/np.sum(k, axis=0)
+    return p_tr
+   
+
+taus2()
+p_trf(x1)
+
+
+
+
+
+
 #-------------------------------------- Human capital of teachers - eq 31
 
 #x1 = np.array( [tau_w, tau_h, w] )
@@ -70,23 +103,19 @@ from time import sleep as sl
 
 def H_trf(x1):
     global H_tr
-#    taus2( )
-    C = sf()[i-1]**phi[i-1]*eta**eta *gamma1**(-z)
-    A = np.zeros(r)         
-    B = np.zeros(r)
-    H_tr = np.zeros(r)
-    for j in range(r):
-        A[j] = ( (1 - x1[0, i-1 , j]) /( (1 + x1[1, i-1 , j])**eta) * x1[2, i-1 , j] )**omg  
-        B[j] = ((1 + np.sum(x1[1], axis=0)[j] ) **eta / (1 - np.sum(x1[0], axis=0)[j] ) * ( 1/x1[2, i-1 , j] ) )**mu
-  
-        H_tr[j] = A[j]*B[j]*C      
+            
+    
+    A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
+    B[c, j] = x1[2, c, j]*s[c]**phi[c]
+    C[c, j] = (1 - s[c])**((1-eta)/beta)
+    k[c, j] = (B[c, j]*B[c, j]*C[c, j] )**theta
+
    
-    return H_tr
+    return k
  
 
 taus2()
-
-H_trf()
+H_trf(x1)
 
 
 
@@ -185,13 +214,13 @@ def taus2():
     global x1, tau_h, tau_w, w
     par()
         
-    tau_h = np.random.uniform(low=-1, high=1, size=(i,r))
+    tau_h = np.random.uniform(low=-0.99, high=100, size=(i,r))
     tau_h[0, :] = 0
 
-    tau_w = np.random.uniform(low=-1, high=1, size=(i,r))
+    tau_w = np.random.uniform(low=-0.99, high=0.99, size=(i,r))
     tau_w[0, : ] = tau_w[0, 0]
     
-    w =np.random.uniform(low=0, high=1, size=(i,r))
+    w =np.random.uniform(low=0, high=100, size=(i,r))
     w[:, r-1] = 1
     
     x1 = np.array( [tau_w, tau_h, w] )
@@ -226,7 +255,6 @@ def obj(x1):
 #----------------------------- OPTIMIZATION Scipy
 
 taus2()
-
 obj(x1)
 
 
