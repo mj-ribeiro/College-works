@@ -84,8 +84,9 @@ def p_trf(x1):
    
 
 taus2()
-p_trf(x1)
-k
+np.around(p_trf(x1), 4 )
+
+
 
 
 
@@ -98,7 +99,7 @@ k
 
 
 def H_trf(x1):
-    #global H_tr
+    global H_tr
     
     p_tr = p_trf(x1)  
     A = np.zeros((i,r))        
@@ -109,11 +110,11 @@ def H_trf(x1):
             A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * x1[2, c, j]**sig 
     
     A = A[i-1]
-    P1 = np.zeros(r) 
-    for j in range(r):
-        P1[j] = p_tr[j]**(alfa/z) * (eta**eta * s[i-1]**phi[i-1])
     
-    return A
+    for j in range(r):
+        H_tr[j] = p_tr[j]**(alfa/z) * (eta**eta * s[i-1]**phi[i-1])*A[j]*gamma1**z
+    
+    return H_tr
  
 
 taus2()
@@ -135,20 +136,20 @@ def w_tilf(x1):
     w_til = np.zeros((i, r))
     A = np.zeros((i, r))
     B = np.zeros((i, r))
-    C = np.zeros((i, r))
+    C = np.zeros(i)
     
     for c in range(i):
+        C[c] = (1 - s[c])**((1-eta)/beta)
         for j in range(r):
             A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
             B[c, j] = x1[2, c, j]*H_tr[j]**varphi*s[c]**phi[c]
-            C[c, j] = (1 - s[c])**((1-eta)/beta)
-            
-            w_til[c, j] = A[c, j]*B[c, j]*C[c, j] 
+        
+            w_til[c, j] = A[c, j]*B[c, j]*C[c] 
              
     return w_til 
  
 taus2()
-w_tilf()
+w_tilf(x1)
 
 #------------------------------------------ p_ir  (eq 19)
     
@@ -170,8 +171,8 @@ def p_irf(x1):
 
 
 taus2()
-w_tilf()
-p_irf( )
+#w_tilf()
+np.around(p_irf(x1), 5)
 w_r
 
 
@@ -190,10 +191,15 @@ def Wf(x1):
         for j in range(r):
                        
             A[c, j] = ((1 - s[c])**(-1/beta))/( 1 - x1[0, c, j] )
+    
             B[c, j] = gamma1*eta*w_r[j]**(1/(theta*(1 - eta)))                    
             W[c, j] = A[c, j]*B[c, j]
+    print('A=', A)
     return W
 
+( (1 - s[0])**(-1/beta) )/ ( 1 - x1[0, 0, 1] )
+
+Wf(x1)
 
 #--------- Simulated data 
 
