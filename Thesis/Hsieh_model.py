@@ -230,7 +230,7 @@ def taus2():
     global x1, tau_h, tau_w, w
     par()
         
-    tau_h = np.random.uniform(low=-0.99, high=50, size=(i,r))
+    tau_h = np.random.uniform(low=-0.99, high=40, size=(i,r))
     tau_h[0, :] = 0
 
     tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
@@ -263,7 +263,7 @@ def obj(x1):
     simul()
     
     D = np.sum((W/W_t - 1)**2 + (p_ir/p_t - 1)**2)
-
+ 
     return D
 
 
@@ -278,7 +278,7 @@ obj(x1)
 
 def calibration(v):
     
-    global D
+    global D, s
     start = time.time()
     sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':v})
     end = time.time()
@@ -305,19 +305,40 @@ def calibration(v):
     print('   ') 
     
     print('{:*^50}'.format('End of calibration'))
+    s = sol.x
+    D = sol.fun
+    
+    return D 
 
 
 taus2()
-calibration(50000)
+calibration(5000000)
 
 
 obj(x1)
 
-np.seterr(all='ignore')
+
+#--------- Multiple calibration
 
 
+def hsieh(n, t=12):
+    global opt, k
+    opt = [t]
+    k = np.zeros((3, i, r))
 
+    for z in itl.count():
+        
+        if z < n+1:
 
+            res = calibration(5000) 
+            print(z)
+            
+            if res < opt[0]:
+                opt.remove(opt[0])
+                opt.append(res)
+                k = sol.x
+        else: 
+            break
 
 
 
