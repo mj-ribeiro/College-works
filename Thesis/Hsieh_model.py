@@ -24,7 +24,7 @@ import time
 
 
 def par():
-    global beta, eta, varphi, theta, rho, i, r, gamma1, phi, kappa, z, alfa, omg, mu, sig
+    global beta, eta, varphi, theta, rho, i, r, gamma1, phi, kappa, z, alfa
     beta = 0.69
     eta = 0.25
     varphi = 0.25
@@ -36,11 +36,9 @@ def par():
     gamma1 = gamma(1 - ( 1/(theta*(1-rho)) * 1/(1 - eta) ) )   
     z = 1 - (varphi/(1 - eta))    
     alfa = 1 - 1/(theta*(1-eta))
-    omg = ( theta*alfa + eta*kappa )/ z
+    sig = (eta*kappa)/z
     phi = [0.138, 0.174]
-    mu = (theta*alfa)/ z
-    sig = kappa/z
-
+   
 
 par()
 
@@ -79,7 +77,7 @@ def p_trf(x1):
             A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
             B[c, j] = x1[2, c, j]*s[c]**phi[c]
             C[c, j] = (1 - s[c])**((1-eta)/beta)
-            k[c, j] = (B[c, j]*B[c, j]*C[c, j] )**theta
+            k[c, j] = (A[c, j]*B[c, j]*C[c, j] )**theta
     
     p_tr = k[i-1]/np.sum(k, axis=0)
     return p_tr
@@ -87,8 +85,7 @@ def p_trf(x1):
 
 taus2()
 p_trf(x1)
-
-
+k
 
 
 
@@ -98,20 +95,25 @@ p_trf(x1)
 #x1 = np.array( [tau_w, tau_h, w] )
 
 
-from time import sleep as sl
 
 
 def H_trf(x1):
-    global H_tr
-            
+    #global H_tr
     
-    A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
-    B[c, j] = x1[2, c, j]*s[c]**phi[c]
-    C[c, j] = (1 - s[c])**((1-eta)/beta)
-    k[c, j] = (B[c, j]*B[c, j]*C[c, j] )**theta
+    p_tr = p_trf(x1)  
+    A = np.zeros((i,r))        
+    H_tr = np.zeros(r)    
 
-   
-    return k
+    for c in range(i):
+        for j in range(r):
+            A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * x1[2, c, j]**sig 
+    
+    A = A[i-1]
+    P1 = np.zeros(r) 
+    for j in range(r):
+        P1[j] = p_tr[j]**(alfa/z) * (eta**eta * s[i-1]**phi[i-1])
+    
+    return A
  
 
 taus2()
