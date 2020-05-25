@@ -118,13 +118,15 @@ def H_trf(x1):
  
 
 taus2()
-H_trf(x1)
+
 
 
 
 
 
 #----------------------------------------- w tilde  (Proposition 1)
+
+#    x1 = np.array( [tau_w, tau_h, w] )
 
 
 def w_tilf(x1):
@@ -141,10 +143,10 @@ def w_tilf(x1):
     for c in range(i):
         C[c] = (1 - s[c])**((1-eta)/beta)
         for j in range(r):
-            A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
-            B[c, j] = x1[2, c, j]*H_tr[j]**varphi*s[c]**phi[c]
+            A[c, j] = (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta)  
+            B[c, j] = x1[2, c, j]*(H_tr[j]**varphi)*s[c]**phi[c]
         
-            w_til[c, j] = A[c, j]*B[c, j]*C[c] 
+            w_til[c, j] = (A[c, j]*B[c, j]*C[c])**theta 
              
     return w_til 
  
@@ -185,20 +187,19 @@ def Wf(x1):
     global W
     W = np.zeros((i, r))
     A = np.zeros((i, r))
-    B = np.zeros((i, r))
+    B = np.zeros(r)
     
     for c in range(i):
         for j in range(r):
                        
             A[c, j] = ((1 - s[c])**(-1/beta))/( 1 - x1[0, c, j] )
-    
-            B[c, j] = gamma1*eta*w_r[j]**(1/(theta*(1 - eta)))                    
-            W[c, j] = A[c, j]*B[c, j]
-    print('A=', A)
+            B[j] = gamma1*eta*w_r[j]**(1/(theta*(1 - eta))) 
+
+                                 
+            W[c, j] = A[c, j]*B[j]
     return W
 
-( (1 - s[0])**(-1/beta) )/ ( 1 - x1[0, 0, 1] )
-
+w_r
 Wf(x1)
 
 #--------- Simulated data 
@@ -207,9 +208,9 @@ Wf(x1)
 def simul():
     global W_t, p_t
     
-    W_t = np.array(([0.1, 0.42, 0.33, 0.12], [0.99, 0.22, 0.154, 0.654]))  
-    
-    p_t = np.array(([0.122, 0.12, 0.132, 0.109], [0.212, 0.453, 0.3524, 0.114]))
+    W_t = np.array(([2.71, 2.81, 3.07, 2.7], [2.76, 2.85, 2.89, 2.8]))  
+    W_t = np.exp(W_t)    
+    p_t = np.array(([0.0492, 0.0469, 0.0533, 0.0426], [0.0472, 0.0978, 0.0625, 0.0824]))
 
 
 
@@ -225,10 +226,10 @@ def taus2():
     tau_h = np.random.uniform(low=-0.99, high=100, size=(i,r))
     tau_h[0, :] = 0
 
-    tau_w = np.random.uniform(low=-0.99, high=0.99, size=(i,r))
+    tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
     tau_w[0, : ] = tau_w[0, 0]
     
-    w =np.random.uniform(low=0, high=100, size=(i,r))
+    w =np.random.uniform(low=0.001, high=100, size=(i,r))
     w[:, r-1] = 1
     
     x1 = np.array( [tau_w, tau_h, w] )
@@ -299,7 +300,8 @@ def calibration(v):
     print('{:*^50}'.format('End of calibration'))
 
 
-calibration(2000)
+calibration(30000)
+
 obj(x1)
 
 np.seterr(all='ignore')
