@@ -312,7 +312,7 @@ def calibration(v):
 
 
 taus2()
-calibration(5000000)
+calibration(500)
 
 
 obj(x1)
@@ -321,7 +321,7 @@ obj(x1)
 #--------- Multiple calibration
 
 
-def hsieh(n, t=12):
+def hsieh(n, v, t=12):
     global opt, k
     opt = [t]
     k = np.zeros((3, i, r))
@@ -330,18 +330,18 @@ def hsieh(n, t=12):
         
         if z < n+1:
 
-            res = calibration(5000) 
+            res = calibration(v) 
             print(z)
             
             if res < opt[0]:
                 opt.remove(opt[0])
                 opt.append(res)
-                k = sol.x
+                k = s
         else: 
             break
 
 
-
+hsieh(100, 2000, t=12)
 
 
 

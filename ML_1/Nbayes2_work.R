@@ -3,6 +3,7 @@
 #------------------------------------------------------------------------------------------------
 
 # Defining my work diretory
+#library(tinytex)
 
 setwd("D:/Git projects/college_works/ML_1")
 
@@ -36,6 +37,14 @@ find = readRDS('findata.rds')
 
 keep = c('x', 'oil', 'pca')
 find2 = find[,keep]
+
+##
+
+keep2 = c('x', 'cb', 'vix')
+find3 = find[,keep2]
+
+
+
 
 
 ## census data
@@ -344,7 +353,7 @@ weight = c(170, 183, 188, 188)
 dfn = data.frame(height, weight)
 
 
-oo = pred_marcos2('sex', teste, dfn, cc, cclas = 0)
+oo = pred_marcos2('sex', teste, dfn, cc, cclas = 1)
 oo
 
 
