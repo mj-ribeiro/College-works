@@ -308,11 +308,11 @@ def calibration(v):
     s = sol.x
     D = sol.fun
     
-    return D 
+    return D
 
 
 taus2()
-calibration(500)
+res = calibration(500)
 
 
 obj(x1)
@@ -330,20 +330,23 @@ def hsieh(n, v, t=12):
         
         if z < n+1:
 
-            res = calibration(v) 
+            sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':v})
+            res = sol.fun
             print(z)
-            
+            k = sol.x
+            print('sol.x =', k)
             if res < opt[0]:
                 opt.remove(opt[0])
                 opt.append(res)
-                k = s
+                k = sol.x
         else: 
             break
+    return opt, k
 
-
-hsieh(100, 2000, t=12)
-
-
+hsieh(5, 500, t=12)
+s
+k
+opt
 
 
 
