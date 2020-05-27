@@ -7,6 +7,20 @@ Created on Tue Mar  3 10:18:22 2020
 # see this: https://pastebin.com/cvYBvW3B
 # The model can be viewed in:  https://mj-ribeiro.github.io/blog/hsieh_model/
 
+#--- My functions
+
+def summary(y):  
+    import numpy as np
+      
+    mean = np.around(np.mean(y), 4)
+    mini = np.around(np.min(y), 4)
+    maxi = np.around(np.max(y), 4)
+    med = np.around(np.median(y), 4)
+    std = np.around(np.std(y), 4)
+    print(f'\033[1;033mMédia: {mean} \n Std: {std} \n Mínimo: {mini} \n Máximo: {maxi} \n Mediana: {med} ')
+
+#----- Libraries
+
 import numpy as np
 import matplotlib.pyplot as plt
 import math as mt
@@ -311,10 +325,8 @@ def calibration(v):
     return D
 
 
-res = calibration(50000)
+res = calibration(500)
 
-
-obj(x1)
 
 
 #--------- Multiple calibration
@@ -323,7 +335,7 @@ obj(x1)
 def hsieh(n, v, t=12):
     global opt, k, tt
     opt = [t]
-    tt = np.zeros(n)
+    tt = np.zeros(n+1)
     for z in itl.count():
         
         if z < n+1:
@@ -346,6 +358,71 @@ def hsieh(n, v, t=12):
 
 
 hsieh(100, 5000, t=5)
+
+
+
+
+len(tt)
+
+import seaborn as sns
+
+fig, ax = plt.subplots(1, 2)
+ax[0].hist(tt)
+ax[1].plot(tt)
+
+
+
+summary(tt)
+
+
+#--------------- NLopt
+
+
+def obj2(x1):
+    global D
+    x1 = taus2()
+    x1 = x1.reshape((3, i, r))    
+    
+    sf()
+    H_trf(x1)
+    w_tilf(x1)
+    p_irf(x1)
+    Wf(x1)
+    simul()
+    
+    D = np.sum((W/W_t - 1)**2 + (p_ir/p_t - 1)**2)
+ 
+    return D
+
+
+
+
+
+
+
+
+
+
+import nlopt 
+
+
+opt = nlopt.opt(nlopt.LD_SLSQP, 100)
+opt.set_min_objective(obj)
+
+
+x = opt.optimize(x1)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
