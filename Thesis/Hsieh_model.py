@@ -24,7 +24,7 @@ import time
 
 
 def par():
-    global beta, eta, varphi, theta, rho, i, r, gamma1, phi, kappa, z, alfa
+    global beta, eta, varphi, theta, rho, i, r, gamma1, phi, kappa, z, alfa, sig
     beta = 0.69
     eta = 0.25
     varphi = 0.25
@@ -311,8 +311,7 @@ def calibration(v):
     return D
 
 
-taus2()
-res = calibration(500)
+res = calibration(50000)
 
 
 obj(x1)
@@ -322,34 +321,31 @@ obj(x1)
 
 
 def hsieh(n, v, t=12):
-    global opt, k
+    global opt, k, tt
     opt = [t]
-    k = np.zeros((3, i, r))
-
+    tt = np.zeros(n)
     for z in itl.count():
         
         if z < n+1:
 
             sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':v})
             res = sol.fun
-            print(z)
+            print(f'\033[1;033mTentativa: {z}, D = {res} ')
+
             k = sol.x
-            print('sol.x =', k)
+            tt[z] = res
+            
             if res < opt[0]:
                 opt.remove(opt[0])
                 opt.append(res)
-                k = sol.x
+                
+                a = k                
         else: 
             break
-    return opt, k
-
-hsieh(5, 500, t=12)
-s
-k
-opt
+    return opt, a
 
 
-
+hsieh(100, 5000, t=5)
 
 
 
