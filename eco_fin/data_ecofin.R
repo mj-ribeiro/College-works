@@ -225,11 +225,15 @@ g1 = ggplot(data=cmts, aes(y=`cmts`, x=`data1`))+geom_line(size=1)+
 
 
 g2 = g1 +
-        annotate(geom='text', x=as.Date('2008-10-10'), y=0.5, label= 'Crise \n de 2008') +
-        annotate(geom='text', x=as.Date('2020-03-10'), y=0.52, label = 'Crise \n do COVID-19') + 
-        annotate(geom='text', x=as.Date('2000-03-10'), y=0.6, label = 'Bolha da \n internet') +
-        annotate(geom='text', x=as.Date('2001-12-9'), y=0.6, label = '11 de setembro') 
+        annotate(geom='text', x=as.Date('2008-10-10'), y=0.47, label= 'Crise \n de 2008') +
+        annotate(geom='text', x=as.Date('2020-03-10'), y=0.56, label = 'Crise do \n COVID-19') + 
+        #annotate(geom='text', x=as.Date('2000-03-10'), y=0.6, label = 'Bolha da \n internet') +
+        annotate(geom='text', x=as.Date('2001-9-13'), y=0.58, label = '11 de \n setembro') +
+        geom_hline(yintercept =var1, size=1)
+        
 
+
+g2 
 
 
 
