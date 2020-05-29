@@ -2,13 +2,13 @@
 #                              Volatility index
 #****************************************************************************************
 
-setwd("D:/Git projects/Finance/Finance_R")
+setwd("D:/Git projects/college_works/eco_fin")
 
 
 #------------- CMAX Function
 
 # w é o tamanho da janela
-# é a quantidade de janelas
+# n é a quantidade de janelas
 # s é o vetor que vou passar a função
 
 
@@ -47,13 +47,15 @@ library(GetBCBData)
 
 ibov = getSymbols('^BVSP', src='yahoo', 
                   from= '1999-01-01', 
-                  to = '2020-04-01',
+                  to = '2020-05-01',
                   periodicity = "monthly",    # IBOV mensal
                   auto.assign = F)[,4]
 
 
 colnames(ibov) = 'ibov'
 ibov = ibov[is.na(ibov)==F]
+
+
 
 # VIX
 
@@ -121,6 +123,16 @@ plot(cdi)
 
 
 
+# Gamma1 - Kalman estimate
+
+write.csv(ind, file='ibv')
+
+
+
+
+
+
+
 # PTAX
 
 #ptax = getSymbols('BRL=X', src='yahoo', 
@@ -166,10 +178,11 @@ cm2 = CMAX(12,(length(ibov)-12), ibov )
 
 var1 = quantile(cm2, 0.05)
 
-hist(-cm2, breaks = 15, col='lightgreen', 
+hist(cm2, breaks = 15, col='lightgreen', 
      probability = T,
      main='Histograma para o CMAX diário \n com 24 janelas')
 abline(v=var1)
+
 
 lim = mean(cm2)-2*sd(cm2)
 
@@ -193,17 +206,33 @@ cmts = xts(x=cm2, order.by = data1)
 # Plot CMAX - 24
 
 library(zoo)
+library(ggplot2)
 
 windows()
-par(mfrow=c(1,1))
-plot(as.zoo(cmts), main = 'CMAX- W24', ylim=c(0.5, 1),
-     type='l', ylab='CMAX', xlab='Ano')
-abline(h=lim)
-abline(h=0.95)
-text(as.Date('2008-10-10'), y=0.55, labels = 'Crise \n de 2008', cex=0.8) 
-text(as.Date('2020-03-10'), y=0.52, labels = 'Crise \n do COVID-19', cex=0.8) 
-text(as.Date('2000-03-10'), y=0.6, labels = 'Bolha da \n internet', cex=0.8) 
-text(as.Date('2001-12-9'), y=0.6, labels = '11 de setembro', cex=0.8) 
+
+
+g1 = ggplot(data=cmts, aes(y=`cmts`, x=`data1`))+geom_line(size=1)+
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+ 
+  ylim(0.4, 1) +
+  xlab('Anos') + ylab('CMAX') + 
+  ggtitle('Evolução do CMAX do Ibovespa mensal')+
+  theme(axis.title.x = element_text(colour = 'black', size=13),
+        axis.title.y = element_text(colour = 'black', size=13),
+        plot.title = element_text(hjust = 0.5))
+
+
+
+
+g2 = g1 +
+        annotate(geom='text', x=as.Date('2008-10-10'), y=0.5, label= 'Crise \n de 2008') +
+        annotate(geom='text', x=as.Date('2020-03-10'), y=0.52, label = 'Crise \n do COVID-19') + 
+        annotate(geom='text', x=as.Date('2000-03-10'), y=0.6, label = 'Bolha da \n internet') +
+        annotate(geom='text', x=as.Date('2001-12-9'), y=0.6, label = '11 de setembro') 
+
+
+
+
 
 
 

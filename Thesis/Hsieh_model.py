@@ -395,7 +395,7 @@ def obj2(x1):
     return D
 
 
-
+obj2(x1)
 
 
 
@@ -406,17 +406,15 @@ def obj2(x1):
 import nlopt 
 
 
-opt = nlopt.opt(nlopt.LD_SLSQP, 100)
+opt = nlopt.opt(nlopt.LD_SLSQP, 1)
 opt.set_min_objective(obj)
-
-
 x = opt.optimize(x1)
 
 
 
 
 
-
+ 
 
 
 

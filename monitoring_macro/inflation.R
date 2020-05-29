@@ -22,8 +22,8 @@ inf[,1]=NULL
 colnames(inf) = 'inf'
 inf = xts(inf, order.by = data)
 
-
 plot(inf)
+
 
 # diff inflation
 
