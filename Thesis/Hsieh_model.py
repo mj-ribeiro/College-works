@@ -327,8 +327,9 @@ def calibration(v):
 res = calibration(5000)
 
 
-sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':500000})
-sol.
+sol = minimize(obj, x1,  method='Nelder-Mead', options={'adaptive': True})
+
+sol
 
 
 #--------- Multiple calibration
@@ -403,14 +404,13 @@ obj2(x2)
 
 
 
-
-
 import nlopt 
 
 
-opt = nlopt.opt(nlopt.LD_SLSQP, 1)
-opt.set_min_objective(obj)
-x = opt.optimize(x1)
+opt = nlopt.opt(nlopt.LD_SLSQP, 24)
+opt.set_min_objective(obj2)
+x = opt.optimize(x2)
+
 
 
 
@@ -424,39 +424,51 @@ def taus3():
     global x2
     par()
         
-    tau_h = np.random.uniform(low=-0.99, high=40, size=(i,r))
+    tau_h = np.random.uniform(size=(i,r))
     tau_h[0, :] = 0
 
-    tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
+    tau_w = np.random.uniform(size=(i,r))
     tau_w[0, : ] = tau_w[0, 0]
     
-    w =np.random.uniform(low=0.001, high=20, size=(i,r))
+    w =np.random.uniform(size=(i,r))
     w[:, r-1] = 1
     
     x2 = np.array( [tau_w, tau_h, w] )
         
-    x2 = np.concatenate((tau_w, tau_h, w), axis=0)
-    x2 = x2.reshape(24)
+    #x2 = np.concatenate((tau_w, tau_h, w), axis=0)
+    #x2 = x2.reshape(24)
     
     return x2
 
 
+taus3()
 
 
-
+s =np.reshape(np.repeat(-0.99, 8), (2,4) )
 
 
 b0 = [-0.99, 0.999]
 b1 = [-0.99, 40]
 b2 = [0.001, 20]
 
-bounds = np.array([b0, b1, b2])
+bnd = [(-0.99, 0.999), (-0.99, 40), (0.001, 20)]
+
+len(bnd)
+
+sol2 = minimize(obj, x2, method='SLSQP', bounds=bnd, options={'maxiter': 5000})
 
 
 
-sol2 = minimize(obj, x2, method='trust-constr')
 
-sol2
+
+
+
+
+from scipy.optimize import minimize_scalar
+
+minimize_scalar(obj, x2, method='bounded', bounds=bnd)
+
+
 
 
 
