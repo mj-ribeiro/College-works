@@ -123,7 +123,6 @@ cdi = xts(cdi, order.by = data)
 rownames(cdi) = data    # colocar a data como índice
 
 colnames(cdi) = 'cdi'
-plot(cdi)
 
 
 
@@ -136,43 +135,16 @@ write.csv(ind, file='ibv')
 
 
 
-
-
-
-# PTAX
-
-#ptax = getSymbols('BRL=X', src='yahoo', 
-#                  from= '2000-01-01', 
-#                  periodicity = "monthly",
-#                 auto.assign = F)[,4]
-
-
-#-------- Descriptive stats
-
-
-df2 = data.frame(cb[index(oil)], ibov[index(oil)], vix[index(oil)], gold[index(oil)], oil)
-
-apply(df2[,1:3], 2, basicStats)
-
-
-#plots
-
-windows()
-par(mfrow=c(1,3))
-plot(ibov)
-plot(vix)
-plot(cb, type='l')
-
-
-
-
 # returns
+
+
 
 ret = diff(log(ibov))
 basicStats(ret)
 
 ret = ret[is.na(ret)==F]
 colnames(ret) = 'ret'
+
 
 #ret = matrix(ret)
 
@@ -211,7 +183,10 @@ data1 = data[13:length(ibov)]
 cmts = xts(x=cm2, order.by = data1) 
 
 
-# Plot CMAX - 24
+
+#----- Plot CMAX  using ggplot2
+
+
 
 library(ggplot2)
 
@@ -237,7 +212,7 @@ g2 = g1 +
         annotate(geom='text', x=as.Date('2020-03-10'), y=0.58, label = 'Crise do \n COVID-19', size=6) + 
         #annotate(geom='text', x=as.Date('2000-03-10'), y=0.6, label = 'Bolha da \n internet') +
         annotate(geom='text', x=as.Date('2001-9-13'), y=0.58, label = '11 de \n setembro', size=6) +
-        geom_hline(yintercept =var1, size=1)
+        geom_hline(yintercept =var2, size=1)
         
 
 
@@ -248,12 +223,14 @@ g2
 plot(as.vector(cmts), type='l')
 abline(h=var2)
 
+
+
 #----- Create Dummy
 
 
 crise = matrix(nrow = length(cmts))
 
-crise = ifelse(cm2<var2, 1, 0)
+crise = ifelse(cm2<var1, 1, 0)
 
 #crise = ifelse(cm2>0.9, 2, crise)
 
@@ -262,7 +239,7 @@ pos = which(crise==1)   # pegar a posição onde crise== 1
 pos
 
 
-for(i in 1:length(pos)){
+for(i in 2:length(pos)){
   crise[(pos[i]-12):pos[i]] = 1
 }
 

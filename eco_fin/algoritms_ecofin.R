@@ -22,7 +22,7 @@ df = readRDS('df.rds')
 
 pca2 = pca
 pca2 = pca2[-1]
-pca2 =pca2[-242]
+#pca2 =pca2[-242]
 
 
 basicStats(pca2)
@@ -30,7 +30,6 @@ basicStats(pca2)
 df2 = df
 df2$pca = pca2
 
-df2$x = ifelse(df2$x==2, 0, df2$x )
 
 table(df2$x)
 
@@ -60,16 +59,18 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 2)   
 #control_train =trainControl(method = "timeslice",initialWindow = 36, horizon = 12, fixedWindow = T,allowParallel = T)  
 
 
-model4 = train(as.factor(x) ~., data=df3, trControl = control_train, 
+model4 = train(as.factor(x) ~., data=df2, trControl = control_train, 
                method='nnet', threshold = 0.3)
 
 
 
-model4 = train(as.factor(x) ~ vix + ret**2 + cdi + gold + oil, data=df3 , trControl = control_train, 
+model4 = train(as.factor(x) ~ vix + oil + cdi + cb, data=df3 , trControl = control_train, 
                method='nnet', threshold = 0.6)
  
 model4
 confusionMatrix(model4)
+
+# 41% correto com var2 
 
 # 1 best: as.factor(x) ~ vix + ret**2 + cdi + gold + oil   (0.9087)
 # 2 best: as.factor(x) ~ vix + ret + cdi + gold + oil      (0.8921)
@@ -78,7 +79,7 @@ confusionMatrix(model4)
 #------ Multilogit
 
 
-model3 = train(as.factor(x) ~., data=df, 
+model3 = train(as.factor(x) ~., data=df3, 
                trControl = control_train, 
                method='multinom', family='binomial') 
 
