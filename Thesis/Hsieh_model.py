@@ -238,7 +238,6 @@ def simul():
 #----------------------- Tau's  & w (TPF)
 
 
-
     
 def taus2():
     global x1, tau_h, tau_w, w
@@ -325,8 +324,11 @@ def calibration(v):
     return D
 
 
-res = calibration(500)
+res = calibration(5000)
 
+
+sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':500000})
+sol.
 
 
 #--------- Multiple calibration
@@ -381,7 +383,7 @@ summary(tt)
 def obj2(x1):
     global D
     x1 = taus2()
-    x1 = x1.reshape((3, i, r))    
+    #x1 = x1.reshape((1, i*3, 1))    
     
     sf()
     H_trf(x1)
@@ -395,7 +397,7 @@ def obj2(x1):
     return D
 
 
-obj2(x1)
+obj2(x2)
 
 
 
@@ -413,11 +415,48 @@ x = opt.optimize(x1)
 
 
 
-
- 
-
+##------------------------ tests
 
 
+
+
+def taus3():
+    global x2
+    par()
+        
+    tau_h = np.random.uniform(low=-0.99, high=40, size=(i,r))
+    tau_h[0, :] = 0
+
+    tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
+    tau_w[0, : ] = tau_w[0, 0]
+    
+    w =np.random.uniform(low=0.001, high=20, size=(i,r))
+    w[:, r-1] = 1
+    
+    x2 = np.array( [tau_w, tau_h, w] )
+        
+    x2 = np.concatenate((tau_w, tau_h, w), axis=0)
+    x2 = x2.reshape(24)
+    
+    return x2
+
+
+
+
+
+
+
+b0 = [-0.99, 0.999]
+b1 = [-0.99, 40]
+b2 = [0.001, 20]
+
+bounds = np.array([b0, b1, b2])
+
+
+
+sol2 = minimize(obj, x2, method='trust-constr')
+
+sol2
 
 
 
