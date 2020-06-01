@@ -62,7 +62,7 @@ ibov = ibov[is.na(ibov)==F]
 vix = getSymbols('^VIX', src='yahoo', 
                  periodicity = "monthly",
                  from= '2000-01-01', 
-                 to = '2020-04-01',
+                 to = '2020-05-01',
                  auto.assign = F)[,4]
 
 colnames(vix) = 'vix'
@@ -70,21 +70,24 @@ colnames(vix) = 'vix'
 
 # Oil price
 
+
 oil = getSymbols('CL=F', src='yahoo', 
                  periodicity = "monthly",
                  from= '2000-01-01', 
-                 to = '2020-04-01',
+                 to = '2020-05-01',
                  auto.assign = F)[,4]
 
 colnames(oil) = 'oil'
 
 
+
 # Gold price
+
 
 gold = getSymbols('GC=F', src='yahoo', 
                  periodicity = "monthly",
                  from= '2000-01-01', 
-                 to = '2020-04-01',
+                 to = '2020-05-01',
                  auto.assign = F)[,4]
 
 colnames(gold) = 'gold'
@@ -95,7 +98,7 @@ colnames(gold) = 'gold'
 # 11768 - Índice da taxa de câmbio real (INPC)
 
 
-cb = gbcbd_get_series(11768, first.date= '2000-01-01', last.date = '2020-04-01',  
+cb = gbcbd_get_series(11768, first.date= '2000-01-01', last.date = '2020-05-01',  
                       format.data = "long", be.quiet = FALSE)[ ,1:2]
 
 data = cb$ref.date
@@ -106,9 +109,11 @@ rownames(cb) = data    # colocar a data como índice
 
 colnames(cb) = 'cb'
 
+
 # cdi
 
-cdi = gbcbd_get_series(4391, first.date= '2000-01-01', last.date = '2020-04-01',  
+
+cdi = gbcbd_get_series(4391, first.date= '2000-01-01', last.date = '2020-05-01',  
                        format.data = "long", be.quiet = FALSE)[ ,1:2]
 
 data = cdi$ref.date
@@ -119,6 +124,7 @@ rownames(cdi) = data    # colocar a data como índice
 
 colnames(cdi) = 'cdi'
 plot(cdi)
+
 
 
 
@@ -177,6 +183,8 @@ colnames(ret) = 'ret'
 cm2 = CMAX(12,(length(ibov)-12), ibov )
 
 var1 = quantile(cm2, 0.05)
+var2 = quantile(cm2, 0.1)
+
 
 hist(cm2, breaks = 15, col='lightgreen', 
      probability = T,
@@ -237,17 +245,17 @@ g2
 
 
 
-
-
+plot(as.vector(cmts), type='l')
+abline(h=var2)
 
 #----- Create Dummy
 
 
 crise = matrix(nrow = length(cmts))
 
-crise = ifelse(cm2<lim, 1, 0)
+crise = ifelse(cm2<var2, 1, 0)
 
-crise = ifelse(cm2>0.9, 2, crise)
+#crise = ifelse(cm2>0.9, 2, crise)
 
 
 pos = which(crise==1)   # pegar a posição onde crise== 1
@@ -268,8 +276,10 @@ prop.table(table(crise))
 
 
 crise = xts(crise, order.by = data1)
-plot(crise)
 
+
+plot(crise)
+lines(1-cmts)
 
 
 

@@ -383,7 +383,7 @@ summary(tt)
 
 def obj2(x1):
     global D
-    x1 = taus2()
+    x1 = taus3()
     #x1 = x1.reshape((1, i*3, 1))    
     
     sf()
@@ -409,7 +409,7 @@ import nlopt
 
 opt = nlopt.opt(nlopt.LD_SLSQP, 24)
 opt.set_min_objective(obj2)
-x = opt.optimize(x2)
+x = opt.optimize(x2.flatten())
 
 
 
@@ -455,7 +455,7 @@ bnd = [(-0.99, 0.999), (-0.99, 40), (0.001, 20)]
 
 len(bnd)
 
-sol2 = minimize(obj, x2, method='SLSQP', bounds=bnd, options={'maxiter': 5000})
+sol2 = minimize(obj2, x2, method='SLSQP', bounds=bnd, options={'maxiter': 5000})
 
 
 
