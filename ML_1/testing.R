@@ -98,9 +98,6 @@ b = predict(clas4,Grid2)
 
 
 
-
-
-
 regions2 = ggplot(data = fits2, aes(x=cb, y=vix, color =x)) 
   geom_tile(data = cbind(Grid2, x = b), aes(fill = x)) +
   #scale_fill_manual(name = 'x', values = twoClassColor) +
@@ -112,6 +109,66 @@ regions2 = ggplot(data = fits2, aes(x=cb, y=vix, color =x))
 
 show(regions2)
 
+
+
+
+bound2 = ggplot(data = fits2, aes(x=cb, y=vix, color =as.factor(x) )) +
+  geom_contour(data = cbind(Grid2, x = b), aes(z = as.numeric (x) ), 
+               color='red', breaks = c(1.5)) + 
+  geom_point(size = 4, alpha = .5)  +
+  ggtitle("Decision boundaries") +
+  theme(legend.text = element_text(size = 10)) 
+
+
+bound2
+
+
+
+
+
+##------ teste dataset
+
+
+
+
+
+clas5 = naiveBayes(x=teste[-3], y = as.factor(teste$sex))
+
+fits3 = mutate(teste, prev4 = predict(clas5, newdata = teste[-3]) )
+
+
+
+nbp <- 100;
+PredA <- seq(min(teste$height), max(teste$height), length = nbp)
+PredB <- seq(min(teste$weight), max(teste$weight), length = nbp)
+Grid3 <- expand.grid(height = PredA, weight = PredB)
+
+
+c = predict(clas5,Grid3)
+
+
+
+
+regions3 = ggplot(data = fits3, aes(x=height, y=weight, color=sex ) ) +
+geom_tile(data = cbind(Grid3, sex = c), aes(fill = sex)) +
+  ggtitle("Decision region") + 
+  theme(legend.text = element_text(size = 10)) +
+  scale_colour_manual(name ='sex', values =twoClassColor)
+
+
+
+show(regions3)
+
+
+
+# bounds
+
+bound3 = ggplot(data = fits3, aes(x=height, y=weight, color=as.factor(sex) ) ) +
+  geom_contour(data = cbind(Grid2, sex = b), aes(z = as.numeric (sex) ), 
+               color='red', breaks = c(1.5)) + 
+  geom_point(size = 4, alpha = .5)  +
+  ggtitle("Decision boundaries") +
+  theme(legend.text = element_text(size = 10)) 
 
 
 
