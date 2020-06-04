@@ -63,7 +63,17 @@ show(regions)
 
 clas4 = naiveBayes(x=find3[-1], y = as.factor(find3$x))
 
-fits = mutate(find3, prev4 = predict(clas4, newdata = find3[-1]) )
+fits2 = mutate(find3, prev4 = predict(clas4, newdata = find3[-1]) )
+
+
+
+nbp <- 250;
+PredA <- seq(min(find3$cb), max(find3$cb), length = nbp)
+PredB <- seq(min(find3$vix), max(find3$vix), length = nbp)
+Grid2 <- expand.grid(cb = PredA, vix = PredB)
+
+
+b = predict(clas4,Grid2)
 
 
 
@@ -71,6 +81,16 @@ fits = mutate(find3, prev4 = predict(clas4, newdata = find3[-1]) )
 
 
 
+regions = ggplot(data = fits2, aes(x=cb, y=vix, color =x)) + 
+  geom_tile(data = cbind(Grid2, x = b), aes(fill = x)) +
+  #scale_fill_manual(name = 'x', values = twoClassColor) +
+  ggtitle("Decision region") + 
+  theme(legend.text = element_text(size = 10)) +
+  scale_colour_manual(name ='x', values =twoClassColor)
+
+
+
+show(regions)
 
 
 
