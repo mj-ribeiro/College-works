@@ -210,10 +210,10 @@ census = as.data.frame(kk)
 
 clas6 = naiveBayes(x=census[-3], y = as.factor(census$income))
 
-fits3 = mutate(census, prev4 = predict(clas6, newdata = census[-3]) )
+fits4 = mutate(census, prev4 = predict(clas6, newdata = census[-3]) )
 
 
-nbp <- 250;
+nbp <- 500;
 PredA <- seq(min(census$education), max(census$occupation), length = nbp)
 PredB <- seq(min(census$occupation), max(census$occupation), length = nbp)
 Grid4 <- expand.grid(education = PredA, occupation = PredB)
@@ -222,12 +222,33 @@ Grid4 <- expand.grid(education = PredA, occupation = PredB)
 d = predict(clas6, Grid4)
 
 
+#- 
+
+regions4 = ggplot(data = fits4, aes(x=education, y=occupation, color=income ) ) +
+  geom_tile(data = cbind(Grid4, income = d), aes(fill = income)) +
+  ggtitle("Decision region") + 
+  scale_colour_manual(name ='income', values =twoClassColor) +
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
 
 
 
 
 
 
+# bounds
+
+bound4 = ggplot(data = fits4, aes(x=education, y=occupation, color= as.factor(income) ) ) +
+  geom_contour(data = cbind(Grid4, income = d), aes(z = as.numeric (income) ), 
+               color='black', breaks = c(1.5)) + 
+  geom_point(size = 4, alpha = .5)  +
+  ggtitle("Decision boundaries") +
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
 
 
 
