@@ -427,6 +427,35 @@ predf = function(k, df, df_n, cl, cclas=0, cd=1){
 
 
 
+#######################################################################################
+#                                  Boundaries
+#######################################################################################
+library(ggplot2)
+library(plyr)
+library(e1071)
+library('AppliedPredictiveModeling')
+library('RColorBrewer')
+library(quantmod)
+
+
+
+twoClassColor <- brewer.pal(3,'Set1')[1:2]
+names(twoClassColor) <- c('Class1','Class2')
+
+
+#-------- first example oil vs pca
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
