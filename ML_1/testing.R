@@ -152,8 +152,12 @@ c = predict(clas5,Grid3)
 regions3 = ggplot(data = fits3, aes(x=height, y=weight, color=sex ) ) +
 geom_tile(data = cbind(Grid3, sex = c), aes(fill = sex)) +
   ggtitle("Decision region") + 
-  theme(legend.text = element_text(size = 10)) +
-  scale_colour_manual(name ='sex', values =twoClassColor)
+  scale_colour_manual(name ='sex', values =twoClassColor) +
+  theme(legend.text = element_text(size = 10),
+        axis.title.x = element_text(colour = 'black', size=15),
+        axis.title.y = element_text(colour = 'black', size=15),
+        plot.title = element_text(hjust = 0.5))
+
 
 
 
@@ -168,7 +172,10 @@ bound3 = ggplot(data = fits3, aes(x=height, y=weight, color=as.factor(sex) ) ) +
                color='red', breaks = c(1.5)) + 
   geom_point(size = 4, alpha = .5)  +
   ggtitle("Decision boundaries") +
-  theme(legend.text = element_text(size = 10)) 
+  theme(legend.text = element_text(size = 10),
+  axis.title.x = element_text(colour = 'black', size=15),
+  axis.title.y = element_text(colour = 'black', size=15),
+  plot.title = element_text(hjust = 0.5))
 
 
 
