@@ -1,9 +1,20 @@
 #------------------------------------------------------------------------------------------------
 #                                    Naive Bayes
 #------------------------------------------------------------------------------------------------
+##############################################################################################
+#                                     Boundaries
+##############################################################################################
+
+library(ggplot2)
+library(plyr)
+library(e1071)
+library('AppliedPredictiveModeling')
+library('RColorBrewer')
+library(quantmod)
+
+
 
 # Defining my work diretory
-#library(tinytex)
 
 setwd("D:/Git projects/college_works/ML_1")
 
@@ -121,6 +132,22 @@ names = c('education', 'occupation', 'income')
 colnames(a) = names
 
 
+
+tst1 = census[28001:30162, ]
+census = census[1:28000, ]
+
+
+
+
+census = ovun.sample(as.factor(income)~., data=census, method="both", p=0.5,
+            subset=options("subset")$subset,
+            na.action=options("na.action")$na.action, seed=1)
+
+#census = data.frame(census$data)
+
+tr1 = data.frame(census$data)
+
+census = data.frame(census$data)
 
 
 
@@ -427,23 +454,6 @@ predf = function(k, df, df_n, cl, cclas=0, cd=1){
 
 
 
-#######################################################################################
-#                                  Boundaries
-#######################################################################################
-library(ggplot2)
-library(plyr)
-library(e1071)
-library('AppliedPredictiveModeling')
-library('RColorBrewer')
-library(quantmod)
-
-
-
-twoClassColor <- brewer.pal(3,'Set1')[1:2]
-names(twoClassColor) <- c('Class1','Class2')
-
-
-#-------- first example oil vs pca
 
 
 

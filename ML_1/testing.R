@@ -51,8 +51,15 @@ regions = ggplot(data = fits, aes(x=oil, y=pca, color =x)) +
   geom_tile(data = cbind(Grid, x = a), aes(fill = x)) +
   #scale_fill_manual(name = 'x', values = twoClassColor) +
   ggtitle("Decision region") + 
-  theme(legend.text = element_text(size = 10)) +
-  scale_colour_manual(name ='x', values =twoClassColor)
+  scale_colour_manual(name ='x', values =twoClassColor) +
+  theme(legend.text = element_text(size = 24),
+      axis.title.x = element_text(colour = 'black', size=24),
+      axis.title.y = element_text(colour = 'black', size=24),
+      plot.title = element_text(hjust = 0.5, size = 25))
+
+
+
+
 
 show(regions)
 
@@ -66,8 +73,11 @@ bound = ggplot(data = fits, aes(x=oil, y=pca, color =as.factor(x) )) +
   color='red', breaks = c(1.5)) + 
   geom_point(size = 4, alpha = .5)  +
   ggtitle("Decision boundaries") +
-  theme(legend.text = element_text(size = 10)) 
-  
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
+
 
 bound
 
@@ -98,12 +108,15 @@ b = predict(clas4,Grid2)
 
 
 
-regions2 = ggplot(data = fits2, aes(x=cb, y=vix, color =x)) 
+regions2 = ggplot(data = fits2, aes(x=cb, y=vix, color =x)) +
   geom_tile(data = cbind(Grid2, x = b), aes(fill = x)) +
-  #scale_fill_manual(name = 'x', values = twoClassColor) +
   ggtitle("Decision region") + 
-  theme(legend.text = element_text(size = 10)) +
-  scale_colour_manual(name ='x', values =twoClassColor)
+  scale_colour_manual(name ='x', values =twoClassColor) +
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
+  
 
 
 
@@ -114,10 +127,13 @@ show(regions2)
 
 bound2 = ggplot(data = fits2, aes(x=cb, y=vix, color =as.factor(x) )) +
   geom_contour(data = cbind(Grid2, x = b), aes(z = as.numeric (x) ), 
-               color='red', breaks = c(1.5)) + 
+               color='black', breaks = c(1.5)) + 
   geom_point(size = 4, alpha = .5)  +
   ggtitle("Decision boundaries") +
-  theme(legend.text = element_text(size = 10)) 
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
 
 
 bound2
@@ -127,8 +143,6 @@ bound2
 
 
 ##------ teste dataset
-
-
 
 
 
@@ -153,10 +167,10 @@ regions3 = ggplot(data = fits3, aes(x=height, y=weight, color=sex ) ) +
 geom_tile(data = cbind(Grid3, sex = c), aes(fill = sex)) +
   ggtitle("Decision region") + 
   scale_colour_manual(name ='sex', values =twoClassColor) +
-  theme(legend.text = element_text(size = 10),
-        axis.title.x = element_text(colour = 'black', size=15),
-        axis.title.y = element_text(colour = 'black', size=15),
-        plot.title = element_text(hjust = 0.5))
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
 
 
 
@@ -168,14 +182,47 @@ show(regions3)
 # bounds
 
 bound3 = ggplot(data = fits3, aes(x=height, y=weight, color=as.factor(sex) ) ) +
-  geom_contour(data = cbind(Grid2, sex = b), aes(z = as.numeric (sex) ), 
+  geom_contour(data = cbind(Grid3, sex = c), aes(z = as.numeric (sex) ), 
                color='red', breaks = c(1.5)) + 
   geom_point(size = 4, alpha = .5)  +
   ggtitle("Decision boundaries") +
-  theme(legend.text = element_text(size = 10),
-  axis.title.x = element_text(colour = 'black', size=15),
-  axis.title.y = element_text(colour = 'black', size=15),
-  plot.title = element_text(hjust = 0.5))
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
+
+
+
+
+
+
+#- census
+
+
+clas6 = naiveBayes(x=census[-3], y = as.factor(census$income))
+
+fits3 = mutate(census, prev4 = predict(clas6, newdata = census[-3]) )
+
+
+
+
+nbp <- 250;
+PredA <- seq(min(census$education), max(census$occupation), length = nbp)
+PredB <- seq(min(census$occupation), max(census$occupation), length = nbp)
+Grid3 <- expand.grid(education = PredA, occupation = PredB)
+
+
+c = predict(clas5,Grid3)
+
+
+
+
+
+
+
+
+
+
 
 
 
