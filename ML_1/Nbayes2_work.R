@@ -123,41 +123,6 @@ colnames(a) = names
 
 
 
-#---------- testes
-
-
-cl4 = naivef('x',tr2, cd=0)
-prev2 = predf('x', tr2, tst2, cl4, cclas=1, cd=0)
-library(ElemStatLearn)
-
-set = tst2
-X1 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
-X2 = seq(min(set[, 3]) - 1, max(set[, 3]) + 1, by = 0.01)
-grid_set = expand.grid(X1, X2)
-colnames(grid_set) = c('vix', 'cb')
-
-y_grid = prev2
-
-plot(set[, -1], main = 'Naive Bayes (Test set)',
-     xlab = 'vix', ylab = 'cb',
-     xlim = range(X1), ylim = range(X2))
-contour(X1, X2, matrix(as.numeric(y_grid), add = TRUE)
-points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
-points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #------------------------------------------------------------------------------------------
 #                            categorical independent variable
@@ -270,35 +235,10 @@ df_teste = data.frame(historia, divida)
 
 
 d = pred_marcos('risco',  df, df_teste, cl, cclas = 1)
-d
-
-
-
-#---- Quality control
-
-
-
-library(e1071) # library to work with naive bayes
-
- 
-clas3 = naiveBayes(x=teste[-3], y = teste$sex)
-prev3 = predict(clas3, newdata = dfn, 'raw')
-print(prev3)
 
 
 
 
-teste$sex = ifelse(teste$sex=='male', 1, 0)
-teste$sex = as.factor(teste$sex)
-
-
-plot(teste[,1:2], col=teste[,3], pch=19)
-
-decisionplot(clas3, teste, class = "sex", main = "naive Bayes")
-
-
-
-#the result obtained from my algorithm is identical to the result produced by the library
 
 
 
