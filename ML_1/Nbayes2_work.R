@@ -31,7 +31,10 @@ teste$sex = df2
 
 teste = data.frame(teste)
 
+
+
 ## Import financial data
+
 
 find = readRDS('findata.rds')
 
@@ -277,16 +280,21 @@ d
 
 library(e1071) # library to work with naive bayes
 
-clas2 = naiveBayes(x=df[-3], y = df$risco)
-
-print(clas2)
-
-
-prev2 = predict(clas2, newdata = df_teste, 'raw') 
-print(prev2) 
+ 
+clas3 = naiveBayes(x=teste[-3], y = teste$sex)
+prev3 = predict(clas3, newdata = dfn, 'raw')
+print(prev3)
 
 
 
+
+teste$sex = ifelse(teste$sex=='male', 1, 0)
+teste$sex = as.factor(teste$sex)
+
+
+plot(teste[,1:2], col=teste[,3], pch=19)
+
+decisionplot(clas3, teste, class = "sex", main = "naive Bayes")
 
 
 
