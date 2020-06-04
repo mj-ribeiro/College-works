@@ -198,22 +198,28 @@ bound3 = ggplot(data = fits3, aes(x=height, y=weight, color=as.factor(sex) ) ) +
 
 #- census
 
+census$education = factor(census$education, levels = c(' 10th', ' 11th', ' 12th', ' 1st-4th', ' 5th-6th', ' 7th-8th', ' 9th', ' Assoc-acdm', ' Assoc-voc', ' Bachelors', ' Doctorate', ' HS-grad', ' Masters', ' Preschool', ' Prof-school', ' Some-college'), labels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16))
+census$income = factor(census$income, levels = unique(census$income), labels = c(1, 0))
+census$occupation = factor(census$occupation, levels = c(' Adm-clerical', ' Armed-Forces', ' Craft-repair', ' Exec-managerial', ' Farming-fishing', ' Handlers-cleaners', ' Machine-op-inspct', ' Other-service', ' Priv-house-serv', ' Prof-specialty', ' Protective-serv', ' Sales', ' Tech-support', ' Transport-moving'), labels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14))
+
+
+kk = lapply(census, as.numeric)
+census = as.data.frame(kk)
+
+
 
 clas6 = naiveBayes(x=census[-3], y = as.factor(census$income))
 
 fits3 = mutate(census, prev4 = predict(clas6, newdata = census[-3]) )
 
 
-
-
 nbp <- 250;
 PredA <- seq(min(census$education), max(census$occupation), length = nbp)
 PredB <- seq(min(census$occupation), max(census$occupation), length = nbp)
-Grid3 <- expand.grid(education = PredA, occupation = PredB)
+Grid4 <- expand.grid(education = PredA, occupation = PredB)
 
 
-c = predict(clas5,Grid3)
-
+d = predict(clas6, Grid4)
 
 
 
