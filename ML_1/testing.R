@@ -6,13 +6,18 @@ source("D:/Git projects/college_works/ML_1/Nbayes2_work.R")
 
 
 
-#---------- census
+#---------- libraries
 
 library('AppliedPredictiveModeling')
 library('RColorBrewer')
 library(ggplot2)
-library(plyr)
 library(e1071)
+
+library("plyr")
+library("dplyr")
+library("grid")
+library("gridExtra")
+library("caret")
 
 
 
@@ -54,20 +59,21 @@ show(regions)
 
 # bounds
 
-bound = ggplot(data = fits, aes(x=oil, y=pca, color =as.factor(x))) + 
-  geom_contour(data = cbind(Grid, x = a), aes(z = as.numeric(x)), 
-  color='red', breaks = c(2)) + 
-  geom_point(size = 4, alpha = .5) +
-  ggtitle("Decision boundary") +
-  theme(legend.text = element_text(size = 10)) +
-  scale_colour_manual(name = 'classes', values = twoClassColor)
-  
-  
-  
-  
-  
+
+
+bound = ggplot(data = fits, aes(x=oil, y=pca, color =as.factor(x) )) +
+  geom_contour(data = cbind(Grid, x = a), aes(z = as.numeric (x) ), 
+  color='red', breaks = c(1.5)) + 
+  geom_point(size = 4, alpha = .5)  +
+  ggtitle("Decision boundaries") +
+  theme(legend.text = element_text(size = 10)) 
   
 
+bound
+
+grid.arrange(regions, bound, nrow=2)
+  
+  
 
 
 
