@@ -24,11 +24,9 @@ names(twoClassColor) <- c('Class1','Class2')
 
 
 
-
 clas3 = naiveBayes(x=find2[-1], y = as.factor(find2$x))
 
 fits = mutate(find2, prev3 = predict(clas3, newdata = find2[-1]) )
-
 
 
 
@@ -42,6 +40,8 @@ Grid <- expand.grid(oil = PredA, pca = PredB)
 a = predict(clas3,Grid)
 
 
+# limits
+
 regions = ggplot(data = fits, aes(x=oil, y=pca, color =x)) + 
   geom_tile(data = cbind(Grid, x = a), aes(fill = x)) +
   #scale_fill_manual(name = 'x', values = twoClassColor) +
@@ -49,10 +49,24 @@ regions = ggplot(data = fits, aes(x=oil, y=pca, color =x)) +
   theme(legend.text = element_text(size = 10)) +
   scale_colour_manual(name ='x', values =twoClassColor)
 
-
-
 show(regions)
 
+
+# bounds
+
+bound = ggplot(data = fits, aes(x=oil, y=pca, color =as.factor(x))) + 
+  geom_contour(data = cbind(Grid, x = a), aes(z = as.numeric(x)), 
+  color='red', breaks = c(2)) + 
+  geom_point(size = 4, alpha = .5) +
+  ggtitle("Decision boundary") +
+  theme(legend.text = element_text(size = 10)) +
+  scale_colour_manual(name = 'classes', values = twoClassColor)
+  
+  
+  
+  
+  
+  
 
 
 
@@ -81,7 +95,7 @@ b = predict(clas4,Grid2)
 
 
 
-regions = ggplot(data = fits2, aes(x=cb, y=vix, color =x)) + 
+regions2 = ggplot(data = fits2, aes(x=cb, y=vix, color =x)) 
   geom_tile(data = cbind(Grid2, x = b), aes(fill = x)) +
   #scale_fill_manual(name = 'x', values = twoClassColor) +
   ggtitle("Decision region") + 
@@ -90,7 +104,8 @@ regions = ggplot(data = fits2, aes(x=cb, y=vix, color =x)) +
 
 
 
-show(regions)
+show(regions2)
+
 
 
 
