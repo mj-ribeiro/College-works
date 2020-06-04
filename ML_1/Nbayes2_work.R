@@ -38,10 +38,46 @@ find = readRDS('findata.rds')
 keep = c('x', 'oil', 'pca')
 find2 = find[,keep]
 
+
+library(ROSE)
+
+tst = find2[232:241, ]
+
+
+find2 = find2[1:231, ]
+
+find2 = ovun.sample(as.factor(x)~., data=find2, method="both", p=0.5,
+                    subset=options("subset")$subset,
+                    na.action=options("na.action")$na.action, seed=1)
+
+find2 = find2$data
+
+tr = find2
+
+tr = as.data.frame(tr)
+
+
 ##
 
 keep2 = c('x', 'cb', 'vix')
 find3 = find[,keep2]
+
+
+tst2 = find3[232:241, ]
+
+
+find3 = find3[1:231, ]
+
+find3 = ovun.sample(as.factor(x)~., data=find3, method="both", p=0.5,
+                    subset=options("subset")$subset,
+                    na.action=options("na.action")$na.action, seed=1)
+
+find3 = find3$data
+
+tr2 = find3
+
+tr2 = as.data.frame(tr2)
+
 
 
 
@@ -80,6 +116,44 @@ a = addToDF(a, c)
 a[is.na(a)] = ' '
 names = c('education', 'occupation', 'income')
 colnames(a) = names
+
+
+
+
+#---------- testes
+
+
+cl4 = naivef('x',tr2, cd=0)
+prev2 = predf('x', tr2, tst2, cl4, cclas=1, cd=0)
+library(ElemStatLearn)
+
+set = tst2
+X1 = seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by = 0.01)
+X2 = seq(min(set[, 3]) - 1, max(set[, 3]) + 1, by = 0.01)
+grid_set = expand.grid(X1, X2)
+colnames(grid_set) = c('vix', 'cb')
+
+y_grid = prev2
+
+plot(set[, -1], main = 'Naive Bayes (Test set)',
+     xlab = 'vix', ylab = 'cb',
+     xlim = range(X1), ylim = range(X2))
+contour(X1, X2, matrix(as.numeric(y_grid), add = TRUE)
+points(grid_set, pch = '.', col = ifelse(y_grid == 1, 'springgreen3', 'tomato'))
+points(set, pch = 21, bg = ifelse(set[, 3] == 1, 'green4', 'red3'))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #------------------------------------------------------------------------------------------
@@ -210,6 +284,9 @@ print(clas2)
 
 prev2 = predict(clas2, newdata = df_teste, 'raw') 
 print(prev2) 
+
+
+
 
 
 
@@ -377,12 +454,6 @@ naivef = function(k, df, cd=1){
   } 
 
 
-library(fGarch)
-basicStats(find$oil)
-
-
-
-cl3 = naivef('x', find2[1:231, ], cd=0)
 
 
 
@@ -400,14 +471,6 @@ predf = function(k, df, df_n, cl, cclas=0, cd=1){
   }
 } 
 
-
-tr = find2[1:231, ]
-tst = find2[232:241, ]
-
-prev = predf('x', tr, tst, cl3, cclas=1, cd=0)
-
-accuracy = (sum((prev == tst[,1])*1)/length(tst[,1]) )*100
-accuracy
 
 
 

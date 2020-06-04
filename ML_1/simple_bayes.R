@@ -4,13 +4,13 @@
 
 
 
-setwd("C:/Users/user/Downloads/ML_work/Algorithm")
+setwd("D:/Git projects/college_works/ML_1")
 
 
 
 
-library(readxl)
-teste <- read_excel("teste.xlsx")
+
+teste <- read.csv("teste.csv")
 
 
 attach(teste)
@@ -50,7 +50,7 @@ pfm = dnorm(8, m3, v3)
 PM = pm*phm*pwm*pfm
 
 
-
+PM
 #------ Female
 
 pf = 0.5

@@ -70,6 +70,22 @@ model4 = train(as.factor(x) ~ vix + oil + cdi + cb, data=df3 , trControl = contr
 model4
 confusionMatrix(model4)
 
+library(nnet)
+library('pROC')
+
+
+library(neuralnet)
+m = neuralnet(x~., data=df2, hidden = 3, linear.output = T)
+
+
+
+roc(df$x, m$response, plot=T)
+
+
+
+
+
+
 # 41% correto com var2 
 
 # 1 best: as.factor(x) ~ vix + ret**2 + cdi + gold + oil   (0.9087)

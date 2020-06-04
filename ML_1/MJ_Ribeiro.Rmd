@@ -409,6 +409,7 @@ CMAX = function(w, n, s){
 
 
 ## Crisis proxy
+
 - w is the window size
 - n is the number of windows
 - s is the vector that i will pass the function
@@ -416,7 +417,9 @@ CMAX = function(w, n, s){
 - This limit can be the Value at Risk in 5\%
 
 ## Ibovespa returns
+
 - Note the big drop of ibov in 2020 in the figure (a) below. The vertical line in figure (b) is the limit used to define crisis. This is the quantile of 0.05 of Ibovespa returns. This approach is known as Value at Risk (Var)
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, fig.height=3.5, fig.width=6}
 library(quantmod)
 ibov = getSymbols('^BVSP', src='yahoo', 
@@ -458,10 +461,7 @@ ggplot(data=find2, aes(x=oil, y=pca, colour=as.factor(x))) + geom_point(size=4)
 
 - So, i used naivef function in my dataset
 ```{r echo=TRUE}
-tr = find2[1:231, ]
-tst = find2[232:241, ]
 cl3 = naivef('x',tr, cd=0)
-
 ```
 
 
@@ -493,5 +493,5 @@ accuracy
 ##
 
 \begin{center}
-  \huge{Thanks!}
+  \huge{Thanks!} 
 \end{center}
