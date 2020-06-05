@@ -43,6 +43,8 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 2)   
 
 #control_train =trainControl(method = "timeslice",initialWindow = 36, horizon = 12, fixedWindow = T,allowParallel = T)  
 
+# rav
+
 model_a = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
               trControl = control_train, 
               method='nnet', threshold = 0.3,
@@ -56,10 +58,14 @@ model_a
 confusionMatrix(model_a)
 
 
-#best performance
+# vix
 
-model_b = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3 , trControl = control_train, 
-               method='nnet', threshold = 0.6)
+model_b = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3 , 
+                trControl = control_train, 
+                method='nnet', 
+                threshold = 0.3,
+                maxit=1000,
+                MaxNWts=2000)
  
 model_b
 confusionMatrix(model_b)
@@ -67,29 +73,31 @@ confusionMatrix(model_b)
 
 
 
-
-
-
-# 41% correto com var2 
-
-# 1 best: as.factor(x) ~ vix + ret**2 + cdi + gold + oil   (0.9087)
-# 2 best: as.factor(x) ~ vix + ret + cdi + gold + oil      (0.8921)
-# 3 best: as.factor(x) ~ vix + ret + cdi + gold + cb       (0.8423)
-
 #------ Multilogit
 
+# rav
 
-model3 = train(as.factor(x) ~., data=df3, 
+model_c = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
                trControl = control_train, 
-               method='multinom', family='binomial') 
+               method='multinom', 
+               family='binomial') 
 
 model3
 confusionMatrix(model3)
 
 
+# vix
+
+
+model_d = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3, 
+                trControl = control_train, 
+                method='multinom', 
+                family='binomial') 
+
+
 #------- SVM
 
-model5 = train(as.factor(crise) ~., data=df, trControl = control_train, 
+model5 = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
                method='svmRadial') 
 
 model5
@@ -100,16 +108,58 @@ confusionMatrix(model5)
 
 #------- KNN
 
+# vix
 
-model6 = train(as.factor(crise) ~., data=df, 
+model_e = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3, 
                trControl = control_train, 
                method='knn') 
 
-model6
-confusionMatrix(model6)
+model_e
+confusionMatrix(model_e)
+
+
+# rav
+
+model_f = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
+                trControl = control_train, 
+                method='knn') 
 
 
 
+model_f
+
+
+#------ Randon Forests
+
+# vix
+
+model_g = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3,
+               trControl = control_train, method='rf') 
+
+
+model_g
+confusionMatrix(model_g)
+
+
+# rav
+
+model_h = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3,
+                trControl = control_train, method='rf') 
+
+
+model_h
+confusionMatrix(model_h)
+
+
+
+#---------- Naive Bayes
+
+control_train2 = trainControl(method = 'cv')    # ten fold
+
+
+model_i = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
+               trainControl = control_train2, 
+               method='nb') # nb = Naive Bayes
 
 
 
