@@ -190,6 +190,36 @@ embi = embi[,-1]
 
 
 
+
+
+# risk aversion
+
+
+rav = read.csv('kalman.csv', header = T, sep = ',', )[,1:2]
+rav$data = as.Date(rav$data, format = '%m/%d/%Y')
+colnames(rav) = c('date', 'rav')
+
+
+s = firstDayMonth(rav$date)
+s = data.frame(s)
+
+colnames(s) = c('date')
+
+
+
+setDT(rav)
+setDT(s)
+
+
+rav = rav[s, on = c('date')]
+
+
+
+mday(rav$date) = 1   # transformar os dias do vetor de datas  em 1 (lubridate)
+
+
+
+
 # returns
 
 
@@ -361,7 +391,7 @@ embi = embi[data]
 
 # transform data in data frame
 
-df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, embi, oil, gold)
+df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold)
 
 
 ### save in rds file

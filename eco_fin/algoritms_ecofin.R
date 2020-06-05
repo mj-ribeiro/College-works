@@ -38,14 +38,14 @@ saveRDS(df2, 'findata.rds')
 
 library(ROSE)
 
-df3 = ovun.sample(as.factor(x)~., data=df2, method="both", p=0.5,
+df3 = ovun.sample(as.factor(crise)~., data=df, method="both", p=0.5,
             subset=options("subset")$subset,
             na.action=options("na.action")$na.action, seed=1)
 
 df3 = data.frame(df3$data)
 
 
-table(df3$x)
+table(df3$crise)
 
 
 #---- Control train
@@ -58,28 +58,23 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 2)   
 
 #control_train =trainControl(method = "timeslice",initialWindow = 36, horizon = 12, fixedWindow = T,allowParallel = T)  
 
-
-model4 = train(as.factor(x) ~., data=df2, trControl = control_train, 
+model4 = train(as.factor(crise) ~., data=df3[,-c(1, 7)], trControl = control_train, 
                method='nnet', threshold = 0.3)
 
 
+model4 = train(as.factor(crise2) ~., data=df3[,-c(1, 4)], trControl = control_train, 
+               method='nnet', threshold = 0.6)
 
-model4 = train(as.factor(x) ~ vix + oil + cdi + cb, data=df3 , trControl = control_train, 
+
+
+#best performance
+
+model_b = train(as.factor(crise) ~ ret^2 + vix + oil + cb + embi + cdi, data=df3 , trControl = control_train, 
                method='nnet', threshold = 0.6)
  
-model4
-confusionMatrix(model4)
+model_b
+confusionMatrix(model_b)
 
-library(nnet)
-library('pROC')
-
-
-library(neuralnet)
-m = neuralnet(x~., data=df2, hidden = 3, linear.output = T)
-
-
-
-roc(df$x, m$response, plot=T)
 
 
 
