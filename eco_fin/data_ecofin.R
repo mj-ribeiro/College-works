@@ -90,6 +90,8 @@ vix = getSymbols('^VIX', src='yahoo',
 
 colnames(vix) = 'vix'
 
+rvix = diff(log(vix))
+
 
 # Oil price
 
@@ -217,6 +219,9 @@ rav = rav[s, on = c('date')]
 
 mday(rav$date) = 1   # transformar os dias do vetor de datas  em 1 (lubridate)
 
+
+rav = xts(rav, order.by = rav$date)
+rav = rav[,-1]
 
 
 
@@ -376,7 +381,8 @@ data = data[-c(1, 2)]
 crise = xts(crise[-c(1, 2)], order.by = data)
 crise2 = xts(crise2[-c(1, 2)], order.by = data)
 
-
+rvix = rvix[data]
+rav = rav[data]
 cb = cb[data]
 vix = vix[data]
 data = index(cb)
@@ -391,7 +397,7 @@ embi = embi[data]
 
 # transform data in data frame
 
-df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold)
+df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold, rav, rvix)
 
 
 ### save in rds file
