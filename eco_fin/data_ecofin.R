@@ -46,10 +46,9 @@ firstDayMonth=function(x)
 
 
 
-
-
 # Libraries
 
+library(lubridate)
 library(tseries)
 library(timeSeries)
 library(quantmod)
@@ -160,12 +159,24 @@ datatable(embi_search)
 embi = ipeadata(c('JPM366_EMBI366'))[,2:3]
 colnames(embi) = c('date', 'embi')
 
+embi$date = as.Date(embi$date)
+mday(embi$date) = 1
 
 
-k= as.data.frame(firstDayMonth(embi$date))
+
+k= firstDayMonth(embi$date)
+k = as.Date(k)
+
+
+
+
+mday(k) = 1   # transformar os dias do vetor de datas k em 1 (lubridate)
+
+
+k = as.data.frame(k)
+
 colnames(k) = 'date'
 
-k$date = as.Date(k$date)
 
 
 setDT(embi)
@@ -177,6 +188,9 @@ embi = embi[k, on = c('date')]
 
 embi = xts(embi, order.by = embi$date)
 embi = embi[,-1]
+
+
+
 
 
 # returns
@@ -330,6 +344,8 @@ lines(crise2)
 data = index(cmts)
 
 crise = xts(crise, order.by = data)
+crise2 = xts(crise, order.by = data)
+
 cb = cb[data]
 vix = vix[data]
 
@@ -344,9 +360,10 @@ gold = gold[data]
 embi = embi[data]
 
 
+
 # transform data in data frame
 
-df = data.frame(ret, vix, cb, crise, cdi)
+df = data.frame(ret, vix, cb, crise, cdi, embi, crise2)
 
 df = merge(df, gold, by='row.names')
 d = df$Row.names
