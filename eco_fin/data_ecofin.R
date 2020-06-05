@@ -159,18 +159,11 @@ datatable(embi_search)
 embi = ipeadata(c('JPM366_EMBI366'))[,2:3]
 colnames(embi) = c('date', 'embi')
 
-embi$date = as.Date(embi$date)
-mday(embi$date) = 1
-
 
 
 k= firstDayMonth(embi$date)
 k = as.Date(k)
 
-
-
-
-mday(k) = 1   # transformar os dias do vetor de datas k em 1 (lubridate)
 
 
 k = as.data.frame(k)
@@ -186,10 +179,14 @@ setDT(k)
 embi = embi[k, on = c('date')]
 
 
+embi$date = as.Date(embi$date)
+
+mday(embi$date) = 1   # transformar os dias do vetor de datas k em 1 (lubridate)
+
+
+
 embi = xts(embi, order.by = embi$date)
 embi = embi[,-1]
-
-
 
 
 
@@ -304,7 +301,7 @@ prop.table(table(crise))
 
 
 crise = xts(crise, order.by = data1)
-
+colnames(crise) = 'crise'
 
 
 # var2
@@ -342,14 +339,16 @@ lines(crise2)
 #---- create data frame
 
 data = index(cmts)
+data = data[-c(1, 2)]
 
-crise = xts(crise, order.by = data)
-crise2 = xts(crise, order.by = data)
+
+
+crise = xts(crise[-c(1, 2)], order.by = data)
+crise2 = xts(crise2[-c(1, 2)], order.by = data)
+
 
 cb = cb[data]
 vix = vix[data]
-
-
 data = index(cb)
 oil =oil[data]
 vix = vix[data]
@@ -360,33 +359,9 @@ gold = gold[data]
 embi = embi[data]
 
 
-
 # transform data in data frame
 
-df = data.frame(ret, vix, cb, crise, cdi, embi, crise2)
-
-df = merge(df, gold, by='row.names')
-d = df$Row.names
-
-df$Row.names = NULL
-
-row.names(df) = d
-
-
-df = merge(df, oil, by='row.names')
-
-d = df$Row.names
-
-df$Row.names = NULL
-
-row.names(df) = d
-
-
-
-
-#df = data.frame(date=index(index(cb)), coredata(df))
-
-#df$date = NULL
+df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, embi, oil, gold)
 
 
 ### save in rds file
