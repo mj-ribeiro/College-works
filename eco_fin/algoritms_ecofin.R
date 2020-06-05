@@ -17,23 +17,8 @@ library(ROSE)
 
 #--- load variables
 
-pca = readRDS('pca.rds')
 df = readRDS('df.rds')
 
-pca2 = pca
-pca2 = pca2[-1]
-#pca2 =pca2[-242]
-
-
-basicStats(pca2)
-
-df2 = df
-df2$pca = pca2
-
-
-table(df2$x)
-
-saveRDS(df2, 'findata.rds')
 #--- Rose library
 
 library(ROSE)
@@ -45,7 +30,7 @@ df3 = ovun.sample(as.factor(crise)~., data=df, method="both", p=0.5,
 df3 = data.frame(df3$data)
 
 
-table(df3$crise)
+prop.table(table(df3$crise))
 
 
 #---- Control train
@@ -58,18 +43,22 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 2)   
 
 #control_train =trainControl(method = "timeslice",initialWindow = 36, horizon = 12, fixedWindow = T,allowParallel = T)  
 
-model4 = train(as.factor(crise) ~., data=df3[,-c(1, 7)], trControl = control_train, 
-               method='nnet', threshold = 0.3)
+model_a = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
+              trControl = control_train, 
+              method='nnet', threshold = 0.3,
+              maxit=1000,
+              MaxNWts=2000
+              )
+              
 
+model_a
 
-model4 = train(as.factor(crise2) ~., data=df3[,-c(1, 4)], trControl = control_train, 
-               method='nnet', threshold = 0.6)
-
+confusionMatrix(model_a)
 
 
 #best performance
 
-model_b = train(as.factor(crise) ~ ret^2 + vix + oil + cb + embi + cdi, data=df3 , trControl = control_train, 
+model_b = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3 , trControl = control_train, 
                method='nnet', threshold = 0.6)
  
 model_b

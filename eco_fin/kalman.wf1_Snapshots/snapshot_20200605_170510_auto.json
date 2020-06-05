@@ -1,8 +1,8 @@
 
 {
-	"commands" : "",
+	"commands" : null,
 	"description" : "",
-	"label" : "save",
+	"label" : "auto",
 	"workbook_meta" : 
 	{
 		"_name" : "d:\\git projects\\college_works\\eco_fin\\kalman.wf1",

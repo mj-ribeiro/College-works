@@ -91,7 +91,7 @@ vix = getSymbols('^VIX', src='yahoo',
 colnames(vix) = 'vix'
 
 rvix = diff(log(vix))
-
+colnames(rvix) =  'rvix'
 
 # Oil price
 
@@ -356,17 +356,18 @@ for(i in 2:length(pos2)){
 
 
 
-pos2
-
-table(crise)
 
 par(mfrow=(c(1,2)))
 
-plot(as.vector(1-cmts), type='l', ylim=c(0,1))
+plot(as.vector(1-cmts), type='l', ylim=c(0,1), 
+     main='CMAX and Crisis VaR 5%', 
+     ylab='CMAX and Crisis')
 lines(as.vector(crise))
 
 
-plot(as.vector(1-cmts), type='l', ylim=c(0,1))
+plot(as.vector(1-cmts), type='l', ylim=c(0,1), 
+     main='CMAX and Crisis VaR 10%', 
+     ylab='CMAX and Crisis')
 lines(crise2)
 
 
