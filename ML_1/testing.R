@@ -49,7 +49,6 @@ a = predict(clas3,Grid)
 
 regions = ggplot(data = fits, aes(x=oil, y=pca, color =x)) + 
   geom_tile(data = cbind(Grid, x = a), aes(fill = x)) +
-  #scale_fill_manual(name = 'x', values = twoClassColor) +
   ggtitle("Decision region") + 
   scale_colour_manual(name ='x', values =twoClassColor) +
   theme(legend.text = element_text(size = 24),
@@ -194,8 +193,6 @@ bound3 = ggplot(data = fits3, aes(x=height, y=weight, color=as.factor(sex) ) ) +
 
 
 
-
-
 #- census
 
 census$education = factor(census$education, levels = c(' 10th', ' 11th', ' 12th', ' 1st-4th', ' 5th-6th', ' 7th-8th', ' 9th', ' Assoc-acdm', ' Assoc-voc', ' Bachelors', ' Doctorate', ' HS-grad', ' Masters', ' Preschool', ' Prof-school', ' Some-college'), labels = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16))
@@ -249,6 +246,74 @@ bound4 = ggplot(data = fits4, aes(x=education, y=occupation, color= as.factor(in
         axis.title.x = element_text(colour = 'black', size=24),
         axis.title.y = element_text(colour = 'black', size=24),
         plot.title = element_text(hjust = 0.5, size = 25))
+
+
+
+
+
+# risco
+
+df$historia = factor(df$historia, levels = unique(df$historia), labels = c(0, 1, 2))
+df$divida = factor(df$divida, levels = unique(df$divida), labels = c(0, 1))
+df$risco = factor(df$risco, levels = unique(df$risco), labels = c(0, 1, 2))
+
+
+
+
+tt = lapply(df, as.numeric)
+df = as.data.frame(tt)
+
+
+
+
+clas7 = naiveBayes(x=df[-3], y = as.factor(df$risco))
+
+fits5 = mutate(df, prev5 = predict(clas7, newdata = df[-3]) )
+
+
+
+
+
+nbp <- 500;
+PredA <- seq(min(df$historia), max(df$historia), length = nbp)
+PredB <- seq(min(df$divida), max(df$divida), length = nbp)
+Grid5 <- expand.grid(historia = PredA, divida = PredB)
+
+
+e = predict(clas7, Grid5)
+
+
+
+threeClassColor <- brewer.pal(4,'Set2')[1:3]
+names(threeClassColor) <- c('Class1','Class2', 'Class3')
+
+
+
+regions5 = ggplot(data = fits5, aes(x=historia, y=divida, color=risco ) ) +
+  geom_tile(data = cbind(Grid5, risco = e), aes(fill = risco)) +
+  ggtitle("Decision region") + 
+  #scale_colour_manual(name ='risco', values=threeClassColor) +
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
+
+
+
+ggplot(data = fits5, aes(x=historia, y=divida, color=risco ) ) + geom_point()
+
+# bounds
+
+bound5 = ggplot(data = fits5, aes(x=divida, y=historia, color=as.factor(risco) ) ) +
+  geom_contour(data = cbind(Grid5, risco = e), aes(z = as.numeric (risco) ), 
+               color='black', breaks = c(1.5)) + 
+  geom_point(size = 4, alpha = .5)  +
+  ggtitle("Decision boundaries") +
+  theme(legend.text = element_text(size = 24),
+        axis.title.x = element_text(colour = 'black', size=24),
+        axis.title.y = element_text(colour = 'black', size=24),
+        plot.title = element_text(hjust = 0.5, size = 25))
+
 
 
 
