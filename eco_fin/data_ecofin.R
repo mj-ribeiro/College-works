@@ -30,6 +30,21 @@ CMAX = function(w, n, s){
 
 
 
+#### get first day
+
+firstDayMonth=function(x)
+{           
+  x=as.Date(as.character(x))
+  day = format(x,format="%d")
+  monthYr = format(x,format="%Y-%m")
+  y = tapply(day,monthYr, min)
+  first=as.Date(paste(row.names(y),y,sep="-"))
+  #as.factor(first)
+  as.Date(first)
+}
+
+
+
 
 
 
@@ -40,6 +55,15 @@ library(timeSeries)
 library(quantmod)
 library(fGarch)
 library(GetBCBData)
+
+library(ipeadatar)
+library(knitr);
+library(tidyr);
+library(dplyr);
+library(DT);
+library(magrittr)
+library(data.table)
+
 
 
 
@@ -125,14 +149,34 @@ rownames(cdi) = data    # colocar a data como índice
 colnames(cdi) = 'cdi'
 
 
+## EMBI
+
+
+embi_search = as.data.frame(search_series(terms = c('EMBI'), fields = c("name"),language = c("br")))
+embi_search %<>% dplyr::slice(1:500L)
+datatable(embi_search)
+
+
+embi = ipeadata(c('JPM366_EMBI366'))[,2:3]
+colnames(embi) = c('date', 'embi')
 
 
 
-# Gamma1 - Kalman estimate
+k= as.data.frame(firstDayMonth(embi$date))
+colnames(k) = 'date'
 
-write.csv(ind, file='ibv')
+k$date = as.Date(k$date)
 
 
+setDT(embi)
+setDT(k)
+
+
+embi = embi[k, on = c('date')]
+
+
+embi = xts(embi, order.by = embi$date)
+embi = embi[,-1]
 
 
 # returns
@@ -140,13 +184,11 @@ write.csv(ind, file='ibv')
 
 
 ret = diff(log(ibov))
-basicStats(ret)
+
 
 ret = ret[is.na(ret)==F]
 colnames(ret) = 'ret'
 
-
-#ret = matrix(ret)
 
 
 #------ Using CMAX function
@@ -227,13 +269,11 @@ abline(h=var2)
 
 #----- Create Dummy
 
+# var1
 
 crise = matrix(nrow = length(cmts))
 
 crise = ifelse(cm2<var1, 1, 0)
-
-#crise = ifelse(cm2>0.9, 2, crise)
-
 
 pos = which(crise==1)   # pegar a posição onde crise== 1
 pos
@@ -244,9 +284,6 @@ for(i in 2:length(pos)){
 }
 
 
-plot(crise, type='l')
-
-
 table(crise)
 prop.table(table(crise))
 
@@ -255,9 +292,36 @@ prop.table(table(crise))
 crise = xts(crise, order.by = data1)
 
 
-plot(crise)
-lines(1-cmts)
 
+# var2
+
+
+crise2 = matrix(nrow = length(cmts))
+
+crise2 = ifelse(cm2<var2, 1, 0)
+
+pos2 = which(crise2==1)   # pegar a posição onde crise== 1
+pos2
+
+
+for(i in 2:length(pos2)){
+  crise2[(pos2[i]-12):pos2[i]] = 1
+}
+
+
+
+pos2
+
+table(crise)
+
+par(mfrow=(c(1,2)))
+
+plot(as.vector(1-cmts), type='l', ylim=c(0,1))
+lines(as.vector(crise))
+
+
+plot(as.vector(1-cmts), type='l', ylim=c(0,1))
+lines(crise2)
 
 
 
@@ -277,6 +341,8 @@ crise = crise[data]
 cdi = cdi[data]
 ret = ret[data]
 gold = gold[data]
+embi = embi[data]
+
 
 # transform data in data frame
 
