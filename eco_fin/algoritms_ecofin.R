@@ -6,7 +6,7 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 library(caret)
 library(ROSE)
-
+library(xgboost)
 
 
 
@@ -152,15 +152,41 @@ confusionMatrix(model_h)
 
 
 
-#---------- Naive Bayes
+#--- XGboost
 
-control_train2 = trainControl(method = 'cv')    # ten fold
+tune_grid <- expand.grid(nrounds = 200,
+                         max_depth = 5,
+                         eta = 0.05,
+                         gamma = 0.01,
+                         colsample_bytree = 0.75,
+                         min_child_weight = 0,
+                         subsample = 0.5)
 
 
-model_i = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
-               trainControl = control_train2, 
-               method='nb') # nb = Naive Bayes
 
+
+# vix
+
+
+model_i = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3,
+                method = "xgbTree",
+                trControl=control_train,
+                tuneGrid = tune_grid,
+                tuneLength = 10)
+
+confusionMatrix(model_j)
+
+
+
+
+# rav
+
+
+model_j = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3,
+      method = "xgbTree",
+      trControl=control_train,
+      tuneGrid = tune_grid,
+      tuneLength = 10)
 
 
 
