@@ -4,9 +4,10 @@
 
 setwd("D:/Git projects/college_works/eco_fin")
 
+
+library('xtable')
 library(caret)
 library(ROSE)
-library(xgboost)
 
 
 
@@ -170,7 +171,7 @@ tune_grid <- expand.grid(nrounds = 200,
 control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
 
 
-model_i = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3,
+model_i = train(as.factor(crise) ~  gold + embi + oil + cb + rav , data=df3,
                 method = "xgbTree",
                 trControl=control_train,
                 tuneGrid = tune_grid,
@@ -194,12 +195,12 @@ model_j = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3
 
 cm_xg = confusionMatrix(model_j)
 
-
+cm[["table"]][1,1]
 
 metrics = function(cm){
-  acurácia = (cm$table[1,1] + cm$table[2,2])/sum(cm$table)
-  sensibilidade = cm$table[1,1] / ( cm$table[1,1] + cm$table[2,1] )  
-  especificidade = cm$table[2,2] /( cm$table[2,2] + cm$table[1,2] )
+  acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
+  sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
+  especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
   LP = sensibilidade/(1 - especificidade)
   LR = (1 - sensibilidade)/(especificidade)
@@ -219,9 +220,18 @@ colnames(métricas) = c("acurácia" , "sensibilidade", "especificidade", "G", "LP"
 
 
 
+métricas[1, ] = metrics(cm_ml)
+métricas[2, ] = metrics(cm_NN)
+métricas[3, ] = metrics(cm_rf)
+métricas[4, ] = metrics(cm_xg)
+
+
+métricas = round( métricas, 4)
+
+métricas = t(métricas)
 
 
 
-
+print(xtable(métricas, type = "latex", digits=4), file = "filename2.tex")
 
 
