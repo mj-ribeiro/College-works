@@ -383,8 +383,8 @@ summary(tt)
 
 def obj2(x1):
     global D
-    x1 = taus3()
-    #x1 = x1.reshape((1, i*3, 1))    
+    x1 = taus2()
+    x1 = x1.reshape((i, r, 3))    
     
     sf()
     H_trf(x1)
@@ -398,7 +398,7 @@ def obj2(x1):
     return D
 
 
-obj2(x2)
+obj2(x1)
 
 
 
@@ -407,9 +407,9 @@ obj2(x2)
 import nlopt 
 
 
-opt = nlopt.opt(nlopt.LD_SLSQP, 24)
-opt.set_min_objective(obj2)
-x = opt.optimize(x2.flatten())
+opt = nlopt.opt(nlopt.LD_SLSQP, 10)
+opt.set_min_objective(obj(x1))
+x = opt.optimize(x1.flatten())
 
 
 
@@ -455,7 +455,7 @@ bnd = [(-0.99, 0.999), (-0.99, 40), (0.001, 20)]
 
 len(bnd)
 
-sol2 = minimize(obj2, x2, method='SLSQP', bounds=bnd, options={'maxiter': 5000})
+sol2 = minimize(obj, x1, method='SLSQP', options={'maxiter': 5000})
 
 
 

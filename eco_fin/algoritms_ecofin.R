@@ -37,7 +37,7 @@ prop.table(table(df3$crise))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 2)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 5)    # ten fold
 
 
 #----- Neural net
@@ -46,11 +46,11 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 2)   
 
 # rav
 
-model_a = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
+model_a = train(as.factor(crise) ~  gold + embi + oil + cb + rav , data=df3,
               trControl = control_train, 
               method='nnet', threshold = 0.3,
-              maxit=1000,
-              MaxNWts=2000
+              maxit=600,
+              MaxNWts=1500
               )
               
 
@@ -59,14 +59,14 @@ model_a
 cm_NN = confusionMatrix(model_a)
 
 
-# vix
+# sem rav
 
-model_b = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3 , 
+model_b = train(as.factor(crise) ~  gold + embi + oil + cb  , data=df3, 
                 trControl = control_train, 
                 method='nnet', 
                 threshold = 0.3,
-                maxit=1000,
-                MaxNWts=2000)
+                maxit=600,
+                MaxNWts=1500)
  
 model_b
 confusionMatrix(model_b)
@@ -78,7 +78,7 @@ confusionMatrix(model_b)
 
 # rav
 
-model_c = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
+model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav , data=df3, 
                trControl = control_train, 
                method='multinom', 
                family='binomial') 
@@ -87,10 +87,10 @@ model_c = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3
 cm_ml = confusionMatrix(model_c)
 
 
-# vix
+# sem rav
 
 
-model_d = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3, 
+model_d = train(as.factor(crise) ~  gold + embi + oil + cb  , data=df3, 
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
