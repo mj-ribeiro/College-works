@@ -129,7 +129,7 @@ model_f = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3
 model_f
 
 
-#------ Randon Forests
+#------ Random Forests
 
 # vix
 
@@ -167,6 +167,8 @@ tune_grid <- expand.grid(nrounds = 200,
 
 # vix
 
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
+
 
 model_i = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3,
                 method = "xgbTree",
@@ -174,7 +176,7 @@ model_i = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df
                 tuneGrid = tune_grid,
                 tuneLength = 10)
 
-confusionMatrix(model_j)
+confusionMatrix(model_i)
 
 
 
@@ -183,10 +185,36 @@ confusionMatrix(model_j)
 
 
 model_j = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3,
-      method = "xgbTree",
-      trControl=control_train,
-      tuneGrid = tune_grid,
-      tuneLength = 10)
+          method = "xgbTree",
+          trControl=control_train,
+          tuneGrid = tune_grid,
+          tuneLength = 10)
+
+
+
+cm = confusionMatrix(model_j)
+
+metrics = function(cm){
+  acurácia = (cm$table[1,1] + cm$table[2,2])/sum(cm$table)
+  sensibilidade = cm$table[1,1] / ( cm$table[1,1] + cm$table[2,1] )  
+  especificidade = cm$table[2,2] /( cm$table[2,2] + cm$table[1,2] )
+  G = sqrt(sensibilidade*especificidade)
+  LP = sensibilidade/(1 - especificidade)
+  LR = (1 - sensibilidade)/(especificidade)
+  DP = sqrt(pi)/3 * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
+  gamma = sensibilidade - (1 - especificidade)
+  BA = (1/2) * (sensibilidade + especificidade)
+  métricas = data.frame(acurácia, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
+  knitr::kable(métricas)
+}
+
+a = metrics(cm)
+
+
+
+
+
+
 
 
 
