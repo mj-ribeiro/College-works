@@ -55,7 +55,7 @@ model_a = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3
 
 model_a
 
-confusionMatrix(model_a)
+cm_NN = confusionMatrix(model_a)
 
 
 # vix
@@ -82,8 +82,8 @@ model_c = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3
                method='multinom', 
                family='binomial') 
 
-model3
-confusionMatrix(model3)
+
+cm_ml = confusionMatrix(model_c)
 
 
 # vix
@@ -148,7 +148,7 @@ model_h = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3
 
 
 model_h
-confusionMatrix(model_h)
+cm_rf = confusionMatrix(model_h)
 
 
 
@@ -192,7 +192,9 @@ model_j = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3
 
 
 
-cm = confusionMatrix(model_j)
+cm_xg = confusionMatrix(model_j)
+
+
 
 metrics = function(cm){
   acurácia = (cm$table[1,1] + cm$table[2,2])/sum(cm$table)
@@ -205,11 +207,15 @@ metrics = function(cm){
   gamma = sensibilidade - (1 - especificidade)
   BA = (1/2) * (sensibilidade + especificidade)
   métricas = data.frame(acurácia, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
-  knitr::kable(métricas)
+  #knitr::kable(métricas)
 }
 
-a = metrics(cm)
 
+
+
+métricas = data.frame(matrix(, nrow=4, ncol=9))
+row.names(métricas) = c('Multilogit', 'Redes neurais', 'Random Forests', 'XGboost')
+colnames(métricas) = c("acurácia" , "sensibilidade", "especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
