@@ -63,8 +63,8 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)  
 model_a = train(as.factor(crise) ~  rav, data=df3, 
                 trControl = control_train, 
                 method='nnet', threshold = 0.3,
-                maxit=600,
-                MaxNWts=1500
+                maxit=700,
+                MaxNWts=1300
 )
 
 
@@ -141,6 +141,7 @@ model_i = train(as.factor(crise) ~  rav, data=df3,
 
 cm_xg = confusionMatrix(model_i)
 
+print(metrics(cm_xg))
 
 
 

@@ -50,7 +50,7 @@ prop.table(table(df3$crise))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 5)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
 
 
 #----- Neural net
@@ -61,8 +61,8 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 5)   
 model_a = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
                 trControl = control_train, 
                 method='nnet', threshold = 0.3,
-                maxit=600,
-                MaxNWts=1500
+                maxit=700,
+                MaxNWts=1300
 )
 
 
