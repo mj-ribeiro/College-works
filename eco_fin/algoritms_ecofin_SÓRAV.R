@@ -163,7 +163,7 @@ cm_svm = confusionMatrix(model_k)
 
 
 métricas = data.frame(matrix(, nrow=6, ncol=10))
-row.names(métricas) = c('Multilogit', 'Redes neurais','KNN', 'Random Forests', 'XGboost')
+row.names(métricas) = c('Multilogit', 'Redes neurais','KNN', 'Random Forests', 'XGboost', 'SVM')
 colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 

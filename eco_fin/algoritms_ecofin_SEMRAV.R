@@ -10,7 +10,7 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 metrics = function(cm){
   acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
-  cpc = cm_nn$table[2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
+  cpc = cm[["table"]][2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
   sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
   especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
@@ -176,7 +176,7 @@ colnames(métricas) = c("Acurácia" ,"CPC", "Sensibilidade", "Especificidade", "G"
 
 
 métricas[1, ] = metrics(cm_ml)
-métricas[2, ] = metrics(cm_NN)
+métricas[2, ] = metrics(cm_nn)
 métricas[3, ] = metrics(cm_knn)
 métricas[4, ] = metrics(cm_rf)
 métricas[5, ] = metrics(cm_xg)

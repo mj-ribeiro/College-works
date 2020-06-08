@@ -37,30 +37,12 @@ colnames(inf) = 'inf'
 inf = xts(inf, order.by = data)
 ```
 
-Vou fazer um gráfico dessa série.
+Vou fazer um gráfico dessa série. Como essa série já é a variação percentual isso resolve o item (a).
 
 ```{r}
 plot(inf)
 ```
 
-No item (a) temos: \
-
-(a)- Utilize o IPCA e calcule a variação da inflação nesse período, $$π_t − π_{t−1}$$. \
-
-Então vou fazer a primeira diferença da inflação e salvar em objeto chamado dinf:
-
-
-```{r}
-dinf = diff(inf)
-colnames(dinf) = 'dinf'
-```
-
-
-Agora vou fazer o gráfico dessa série, que é o item b.
-
-```{r}
-plot(dinf)
-```
 
 Agora vou obter os dados do desemprego, utilizando a mesma rotina. Só que o código da taxa de desocupação é 24369. 
 
@@ -96,11 +78,11 @@ Para fazer isso vou utilizar uma biblioteca de visualização gráfica bastante 
 library(ggplot2)
 
 
-df = data.frame(des, dinf[index(des)],inf[index(des)])
+df = data.frame(des, inf[index(des)])
 data3 = index(inf)
 dfinf = data.frame(data3, inf)
 
-g1 = ggplot(data = df[1:40,], aes(x = `des`, y =`dinf`), alpha=0.5)
+g1 = ggplot(data = df/100, aes(x = `des`, y =`inf`), alpha=0.5)
 
 g1 + geom_point(color='blue', size=2) + 
   ggtitle('Phillips Curve') + 
@@ -117,17 +99,17 @@ Por fim, vou estimar a regressão linear em que a variável dependente é a vari
 
 
 ```{r}
-reg1 = lm(dinf ~ des, data = df)
+reg1 = lm(inf ~ des, data = df/100)
 summary(reg1)
 ```
 
 Temos então que:
 
-$$\pi_t - \pi_{t-1} = 6,9\% - 0.007u_t$$
+$$\pi_t - \pi_{t-1} = 0,0098 - 0,05u_t$$
 
 Note que isso é uma função linear, e é representada pela reta da figura acima. Para obter a taxa natural de desemprego fazemos o seguinte:
 
-$$\frac{(\mu + z)}{\alpha} = 6,9\%/0.007 = 985,71$$
+$$\frac{(\mu + z)}{\alpha} = \frac{0,009876}{0,053953} = 18,33\% $$
 
 
-Em outras palavras: a evidência sugere que, desde 2012, no Brasil, a taxa média de desemprego necessária para manter a inflação constante é igual a 985%.
+Em outras palavras: a evidência sugere que, desde 2012, no Brasil, a taxa média de desemprego necessária para manter a inflação constante é igual a 18,33%.

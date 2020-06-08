@@ -180,6 +180,6 @@ métricas = t(métricas)
 
 
 
-print(xtable(métricas, type = "latex", digits=4), file = "sóRAV.tex")
+print(xtable(métricas, type = "latex", digits=4), file = "RAV.tex")
 
 

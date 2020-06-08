@@ -11,7 +11,7 @@ library(GetBCBData)
 library('xts')
 
 
-# inflation - Índice nacional de preços ao consumidor-amplo (IPCA)
+# inflation - Índice nacional de preços ao consumidor-amplo (IPCA)  (variação % )
 
 
 inf = gbcbd_get_series(433, first.date= '1981-01-01', last.date = '2020-04-01',  
@@ -24,13 +24,6 @@ inf = xts(inf, order.by = data)
 
 plot(inf)
 
-
-# diff inflation
-
-dinf = diff(inf)
-colnames(dinf) = 'dinf'
-
-plot(dinf)
 
 
 # unemployment  - Taxa de desocupação - PNADC
@@ -52,21 +45,14 @@ plot(des)
 
 library(ggplot2)
 
-plot(des)
 
 
-df = data.frame(des, dinf[index(des)],inf[index(des)])
-
-
-data3 = index(inf)
-dfinf = data.frame(data3, inf)
-
-ggplot(data=dfinf, aes(y=`inf`, x=`data3`), alpha=0.5)+geom_line()
+df = data.frame(des, inf[index(des)])
 
 
 
 windows()
-g1 = ggplot(data = df[1:40,], aes(x = `des`, y =`dinf`), alpha=0.5)
+g1 = ggplot(data = df[1:40,], aes(x = `des`, y =`inf`), alpha=0.5)
 
 g1 + geom_point(color='blue', size=2) + 
   ggtitle('Phillips Curve') + 
@@ -81,16 +67,11 @@ g1 + geom_point(color='blue', size=2) +
 
 # reg
 
+df/100
 
-reg1 = lm(dinf ~ des, data = df[1:40,])
+reg1 = lm(inf ~ des, data = (df/100))
 summary(reg1)
 
-
-
-# arima
-
-reg2 = arima(inf, order=c(1,1,0))
-reg2
 
 
 
