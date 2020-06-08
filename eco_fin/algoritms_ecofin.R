@@ -5,6 +5,27 @@
 setwd("D:/Git projects/college_works/eco_fin")
 
 
+# functions
+
+
+metrics = function(cm){
+  acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
+  sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
+  especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
+  G = sqrt(sensibilidade*especificidade)
+  LP = sensibilidade/(1 - especificidade)
+  LR = (1 - sensibilidade)/(especificidade)
+  DP = sqrt(pi)/3 * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
+  gamma = sensibilidade - (1 - especificidade)
+  BA = (1/2) * (sensibilidade + especificidade)
+  métricas = data.frame(acurácia, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
+  #knitr::kable(métricas)
+}
+
+
+
+# libraries
+
 library('xtable')
 library(caret)
 library(ROSE)
@@ -46,7 +67,7 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 5)   
 
 # rav
 
-model_a = train(as.factor(crise) ~  gold + embi + oil + cb + rav , data=df3,
+model_a = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
               trControl = control_train, 
               method='nnet', threshold = 0.3,
               maxit=600,
@@ -61,7 +82,7 @@ cm_NN = confusionMatrix(model_a)
 
 # sem rav
 
-model_b = train(as.factor(crise) ~  gold + embi + oil + cb  , data=df3, 
+model_b = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3, 
                 trControl = control_train, 
                 method='nnet', 
                 threshold = 0.3,
@@ -78,7 +99,7 @@ confusionMatrix(model_b)
 
 # rav
 
-model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi , data=df3, 
+model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
                trControl = control_train, 
                method='multinom', 
                family='binomial') 
@@ -90,7 +111,7 @@ cm_ml = confusionMatrix(model_c)
 # sem rav
 
 
-model_d = train(as.factor(crise) ~  gold + embi + oil + cb  , data=df3, 
+model_d = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,  
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
@@ -98,22 +119,13 @@ model_d = train(as.factor(crise) ~  gold + embi + oil + cb  , data=df3,
 
 confusionMatrix(model_d)
 
-#------- SVM
-
-model5 = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
-               method='svmRadial') 
-
-model5
-confusionMatrix(model5)
-
-
-
 
 #------- KNN
 
-# vix
 
-model_e = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3, 
+# rav
+
+model_e = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
                trControl = control_train, 
                method='knn') 
 
@@ -121,22 +133,26 @@ model_e
 confusionMatrix(model_e)
 
 
-# rav
+# sem rav
 
-model_f = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3, 
+model_f = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3, 
                 trControl = control_train, 
                 method='knn') 
 
 
-
 model_f
+confusionMatrix(model_f)
+
+
+
+
 
 
 #------ Random Forests
 
-# vix
+# rav
 
-model_g = train(as.factor(crise) ~ ret^2 + rvix + oil + cb + embi + cdi, data=df3,
+model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
                trControl = control_train, method='rf') 
 
 
@@ -144,9 +160,9 @@ model_g
 confusionMatrix(model_g)
 
 
-# rav
+# sem rav
 
-model_h = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3,
+model_h =train(as.factor(crise) ~  gold + embi + oil + cb + cdi, data=df3, 
                 trControl = control_train, method='rf') 
 
 
@@ -172,7 +188,7 @@ tune_grid <- expand.grid(nrounds = 200,
 
 
 
-model_i =train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi , data=df3, 
+model_i = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
                 method = "xgbTree",
                 trControl=control_train,
                 tuneGrid = tune_grid,
@@ -186,7 +202,7 @@ confusionMatrix(model_i)
 # sem rav
 
 
-model_j = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi , data=df3, 
+model_j = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
           method = "xgbTree",
           trControl=control_train,
           tuneGrid = tune_grid,
@@ -196,21 +212,6 @@ model_j = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi , data=df3,
 
 cm_xg = confusionMatrix(model_j)
 
-cm[["table"]][1,1]
-
-metrics = function(cm){
-  acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
-  sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
-  especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
-  G = sqrt(sensibilidade*especificidade)
-  LP = sensibilidade/(1 - especificidade)
-  LR = (1 - sensibilidade)/(especificidade)
-  DP = sqrt(pi)/3 * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
-  gamma = sensibilidade - (1 - especificidade)
-  BA = (1/2) * (sensibilidade + especificidade)
-  métricas = data.frame(acurácia, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
-  #knitr::kable(métricas)
-}
 
 
 
