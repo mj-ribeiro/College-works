@@ -78,7 +78,7 @@ confusionMatrix(model_b)
 
 # rav
 
-model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav , data=df3, 
+model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi , data=df3, 
                trControl = control_train, 
                method='multinom', 
                family='binomial') 
@@ -95,6 +95,8 @@ model_d = train(as.factor(crise) ~  gold + embi + oil + cb  , data=df3,
                 method='multinom', 
                 family='binomial') 
 
+
+confusionMatrix(model_d)
 
 #------- SVM
 
@@ -166,12 +168,11 @@ tune_grid <- expand.grid(nrounds = 200,
 
 
 
-# vix
-
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
+# rav
 
 
-model_i = train(as.factor(crise) ~  gold + embi + oil + cb + rav , data=df3,
+
+model_i =train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi , data=df3, 
                 method = "xgbTree",
                 trControl=control_train,
                 tuneGrid = tune_grid,
@@ -182,10 +183,10 @@ confusionMatrix(model_i)
 
 
 
-# rav
+# sem rav
 
 
-model_j = train(as.factor(crise) ~ ret^2 + rav + oil + cb + embi + cdi, data=df3,
+model_j = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi , data=df3, 
           method = "xgbTree",
           trControl=control_train,
           tuneGrid = tune_grid,

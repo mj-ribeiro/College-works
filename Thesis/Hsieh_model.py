@@ -444,7 +444,7 @@ def taus3():
 taus3()
 
 
-s =np.reshape(np.repeat(-0.99, 8), (2,4) )
+s =np.reshape(np.repeat(-0.99, 8), (i,r) )
 
 
 b0 = [-0.99, 0.999]
@@ -455,7 +455,7 @@ bnd = [(-0.99, 0.999), (-0.99, 40), (0.001, 20)]
 
 len(bnd)
 
-sol2 = minimize(obj, x1, method='SLSQP', options={'maxiter': 5000})
+sol2 = minimize(obj, x1, method='SLSQP', bounds=b0, options={'maxiter': 5000})
 
 
 
