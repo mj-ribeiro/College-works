@@ -32,22 +32,14 @@ library(ROSE)
 
 
 
-# see: http://topepo.github.io/caret/train-models-by-tag.html#neural-network
-# see: https://www.analyticsvidhya.com/blog/2016/03/practical-guide-deal-imbalanced-classification-problems/
-# CV in TS https://rpubs.com/crossxwill/time-series-cv
-
-
 #--- load variables
 
 df = readRDS('df.rds')
 
-#--- Rose library
-
-library(ROSE)
 
 df3 = ovun.sample(as.factor(crise)~., data=df, method="both", p=0.5,
-            subset=options("subset")$subset,
-            na.action=options("na.action")$na.action, seed=1)
+                  subset=options("subset")$subset,
+                  na.action=options("na.action")$na.action, seed=1)
 
 df3 = data.frame(df3$data)
 
@@ -63,36 +55,20 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 5)   
 
 #----- Neural net
 
-#control_train =trainControl(method = "timeslice",initialWindow = 36, horizon = 12, fixedWindow = T,allowParallel = T)  
 
 # rav
 
 model_a = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-              trControl = control_train, 
-              method='nnet', threshold = 0.3,
-              maxit=600,
-              MaxNWts=1500
-              )
-              
+                trControl = control_train, 
+                method='nnet', threshold = 0.3,
+                maxit=600,
+                MaxNWts=1500
+)
+
 
 model_a
 
 cm_NN = confusionMatrix(model_a)
-
-
-# sem rav
-
-
-model_b = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3, 
-                trControl = control_train, 
-                method='nnet', 
-                threshold = 0.3,
-                maxit=600,
-                MaxNWts=1500)
- 
-model_b
-confusionMatrix(model_b)
-
 
 
 
@@ -101,24 +77,13 @@ confusionMatrix(model_b)
 # rav
 
 model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-               trControl = control_train, 
-               method='multinom', 
-               family='binomial') 
-
-
-cm_ml = confusionMatrix(model_c)
-
-
-# sem rav
-
-
-model_d = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,  
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
 
 
-confusionMatrix(model_d)
+cm_ml = confusionMatrix(model_c)
+
 
 
 #------- KNN
@@ -127,25 +92,11 @@ confusionMatrix(model_d)
 # rav
 
 model_e = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-               trControl = control_train, 
-               method='knn') 
-
-model_e
-confusionMatrix(model_e)
-
-
-# sem rav
-
-model_f = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3, 
                 trControl = control_train, 
                 method='knn') 
 
-
-model_f
-confusionMatrix(model_f)
-
-
-
+model_e
+cm_knn = confusionMatrix(model_e)
 
 
 
@@ -154,21 +105,11 @@ confusionMatrix(model_f)
 # rav
 
 model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-               trControl = control_train, method='rf') 
-
-
-model_g
-confusionMatrix(model_g)
-
-
-# sem rav
-
-model_h =train(as.factor(crise) ~  gold + embi + oil + cb + cdi, data=df3, 
                 trControl = control_train, method='rf') 
 
 
-model_h
-cm_rf = confusionMatrix(model_h)
+model_g
+cm_rf = confusionMatrix(model_g)
 
 
 
@@ -199,33 +140,21 @@ confusionMatrix(model_i)
 
 
 
-# sem rav
-
-
-model_j = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
-          method = "xgbTree",
-          trControl=control_train,
-          tuneGrid = tune_grid,
-          tuneLength = 10)
-
-
-
 cm_xg = confusionMatrix(model_j)
 
 
 
-
-
-métricas = data.frame(matrix(, nrow=4, ncol=9))
-row.names(métricas) = c('Multilogit', 'Redes neurais', 'Random Forests', 'XGboost')
+métricas = data.frame(matrix(, nrow=5, ncol=9))
+row.names(métricas) = c('Multilogit', 'Redes neurais','KNN', 'Random Forests', 'XGboost')
 colnames(métricas) = c("acurácia" , "sensibilidade", "especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
 métricas[1, ] = metrics(cm_ml)
 métricas[2, ] = metrics(cm_NN)
-métricas[3, ] = metrics(cm_rf)
-métricas[4, ] = metrics(cm_xg)
+métricas[3, ] = metrics(cm_knn)
+métricas[4, ] = metrics(cm_rf)
+métricas[5, ] = metrics(cm_xg)
 
 
 métricas = round( métricas, 4)
