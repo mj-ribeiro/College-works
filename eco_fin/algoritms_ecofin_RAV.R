@@ -1,5 +1,5 @@
 #***********************************************************************************************
-#                                   Algorithms
+#                                   Algorithms  with rav
 #***********************************************************************************************
 
 setwd("D:/Git projects/college_works/eco_fin")
@@ -11,7 +11,7 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 metrics = function(cm){
   acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
-  cpc = cm_nn$table[2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
+  cpc = cm[["table"]][2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
   sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
   especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
@@ -22,8 +22,6 @@ metrics = function(cm){
   BA = (1/2) * (sensibilidade + especificidade)
   métricas = data.frame(acurácia, cpc, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
 }
-
-
 
 
 # libraries
@@ -99,8 +97,8 @@ model_e = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3
 
 model_e
 cm_knn = confusionMatrix(model_e)
-
-
+d=metrics(cm_knn)
+d
 
 #------ Random Forests
 
@@ -163,7 +161,7 @@ cm_svm = confusionMatrix(model_k)
 
 
 métricas = data.frame(matrix(, nrow=6, ncol=10))
-row.names(métricas) = c('Multilogit', 'Redes neurais','KNN', 'Random Forests', 'XGboost')
+row.names(métricas) = c('Multilogit', 'Redes neurais','KNN', 'Random Forests', 'XGboost', 'SVM')
 colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
@@ -182,6 +180,6 @@ métricas = t(métricas)
 
 
 
-print(xtable(métricas, type = "latex", digits=4), file = "comRAV.tex")
+print(xtable(métricas, type = "latex", digits=4), file = "sóRAV.tex")
 
 

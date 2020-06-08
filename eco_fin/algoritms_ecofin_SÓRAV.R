@@ -1,5 +1,5 @@
 #***********************************************************************************************
-#                                   Algorithms
+#                                   Algorithms only RAV
 #***********************************************************************************************
 
 setwd("D:/Git projects/college_works/eco_fin")
@@ -11,7 +11,7 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 metrics = function(cm){
   acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
-  cpc = cm_nn$table[2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
+  cpc = cm[["table"]][2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
   sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
   especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
@@ -52,7 +52,7 @@ prop.table(table(df3$crise))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 5)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
 
 
 #----- Neural net
