@@ -135,13 +135,14 @@ model_i = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3
                 tuneGrid = tune_grid,
                 tuneLength = 10)
 
-confusionMatrix(model_i)
+
+
+cm_xg = confusionMatrix(model_i)
 
 
 
 
-cm_xg = confusionMatrix(model_j)
-
+#------------- create dataframe
 
 
 métricas = data.frame(matrix(, nrow=5, ncol=9))
@@ -163,6 +164,6 @@ métricas = t(métricas)
 
 
 
-print(xtable(métricas, type = "latex", digits=4), file = "filename2.tex")
+print(xtable(métricas, type = "latex", digits=4), file = "comRAV.tex")
 
 

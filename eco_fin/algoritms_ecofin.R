@@ -32,10 +32,6 @@ library(ROSE)
 
 
 
-# see: http://topepo.github.io/caret/train-models-by-tag.html#neural-network
-# see: https://www.analyticsvidhya.com/blog/2016/03/practical-guide-deal-imbalanced-classification-problems/
-# CV in TS https://rpubs.com/crossxwill/time-series-cv
-
 
 #--- load variables
 
@@ -63,23 +59,6 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 5)   
 
 #----- Neural net
 
-#control_train =trainControl(method = "timeslice",initialWindow = 36, horizon = 12, fixedWindow = T,allowParallel = T)  
-
-# rav
-
-model_a = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-              trControl = control_train, 
-              method='nnet', threshold = 0.3,
-              maxit=600,
-              MaxNWts=1500
-              )
-              
-
-model_a
-
-cm_NN = confusionMatrix(model_a)
-
-
 # sem rav
 
 
@@ -90,23 +69,14 @@ model_b = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
                 maxit=600,
                 MaxNWts=1500)
  
-model_b
-confusionMatrix(model_b)
+
+
+cm_nn = confusionMatrix(model_b)
 
 
 
 
 #------ Multilogit
-
-# rav
-
-model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-               trControl = control_train, 
-               method='multinom', 
-               family='binomial') 
-
-
-cm_ml = confusionMatrix(model_c)
 
 
 # sem rav
@@ -118,20 +88,12 @@ model_d = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
                 family='binomial') 
 
 
-confusionMatrix(model_d)
+cm_ml = confusionMatrix(model_d)
 
 
 #------- KNN
 
 
-# rav
-
-model_e = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-               trControl = control_train, 
-               method='knn') 
-
-model_e
-confusionMatrix(model_e)
 
 
 # sem rav
@@ -141,8 +103,7 @@ model_f = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
                 method='knn') 
 
 
-model_f
-confusionMatrix(model_f)
+cm_knn = confusionMatrix(model_f)
 
 
 
@@ -150,15 +111,6 @@ confusionMatrix(model_f)
 
 
 #------ Random Forests
-
-# rav
-
-model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-               trControl = control_train, method='rf') 
-
-
-model_g
-confusionMatrix(model_g)
 
 
 # sem rav
@@ -184,20 +136,6 @@ tune_grid <- expand.grid(nrounds = 200,
 
 
 
-# rav
-
-
-
-model_i = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-                method = "xgbTree",
-                trControl=control_train,
-                tuneGrid = tune_grid,
-                tuneLength = 10)
-
-confusionMatrix(model_i)
-
-
-
 
 # sem rav
 
@@ -215,17 +153,21 @@ cm_xg = confusionMatrix(model_j)
 
 
 
+#------------- create dataframe
 
-métricas = data.frame(matrix(, nrow=4, ncol=9))
-row.names(métricas) = c('Multilogit', 'Redes neurais', 'Random Forests', 'XGboost')
+
+
+métricas = data.frame(matrix(, nrow=5, ncol=9))
+row.names(métricas) = c('Multilogit', 'Redes neurais','KNN', 'Random Forests', 'XGboost')
 colnames(métricas) = c("acurácia" , "sensibilidade", "especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
 métricas[1, ] = metrics(cm_ml)
 métricas[2, ] = metrics(cm_NN)
-métricas[3, ] = metrics(cm_rf)
-métricas[4, ] = metrics(cm_xg)
+métricas[3, ] = metrics(cm_knn)
+métricas[4, ] = metrics(cm_rf)
+métricas[5, ] = metrics(cm_xg)
 
 
 métricas = round( métricas, 4)
@@ -234,6 +176,6 @@ métricas = t(métricas)
 
 
 
-print(xtable(métricas, type = "latex", digits=4), file = "filename2.tex")
+print(xtable(métricas, type = "latex", digits=4), file = "semRAV.tex")
 
 
