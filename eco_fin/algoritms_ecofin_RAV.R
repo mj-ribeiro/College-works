@@ -8,8 +8,10 @@ setwd("D:/Git projects/college_works/eco_fin")
 # functions
 
 
+
 metrics = function(cm){
   acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
+  cpc = cm_nn$table[2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
   sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
   especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
@@ -18,9 +20,9 @@ metrics = function(cm){
   DP = sqrt(pi)/3 * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
   gamma = sensibilidade - (1 - especificidade)
   BA = (1/2) * (sensibilidade + especificidade)
-  métricas = data.frame(acurácia, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
-  #knitr::kable(métricas)
+  métricas = data.frame(acurácia, cpc, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
 }
+
 
 
 

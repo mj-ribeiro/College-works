@@ -10,6 +10,7 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 metrics = function(cm){
   acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
+  cpc = cm_nn$table[2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
   sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
   especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
@@ -18,8 +19,7 @@ metrics = function(cm){
   DP = sqrt(pi)/3 * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
   gamma = sensibilidade - (1 - especificidade)
   BA = (1/2) * (sensibilidade + especificidade)
-  métricas = data.frame(acurácia, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
-  #knitr::kable(métricas)
+  métricas = data.frame(acurácia, cpc, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
 }
 
 
@@ -72,7 +72,6 @@ model_b = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
 
 
 cm_nn = confusionMatrix(model_b)
-
 
 
 
@@ -159,7 +158,7 @@ cm_xg = confusionMatrix(model_j)
 
 métricas = data.frame(matrix(, nrow=5, ncol=9))
 row.names(métricas) = c('Multilogit', 'Redes neurais','KNN', 'Random Forests', 'XGboost')
-colnames(métricas) = c("acurácia" , "sensibilidade", "especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+colnames(métricas) = c("Acurácia" , "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
