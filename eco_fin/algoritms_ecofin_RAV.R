@@ -144,12 +144,27 @@ cm_xg = confusionMatrix(model_i)
 
 
 
+#--------- SVM
+
+# rav
+
+model_k = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3,
+               method='svmRadial',
+               tuneLength = 8,
+               trControl = control_train) 
+
+
+
+cm_svm = confusionMatrix(model_k)
+
+
+
 #------------- create dataframe
 
 
-métricas = data.frame(matrix(, nrow=5, ncol=9))
+métricas = data.frame(matrix(, nrow=6, ncol=10))
 row.names(métricas) = c('Multilogit', 'Redes neurais','KNN', 'Random Forests', 'XGboost')
-colnames(métricas) = c("acurácia" , "sensibilidade", "especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
@@ -158,6 +173,7 @@ métricas[2, ] = metrics(cm_NN)
 métricas[3, ] = metrics(cm_knn)
 métricas[4, ] = metrics(cm_rf)
 métricas[5, ] = metrics(cm_xg)
+métricas[6, ] = metrics(cm_svm)
 
 
 métricas = round( métricas, 4)
