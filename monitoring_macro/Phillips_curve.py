@@ -16,7 +16,7 @@ z = 0.4
 theta=0
 un = (mu+z)/1.5
 u = un
-pi = np.zeros(n)
+pi = np.zeros(n) 
 
 for i in range(0,n):
     

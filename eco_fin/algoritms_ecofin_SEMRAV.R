@@ -171,13 +171,13 @@ cm_svm = confusionMatrix(model_k)
 
 
 métricas = data.frame(matrix(, nrow=5, ncol=10))
-row.names(métricas) = c('Multilogit', 'Redes neurais','SVM', 'Random Forests', 'XGboost')
+row.names(métricas) = c('Logit', 'Redes neurais','SVM', 'Random Forests', 'XGboost')
 colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
 métricas[1, ] = metrics(cm_ml)
-métricas[2, ] = metrics(cm_NN)
+métricas[2, ] = metrics(cm_nn)
 métricas[3, ] = metrics(cm_svm)
 métricas[4, ] = metrics(cm_rf)
 métricas[5, ] = metrics(cm_xg)
@@ -188,6 +188,7 @@ métricas = round( métricas, 4)
 métricas = t(métricas)
 
 
+m2 = métricas
 
 print(xtable(métricas, type = "latex", digits=4), file = "semRAV.tex")
 

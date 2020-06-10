@@ -61,8 +61,8 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)  
 model_a = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
                 trControl = control_train, 
                 method='nnet', threshold = 0.3,
-                maxit=700,
-                MaxNWts=1300
+                maxit=1000,
+                MaxNWts=1500
 )
 
 
@@ -162,7 +162,7 @@ cm_svm = confusionMatrix(model_k)
 
 
 métricas = data.frame(matrix(, nrow=5, ncol=10))
-row.names(métricas) = c('Multilogit', 'Redes neurais','SVM', 'Random Forests', 'XGboost')
+row.names(métricas) = c('Logit', 'Redes neurais','SVM', 'Random Forests', 'XGboost')
 colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
@@ -177,6 +177,9 @@ métricas[5, ] = metrics(cm_xg)
 métricas = round( métricas, 4)
 
 métricas = t(métricas)
+
+m2
+m3 
 
 
 print(xtable(métricas, type = "latex", digits=4), file = "RAV.tex")
