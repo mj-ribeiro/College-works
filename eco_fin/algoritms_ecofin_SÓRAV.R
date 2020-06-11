@@ -77,7 +77,7 @@ cm_NN = confusionMatrix(model_a)
 
 
 
-#------ Multilogit
+#------ logit
 
 # rav
 
@@ -112,6 +112,9 @@ cm_knn = confusionMatrix(model_e)
 model_g = train(as.factor(crise) ~  rav, data=df3,
                 trControl = control_train,
                 method='rf') 
+
+
+cm_rf = confusionMatrix(model_g)
 
  
 #--- XGboost
@@ -156,7 +159,7 @@ model_k = train(as.factor(crise) ~  rav, data=df3,
 
 cm_svm = confusionMatrix(model_k)
 
-ggplot(model_k) + scale_x_log10() 
+
 
 #------------- create dataframe
 

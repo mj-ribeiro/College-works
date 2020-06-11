@@ -71,7 +71,7 @@ model_d = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
 
 
 
-cm_lg = confusionMatrix(model_d)
+cm_lg1 = confusionMatrix(model_d)
 
 
 
@@ -82,7 +82,27 @@ model_h =train(as.factor(crise) ~  gold + embi + oil + cb + cdi, data=df3,
                trControl = control_train, method='rf') 
 
 
-cm_rf = confusionMatrix(model_h)
+cm_rf1 = confusionMatrix(model_h)
+
+
+
+
+#---------- create dataframe
+
+
+métricas = data.frame(matrix(, nrow=2, ncol=10))
+row.names(métricas) = c('Logit',  'Random Forests')
+colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+
+
+
+métricas[1, ] = metrics(cm_lg1)
+métricas[2, ] = metrics(cm_rf1)
+
+
+métricas = round( métricas, 4)
+
+m1 = t(métricas)
 
 
 
@@ -125,6 +145,27 @@ cm_rf2 = confusionMatrix(model_g)
 
 
 
+#---------- create dataframe
+
+
+métricas = data.frame(matrix(, nrow=2, ncol=10))
+row.names(métricas) = c('Logit',  'Random Forests')
+colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+
+
+
+métricas[1, ] = metrics(cm_lg2)
+métricas[2, ] = metrics(cm_rf2)
+
+
+métricas = round( métricas, 4)
+
+m2 = t(métricas)
+
+
+
+
+
 
 ###############################################################################################
 #                                     Somente  RAV
@@ -152,9 +193,32 @@ model_r = train(as.factor(crise) ~  rav, data=df3,
                 method='rf') 
 
 
-cm_rf = confusionMatrix(model_r)
+cm_rf3 = confusionMatrix(model_r)
 
 
+
+
+#---------- create dataframe
+
+
+métricas = data.frame(matrix(, nrow=2, ncol=10))
+row.names(métricas) = c('Logit',  'Random Forests')
+colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+
+
+
+métricas[1, ] = metrics(cm_lg3)
+métricas[2, ] = metrics(cm_rf3)
+
+
+métricas = round( métricas, 4)
+
+m3 = t(métricas)
+
+
+
+
+#print(xtable(métricas, type = "latex", digits=4), file = "sóRAV.tex")
 
 
 
