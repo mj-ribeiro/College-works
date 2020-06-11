@@ -100,10 +100,11 @@ cm_lg1 = confusionMatrix(model_d)
 
 
 model_h =train(as.factor(crise) ~  gold + embi + oil + cb + cdi, data=df3, 
-               trControl = control_train, method='rf') 
+               trControl = control_train, method='xgbTree') 
 
 
 cm_rf1 = confusionMatrix(model_h)
+
 
 
 
@@ -157,8 +158,8 @@ abline(h=0)
 library('randomForest')
 
 model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-                trControl = control_train, method='rf',
-                preProcess= 'center') 
+                trControl = control_train, method='xgbTree'
+               ) 
 
 cm_rf2 = confusionMatrix(model_g)
 
@@ -208,7 +209,7 @@ cm_lg3 = confusionMatrix(model_m)
 
 model_r = train(as.factor(crise) ~  rav, data=df3,
                 trControl = control_train,
-                method='rf') 
+                method='xgbTree') 
 
 
 cm_rf3 = confusionMatrix(model_r)
@@ -254,6 +255,7 @@ mxnet.params <- expand.grid(layer1=192, layer2=96, layer3=10,
                            learning.rate=0.12, momentum=0.88,
                            dropout=0, repeats=1)
 
+
 ctrl.mxnet <- trainControl(method='cv', 
                            verboseIter=TRUE, 
                            summaryFunction=multiClassSummary,
@@ -261,8 +263,8 @@ ctrl.mxnet <- trainControl(method='cv',
 
 
 fit.mxnet <- train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-                   method='avMxnet', trControl=ctrl.mxnet, 
-                   tuneGrid=mxnet.params, num.round=20, 
+                   method='mlp', trControl=ctrl.mxnet, 
+                    num.round=20, 
                    maximize=TRUE)       
 
 
