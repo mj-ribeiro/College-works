@@ -36,6 +36,24 @@ library(ROSE)
 
 df = readRDS('df.rds')
 
+
+df2 = df
+
+data = rownames(df2[2:242,])
+
+rgold = diff(log(df2$gold))
+roil = diff(log(df2$oil))
+rcdi = diff(log(df2$cdi))
+rcb = diff(log(df2$cb))
+rembi = diff(log(as.numeric(df2$embi)))
+crise = df2$crise[2:242]
+rvix =  df2$rvix[2:242]
+rav = df2$rav[2:242]
+
+dff = data.frame(rgold, roil, rcdi, rcb, rembi, rvix, rav, crise)
+
+rownames(dff) = data
+
 #--- Rose library
 
 library(ROSE)
@@ -47,13 +65,16 @@ df3 = ovun.sample(as.factor(crise)~., data=df, method="both", p=0.5,
 df3 = data.frame(df3$data)
 
 
+
+
+
 prop.table(table(df3$crise))
 
 
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 5)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
 
 
 
@@ -70,7 +91,7 @@ model_d = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
                 family='binomial') 
 
 
-
+varImp(model_d)
 cm_lg1 = confusionMatrix(model_d)
 
 
@@ -102,7 +123,7 @@ métricas[2, ] = metrics(cm_rf1)
 
 métricas = round( métricas, 4)
 
-m1 = t(métricas)
+semrav = t(métricas)
 
 
 
@@ -127,16 +148,23 @@ model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3
 
 cm_lg2 = confusionMatrix(model_c)
 
+varImp(model_c)
+
 
 
 # RF
 
+library('randomForest')
 
 model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
                 trControl = control_train, method='rf') 
 
 
+fit_rf = randomForest(as.factor(crise) ~  gold + embi + oil + cb + vix + cdi, data=df3)
 
+
+varImpPlot(fit_rf, type=2, sort = T)
+importance(fit_rf, type=2)
 
 
 cm_rf2 = confusionMatrix(model_g)
@@ -160,7 +188,7 @@ métricas[2, ] = metrics(cm_rf2)
 
 métricas = round( métricas, 4)
 
-m2 = t(métricas)
+comrav = t(métricas)
 
 
 
@@ -213,13 +241,14 @@ métricas[2, ] = metrics(cm_rf3)
 
 métricas = round( métricas, 4)
 
-m3 = t(métricas)
+sorav = t(métricas)
 
 
 
 
 #print(xtable(métricas, type = "latex", digits=4), file = "sóRAV.tex")
 
-
-
+m1
+m2
+m3
 
