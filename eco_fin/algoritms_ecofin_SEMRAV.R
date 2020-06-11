@@ -74,7 +74,7 @@ cm_nn = confusionMatrix(model_b)
 
 
 
-#------ Multilogit
+#------ logit
 
 
 # sem rav

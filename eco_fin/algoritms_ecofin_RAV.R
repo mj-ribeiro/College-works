@@ -179,7 +179,7 @@ métricas = round( métricas, 4)
 métricas = t(métricas)
 
 m2
-m3 
+m3 = métricas 
 
 
 print(xtable(métricas, type = "latex", digits=4), file = "RAV.tex")
