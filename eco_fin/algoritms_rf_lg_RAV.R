@@ -37,35 +37,34 @@ library(ROSE)
 df = readRDS('df.rds')
 
 
-df2 = df
+# df2 = df
+# 
+# data = rownames(df2[2:242,])
+# 
+# rgold = diff(log(df2$gold))
+# roil = diff(log(df2$oil))
+# rcdi = diff(log(df2$cdi))
+# rcb = diff(log(df2$cb))
+# rembi = diff(log(as.numeric(df2$embi)))
+# crise = df2$crise[2:242]
+# rvix =  df2$rvix[2:242]
+# rav = df2$rav[2:242]
+# 
+# dff = data.frame(rgold, roil, rcdi, rcb, rembi, rvix, rav, crise)
 
-data = rownames(df2[2:242,])
+# rownames(dff) = data
 
-rgold = diff(log(df2$gold))
-roil = diff(log(df2$oil))
-rcdi = diff(log(df2$cdi))
-rcb = diff(log(df2$cb))
-rembi = diff(log(as.numeric(df2$embi)))
-crise = df2$crise[2:242]
-rvix =  df2$rvix[2:242]
-rav = df2$rav[2:242]
 
-dff = data.frame(rgold, roil, rcdi, rcb, rembi, rvix, rav, crise)
-
-rownames(dff) = data
 
 #--- Rose library
 
 library(ROSE)
 
-df3 = ovun.sample(as.factor(crise)~., data=df, method="both", p=0.5,
+df3 = ovun.sample(as.factor(crise)~., data=df, method="both", p=0.50,
                   subset=options("subset")$subset,
                   na.action=options("na.action")$na.action, seed=1)
 
 df3 = data.frame(df3$data)
-
-
-
 
 
 prop.table(table(df3$crise))
@@ -74,7 +73,8 @@ prop.table(table(df3$crise))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 2)    # ten fold
+
 
 
 
@@ -148,8 +148,8 @@ model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3
 
 cm_lg2 = confusionMatrix(model_c)
 
-varImp(model_c)
-
+plot(df3$rav, type='l')
+abline(h=0)
 
 
 # RF
@@ -157,20 +157,10 @@ varImp(model_c)
 library('randomForest')
 
 model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-                trControl = control_train, method='rf') 
-
-
-fit_rf = randomForest(as.factor(crise) ~  gold + embi + oil + cb + vix + cdi, data=df3)
-
-
-varImpPlot(fit_rf, type=2, sort = T)
-importance(fit_rf, type=2)
-
+                trControl = control_train, method='rf',
+                preProcess= 'center') 
 
 cm_rf2 = confusionMatrix(model_g)
-
-
-
 
 
 #---------- create dataframe
@@ -248,7 +238,31 @@ sorav = t(métricas)
 
 #print(xtable(métricas, type = "latex", digits=4), file = "sóRAV.tex")
 
-m1
-m2
-m3
+semrav
+  comrav
+sorav
+
+
+
+
+
+library('mxnet')
+
+
+
+mxnet.params <- expand.grid(layer1=192, layer2=96, layer3=10, 
+                           learning.rate=0.12, momentum=0.88,
+                           dropout=0, repeats=1)
+
+ctrl.mxnet <- trainControl(method='cv', 
+                           verboseIter=TRUE, 
+                           summaryFunction=multiClassSummary,
+                           number = 10)
+
+
+fit.mxnet <- train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
+                   method='avMxnet', trControl=ctrl.mxnet, 
+                   tuneGrid=mxnet.params, num.round=20, 
+                   maximize=TRUE)       
+
 
