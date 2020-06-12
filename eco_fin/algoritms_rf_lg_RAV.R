@@ -251,10 +251,7 @@ library('mxnet')
 
 
 
-mxnet.params <- expand.grid(layer1=192, layer2=96, layer3=10, 
-                           learning.rate=0.12, momentum=0.88,
-                           dropout=0, repeats=1)
-
+mxnet.params <- expand.grid(decay=0.3)
 
 ctrl.mxnet <- trainControl(method='cv', 
                            verboseIter=TRUE, 
@@ -264,7 +261,7 @@ ctrl.mxnet <- trainControl(method='cv',
 
 fit.mxnet <- train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
                    method='mlp', trControl=ctrl.mxnet, 
-                    num.round=20, 
+                   tuneGrid=mxnet.params, 
                    maximize=TRUE)       
 
 
