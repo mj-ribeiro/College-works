@@ -73,7 +73,7 @@ prop.table(table(df3$crise))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 2)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
 
 
 
@@ -100,7 +100,7 @@ cm_lg1 = confusionMatrix(model_d)
 
 
 model_h =train(as.factor(crise) ~  gold + embi + oil + cb + cdi, data=df3, 
-               trControl = control_train, method='xgbTree') 
+               trControl = control_train, method='rf') 
 
 
 cm_rf1 = confusionMatrix(model_h)
@@ -158,7 +158,7 @@ abline(h=0)
 library('randomForest')
 
 model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-                trControl = control_train, method='xgbTree'
+                trControl = control_train, method='rf'
                ) 
 
 cm_rf2 = confusionMatrix(model_g)
@@ -209,7 +209,7 @@ cm_lg3 = confusionMatrix(model_m)
 
 model_r = train(as.factor(crise) ~  rav, data=df3,
                 trControl = control_train,
-                method='xgbTree') 
+                method='rf') 
 
 
 cm_rf3 = confusionMatrix(model_r)
@@ -240,28 +240,18 @@ sorav = t(métricas)
 #print(xtable(métricas, type = "latex", digits=4), file = "sóRAV.tex")
 
 semrav
-  comrav
+comrav
 sorav
 
 
 
 
 
-library('mxnet')
 
 
 
-mxnet.params <- expand.grid(decay=0.3)
-
-ctrl.mxnet <- trainControl(method='cv', 
-                           verboseIter=TRUE, 
-                           summaryFunction=multiClassSummary,
-                           number = 10)
 
 
-fit.mxnet <- train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
-                   method='mlp', trControl=ctrl.mxnet, 
-                   tuneGrid=mxnet.params, 
-                   maximize=TRUE)       
+
 
 
