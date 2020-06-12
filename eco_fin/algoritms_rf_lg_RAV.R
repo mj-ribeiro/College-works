@@ -247,7 +247,55 @@ sorav
 
 
 
+summary(df3)
 
+model =glm(as.factor(crise) ~  gold  + oil +  cdi + as.numeric(rav) + as.numeric(embi), family = 'binomial',  data=df3)
+
+summary(model)
+
+
+summary(df3$av)
+
+
+
+test = read.csv('teste_rav.csv', header = T, sep = ';')[,1:2]
+colnames(test) = c('date', 'trav')
+
+plot(test$trav, type = 'l')
+
+
+init=10
+
+
+trav = as.numeric(test$trav)/100
+
+
+av = c()
+for(i in 0:length(trav)){
+  av[i] = init*exp(sum(trav[1:i]))
+}
+
+
+
+test$av = av
+
+test$date = a
+
+a = as.Date(a, format = '%m/%d/%Y')
+
+
+rownames(test)= a
+test = test[,-1]
+
+
+trav = xts(as.numeric(test$av), order.by = a)
+
+
+plot.xts(trav)
+
+
+
+summary(test$trav)
 
 
 
