@@ -225,6 +225,40 @@ rav = rav[,-1]
 
 
 
+# AV
+
+
+
+av = read.csv('av.csv', header = T, sep = ';')[ ,1:2]
+colnames(av) = c('date', 'av')
+
+av$date = as.Date(av$date, format = '%m/%d/%Y')
+
+plot(av, type='l')
+
+s = firstDayMonth(av$date)
+s = data.frame(s)
+
+colnames(s) = c('date')
+
+
+
+setDT(av)
+setDT(s)
+
+
+av = av[s, on = c('date')]
+
+
+
+mday(av$date) = 1   # transformar os dias do vetor de datas  em 1 (lubridate)
+
+
+av = xts(av, order.by = av$date)
+av = av[,-1]
+
+
+
 # returns
 
 
@@ -382,6 +416,7 @@ data = data[-c(1, 2)]
 crise = xts(crise[-c(1, 2)], order.by = data)
 crise2 = xts(crise2[-c(1, 2)], order.by = data)
 
+av = av[data]
 rvix = rvix[data]
 rav = rav[data]
 cb = cb[data]
@@ -398,7 +433,7 @@ embi = embi[data]
 
 # transform data in data frame
 
-df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold, rav, rvix)
+df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold, rav, rvix, av)
 
 
 ### save in rds file
