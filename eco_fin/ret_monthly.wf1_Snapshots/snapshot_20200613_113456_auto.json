@@ -1,0 +1,75 @@
+
+{
+	"commands" : 
+	[
+		"import \"D:\\Git projects\\college_works\\eco_fin\\ret.xlsx\" range=Sheet1 colhead=1 na=\"#N/A\" @id @date(data) @smpl @all",
+		"{%equation}.arch(archm=var) ibov",
+		"{%equation}.arch(integrated, archm=var, fixedlag=32) ibov",
+		"{%equation}.makegarch garch01",
+		"delete garch01 ",
+		"{%equation}.arch(thrsh=1, archm=var, fixedlag=32) ibov",
+		"{%equation}.makegarch garch01",
+		"delete garch01 ",
+		"{%equation}.arch(1, 0, thrsh=1, archm=var, fixedlag=32) ibov",
+		"{%equation}.garch(v)",
+		"{%equation}.garch",
+		"{%equation}.arch(1, 0, archm=var, fixedlag=32) ibov",
+		"{%equation}.garch",
+		"{%equation}.grads(t)",
+		"{%equation}.resids(t)",
+		"{%equation}.makegarch garch01"
+	],
+	"description" : "",
+	"label" : "save",
+	"workbook_meta" : 
+	{
+		"_name" : "d:\\git projects\\college_works\\eco_fin\\ret_monthly.wf1",
+		"_pages" : 
+		[
+			
+			{
+				"_frequency" : "M",
+				"_last_update" : [ 737588.4770254630, "06/13/2020 11:26" ],
+				"_name" : "Ret",
+				"_obj_count" : 5,
+				"_objects" : 
+				[
+					
+					{
+						"_data_type" : "date",
+						"_name" : "@DATE",
+						"_obs_max" : [ 737515.0, "04/01/2020" ],
+						"_obs_min" : [ 729785.0, "02/01/1999" ],
+						"_type" : "INDEX"
+					},
+					
+					{
+						"_name" : "C",
+						"_type" : "COEF"
+					},
+					
+					{
+						"_name" : "DATA",
+						"_type" : "SERIES"
+					},
+					
+					{
+						"_name" : "GARCH01",
+						"_type" : "SERIES"
+					},
+					
+					{
+						"_name" : "IBOV",
+						"_type" : "SERIES"
+					},
+					
+					{
+						"_name" : "RESID",
+						"_type" : "SERIES"
+					}
+				],
+				"_obs_count" : 255
+			}
+		]
+	}
+}

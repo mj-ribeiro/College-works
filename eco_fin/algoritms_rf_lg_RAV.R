@@ -141,7 +141,7 @@ semrav = t(métricas)
 # LOGIT
 
 
-model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
+model_c = train(as.factor(crise) ~  gold + embi + oil + cb + vix + cdi, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
@@ -157,7 +157,7 @@ abline(h=0)
 
 library('randomForest')
 
-model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
+model_g = train(as.factor(crise) ~  gold + embi + oil + cb + vix + cdi, data=df3, 
                 trControl = control_train, method='rf'
                ) 
 
@@ -193,7 +193,7 @@ comrav = t(métricas)
 # LOGIT
 
 
-model_m = train(as.factor(crise) ~  rav, data=df3, 
+model_m = train(as.factor(crise) ~  vix, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
@@ -207,7 +207,7 @@ cm_lg3 = confusionMatrix(model_m)
 # RF
 
 
-model_r = train(as.factor(crise) ~  rav, data=df3,
+model_r = train(as.factor(crise) ~ vix, data=df3,
                 trControl = control_train,
                 method='rf') 
 
@@ -246,60 +246,37 @@ sorav
 
 
 
+########################################
 
-summary(df3)
+df3$rav = as.numeric(df3$rav)
 
-model =glm(as.factor(crise) ~  gold  + oil +  cdi + as.numeric(rav) + as.numeric(embi), family = 'binomial',  data=df3)
+summary(df3$rav)
+
+model =glm(as.factor(crise) ~  gold  + oil +  cdi +
+             rav + cb +
+             as.numeric(embi),
+           family = 'binomial',  data=df3[-2,])
 
 summary(model)
 
-
-summary(df3$av)
-
-
-
-test = read.csv('teste_rav.csv', header = T, sep = ';')[,1:2]
-colnames(test) = c('date', 'trav')
-
-plot(test$trav, type = 'l')
+plot(as.numeric(df$av)/10, type = 'l', ylim = c(0,1))
+abline(h=0)
+lines(df$crise)
 
 
-init=10
-
-
-trav = as.numeric(test$trav)/100
-
-
-av = c()
-for(i in 0:length(trav)){
-  av[i] = init*exp(sum(trav[1:i]))
-}
-
-
-
-test$av = av
-
-test$date = a
-
-a = as.Date(a, format = '%m/%d/%Y')
-
-
-rownames(test)= a
-test = test[,-1]
-
-
-trav = xts(as.numeric(test$av), order.by = a)
-
-
-plot.xts(trav)
-
-
-
-summary(test$trav)
+plot(df$vix/100, type = 'l', ylim = c(0,1))
+abline(h=0)
+lines(df$crise)
 
 
 
 
+library(randomForest)
+
+rf = randomForest(as.factor(crise) ~  gold  + oil +  cdi + vix + embi + cb, data=df3)
+
+importance(rf)
+varImpPlot(rf)
 
 
 

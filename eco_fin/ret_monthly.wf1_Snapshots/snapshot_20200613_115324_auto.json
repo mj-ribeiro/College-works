@@ -1,0 +1,77 @@
+
+{
+	"commands" : null,
+	"description" : "",
+	"label" : "save",
+	"workbook_meta" : 
+	{
+		"_name" : "d:\\git projects\\college_works\\eco_fin\\ret_monthly.wf1",
+		"_pages" : 
+		[
+			
+			{
+				"_frequency" : "M",
+				"_last_update" : [ 737588.4897337963, "06/13/2020 11:45" ],
+				"_name" : "Ret",
+				"_obj_count" : 9,
+				"_objects" : 
+				[
+					
+					{
+						"_data_type" : "date",
+						"_name" : "@DATE",
+						"_obs_max" : [ 737515.0, "04/01/2020" ],
+						"_obs_min" : [ 729785.0, "02/01/1999" ],
+						"_type" : "INDEX"
+					},
+					
+					{
+						"_name" : "ARCH_M",
+						"_type" : "EQUATION"
+					},
+					
+					{
+						"_name" : "C",
+						"_type" : "COEF"
+					},
+					
+					{
+						"_name" : "DATA",
+						"_type" : "SERIES"
+					},
+					
+					{
+						"_name" : "GARCH01",
+						"_type" : "SERIES"
+					},
+					
+					{
+						"_name" : "IBOV",
+						"_type" : "SERIES"
+					},
+					
+					{
+						"_name" : "RESID",
+						"_type" : "SERIES"
+					},
+					
+					{
+						"_name" : "SIG",
+						"_type" : "SERIES"
+					},
+					
+					{
+						"_name" : "SS01",
+						"_type" : "SSPACE"
+					},
+					
+					{
+						"_name" : "VEC01",
+						"_type" : "VECTOR"
+					}
+				],
+				"_obs_count" : 255
+			}
+		]
+	}
+}
