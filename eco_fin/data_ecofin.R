@@ -229,33 +229,14 @@ rav = rav[,-1]
 
 
 
-av = read.csv('av.csv', header = T, sep = ';')[ ,1:2]
+av = read.csv('av.csv', header = T, sep = ';', )[,1:2]
 colnames(av) = c('date', 'av')
+av$av = as.numeric(av$av)
+av$date = as.Date(av$date, format = '%d/%m/%Y')
 
-av$date = as.Date(av$date, format = '%m/%d/%Y')
-
-plot(av, type='l')
-
-s = firstDayMonth(av$date)
-s = data.frame(s)
-
-colnames(s) = c('date')
+plot(-av$av, type = 'l')
 
 
-
-setDT(av)
-setDT(s)
-
-
-av = av[s, on = c('date')]
-
-
-
-mday(av$date) = 1   # transformar os dias do vetor de datas  em 1 (lubridate)
-
-
-av = xts(av, order.by = av$date)
-av = av[,-1]
 
 
 

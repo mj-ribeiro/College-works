@@ -259,7 +259,7 @@ model =glm(as.factor(crise) ~  gold  + oil +  cdi +
 
 summary(model)
 
-plot(as.numeric(df$av)/10, type = 'l', ylim = c(0,1))
+plot(as.numeric(df$rav), type = 'l')
 abline(h=0)
 lines(df$crise)
 
@@ -277,6 +277,26 @@ rf = randomForest(as.factor(crise) ~  gold  + oil +  cdi + vix + embi + cb, data
 
 importance(rf)
 varImpPlot(rf)
+
+
+library(quantmod)
+
+ibov = getSymbols('^BVSP', src='yahoo', 
+                  from= '1999-01-01', 
+                  to = '2020-05-01',
+                  periodicity = "monthly",    # IBOV mensal
+                  auto.assign = F)[,4]
+
+
+colnames(ibov) = 'ibov'
+ibov = ibov[is.na(ibov)==F]
+
+ret = diff(log(ibov))
+
+library(xlsx)
+write.xlsx(ret, "D:/Git projects/college_works/eco_fin/ret.xlsx")
+
+
 
 
 
