@@ -248,18 +248,19 @@ sorav
 
 ########################################
 
-df3$rav = as.numeric(df3$rav)
+df3$av = -as.numeric(df3$av)
 
-summary(df3$rav)
+
+summary(df3$av)
 
 model =glm(as.factor(crise) ~  gold  + oil +  cdi +
-             rav + cb +
+             as.numeric(av) + cb +
              as.numeric(embi),
            family = 'binomial',  data=df3[-2,])
 
 summary(model)
 
-plot(as.numeric(df$rav), type = 'l')
+plot(-3*as.numeric(df$av), type = 'l')
 abline(h=0)
 lines(df$crise)
 
@@ -273,30 +274,8 @@ lines(df$crise)
 
 library(randomForest)
 
-rf = randomForest(as.factor(crise) ~  gold  + oil +  cdi + vix + embi + cb, data=df3)
+rf = randomForest(as.factor(crise) ~  gold  + oil +  cdi  + embi + cb + av, data=df3)
 
 importance(rf)
 varImpPlot(rf)
-
-
-library(quantmod)
-
-ibov = getSymbols('^BVSP', src='yahoo', 
-                  from= '1999-01-01', 
-                  to = '2020-05-01',
-                  periodicity = "monthly",    # IBOV mensal
-                  auto.assign = F)[,4]
-
-
-colnames(ibov) = 'ibov'
-ibov = ibov[is.na(ibov)==F]
-
-ret = diff(log(ibov))
-
-library(xlsx)
-write.xlsx(ret, "D:/Git projects/college_works/eco_fin/ret.xlsx")
-
-
-
-
 

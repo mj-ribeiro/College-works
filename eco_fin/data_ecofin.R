@@ -234,9 +234,13 @@ colnames(av) = c('date', 'av')
 av$av = as.numeric(av$av)
 av$date = as.Date(av$date, format = '%d/%m/%Y')
 
-plot(-av$av, type = 'l')
+
+a = av$date  
+
+av = xts(av, order.by = a)
 
 
+av = av[ ,'av', drop=F]
 
 
 
@@ -397,7 +401,7 @@ data = data[-c(1, 2)]
 crise = xts(crise[-c(1, 2)], order.by = data)
 crise2 = xts(crise2[-c(1, 2)], order.by = data)
 
-av = av[data]
+av = av$av[data]
 rvix = rvix[data]
 rav = rav[data]
 cb = cb[data]
