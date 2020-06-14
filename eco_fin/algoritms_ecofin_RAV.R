@@ -58,7 +58,7 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)  
 
 # rav
 
-model_a = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
+model_a = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
                 trControl = control_train, 
                 method='nnet', threshold = 0.3,
                 maxit=1000,
@@ -76,7 +76,7 @@ cm_NN = confusionMatrix(model_a)
 
 # rav
 
-model_c = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
+model_c = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
@@ -91,7 +91,7 @@ cm_ml = confusionMatrix(model_c)
 
 # rav
 
-model_e = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
+model_e = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
                 trControl = control_train, 
                 method='knn') 
 
@@ -104,7 +104,7 @@ d
 
 # rav
 
-model_g = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
+model_g = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
                 trControl = control_train, method='rf') 
 
 
@@ -129,7 +129,7 @@ tune_grid <- expand.grid(nrounds = 200,
 
 
 
-model_i = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3, 
+model_i = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
                 method = "xgbTree",
                 trControl=control_train,
                 tuneGrid = tune_grid,
@@ -146,7 +146,7 @@ cm_xg = confusionMatrix(model_i)
 
 # rav
 
-model_k = train(as.factor(crise) ~  gold + embi + oil + cb + rav + cdi, data=df3,
+model_k = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3,
                method='svmRadial',
                tuneLength = 8,
                trControl = control_train) 
