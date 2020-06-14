@@ -188,6 +188,7 @@ métricas = round( métricas, 4)
 métricas = t(métricas)
 
 
+
 m2 = métricas
 
 print(xtable(métricas, type = "latex", digits=4), file = "semRAV.tex")

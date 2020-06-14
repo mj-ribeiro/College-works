@@ -178,7 +178,7 @@ métricas = round( métricas, 4)
 
 métricas = t(métricas)
 
-m2
+
 m3 = métricas 
 
 

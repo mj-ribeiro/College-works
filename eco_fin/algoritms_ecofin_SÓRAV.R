@@ -182,13 +182,23 @@ métricas = round( métricas, 4)
 métricas = t(métricas)
 
 
-m2
-m3
-m4
 m4 = métricas
 
 
 
 print(xtable(métricas, type = "latex", digits=4), file = "sóRAV.tex")
+
+
+
+
+
+
+
+m2  # sem rav
+m3  # com rav
+m4  # só rav
+
+
+
 
 
