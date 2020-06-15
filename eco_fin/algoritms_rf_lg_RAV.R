@@ -73,7 +73,7 @@ prop.table(table(df3$crise))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 1)    # ten fold
 
 
 
@@ -93,8 +93,6 @@ model_d = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,
 
 varImp(model_d)
 cm_lg1 = confusionMatrix(model_d)
-
-
 
 # RF
 
