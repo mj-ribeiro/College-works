@@ -29,6 +29,7 @@ metrics = function(cm){
 library('xtable')
 library(caret)
 library(ROSE)
+library('randomForest')
 
 
 
@@ -73,7 +74,7 @@ prop.table(table(df3$crise))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 1)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
 
 
 
@@ -139,7 +140,7 @@ semrav = t(métricas)
 # LOGIT
 
 
-model_c = train(as.factor(crise) ~  gold + embi + oil + cb + vix + cdi, data=df3, 
+model_c = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
@@ -147,15 +148,11 @@ model_c = train(as.factor(crise) ~  gold + embi + oil + cb + vix + cdi, data=df3
 
 cm_lg2 = confusionMatrix(model_c)
 
-plot(df3$rav, type='l')
-abline(h=0)
-
 
 # RF
 
-library('randomForest')
 
-model_g = train(as.factor(crise) ~  gold + embi + oil + cb + vix + cdi, data=df3, 
+model_g = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
                 trControl = control_train, method='rf'
                ) 
 
@@ -191,7 +188,7 @@ comrav = t(métricas)
 # LOGIT
 
 
-model_m = train(as.factor(crise) ~  vix, data=df3, 
+model_m = train(as.factor(crise) ~  av, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
@@ -205,7 +202,7 @@ cm_lg3 = confusionMatrix(model_m)
 # RF
 
 
-model_r = train(as.factor(crise) ~ vix, data=df3,
+model_r = train(as.factor(crise) ~ av, data=df3,
                 trControl = control_train,
                 method='rf') 
 
@@ -235,16 +232,28 @@ sorav = t(métricas)
 
 
 
-#print(xtable(métricas, type = "latex", digits=4), file = "sóRAV.tex")
-
 semrav
 comrav
 sorav
 
+tt = merge.data.frame(semrav, comrav, by=0, all=T, sort = F)
+
+rownames(tt) = tt$Row.names
+tt = tt[,-1]
+
+tab = merge.data.frame(tt, sorav, by=0, all=T, sort = F)
+rownames(tab) = tab$Row.names
+tab = tab[,-1]
 
 
 
-########################################
+print(xtable(tab, type = "latex", digits=4), file = "tab.tex")
+
+
+
+###########
+
+#############################
 
 df3$av = -as.numeric(df3$av)
 
