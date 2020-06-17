@@ -80,14 +80,16 @@ ggplot() +
 
 
 
-### other way to do the same graph
+### crise and AV
 
 
 
 df4 = df[, c('crise', 'av', 'data1')]
-df4$av = -df4$av
+df4$av = df4$av
 
 df4 <- melt(data = df4, id.vars = "data1")
+
+
 
 # plot, using the aesthetics argument 'colour'
 
@@ -111,11 +113,19 @@ g5 = g4  + scale_colour_discrete(name="Variáveis",
 
 
 
-g5 
+windows()
+g5
 
 
 
 
+
+
+
+
+
+
+#####
 
 
 

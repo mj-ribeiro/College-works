@@ -256,6 +256,32 @@ colnames(ret) = 'ret'
 
 
 
+
+
+
+####  State space in excess of return
+
+
+
+rexc = read.csv('rexc.csv', header = T, sep=';' )
+
+
+colnames(rexc) = c('date', 'rexc')
+
+rexc$date = as.Date(rexc$date)
+
+
+a = rexc$date  
+
+
+rexc = xts(rexc, order.by = a)
+
+
+rexc = rexc[ ,'rexc', drop=F]
+
+
+
+
 #------ Using CMAX function
 
 
@@ -360,11 +386,11 @@ ret = ret[data]
 gold = gold[data]
 embi = embi[data]
 cmts = cmts[data]
-
+rexc = rexc[data]
 
 # transform data in data frame
 
-df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold, rav, rvix, av, cmts)
+df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold, rav, rvix, av, cmts, rexc)
 
 
 ### save in rds file
