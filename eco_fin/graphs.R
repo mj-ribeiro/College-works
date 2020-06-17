@@ -15,8 +15,11 @@ library(ggplot2)
 
 
 df = readRDS('df.rds')
+df$av = as.numeric(df$av)
 
 data1 = row.names(df)
+
+data1 = as.Date(data1, format = '%Y-%m-%d')
 
 df$data1 = data1
 
@@ -28,16 +31,16 @@ df$data1 = data1
 windows()
 
 
-g1 = ggplot(data=cmts, aes(y=`cmts`, x=`data1`))+geom_line(size=1)+
-  scale_x_date(date_labels="%Y",date_breaks  ="1 year")+
+g1 = ggplot(data=df, aes(y=cmts, x=data1))+geom_line(size=0.4) +
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
-        axis.text.y = element_text(size=17) ) + 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19) ) + 
   ylim(0.4, 1) +
-  xlab('Anos') + ylab('CMAX') + 
-  #ggtitle('Evolução do CMAX do Ibovespa mensal')+
-  theme(axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19))
-#plot.title = element_text(hjust = 0.5, size = 17))
+  xlab('Anos') + 
+  ylab('CMAX')  
 
 
 
@@ -58,22 +61,50 @@ g2
 
 
 
-#### comparision 
+#### CMAX and crisis 
 
 
 
-par(mfrow=(c(1,2)))
 
-plot(as.vector(1-cmts), type='l', ylim=c(0,1), 
-     main='CMAX and Crisis VaR 5%', 
-     ylab='CMAX and Crisis')
-lines(as.vector(crise))
+ggplot() +
+  theme_minimal() +
+  geom_line(data=df, aes(y=(1-cmts), x = data1), color='red') +
+  geom_line(data=df, aes(y=crise, x = data1), color='blue')  
 
 
-plot(as.vector(1-cmts), type='l', ylim=c(0,1), 
-     main='CMAX and Crisis VaR 10%', 
-     ylab='CMAX and Crisis')
-lines(crise2)
+
+#### Crisis and AV
+
+
+
+ggplot() +
+  geom_line(data=df, aes(y = -3*av, x = data1), color='red') +
+  geom_line(data=df, aes(y=crise, x = data1), color='blue') +
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+      axis.text.y = element_text(size=17), 
+      axis.title.x = element_text(colour = 'black', size=19),
+      axis.title.y = element_text(colour = 'black', size=19) ) + 
+  xlab('Anos') + 
+  ylab('Aversão ao Risco')  
+
+
+
+
+
+library(reshape2)
+
+df4 = df[, c('crise', 'av', 'data1')]
+
+df4 <- melt(data = df4, id.vars = "data1")
+
+# plot, using the aesthetics argument 'colour'
+ggplot(data = df4, aes(x = data1, y = value, colour = variable)) + geom_line()
+
+
+
+
 
 
 
