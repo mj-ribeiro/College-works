@@ -1,5 +1,5 @@
 #*********************************************************************************************
-#                                     Data 
+#                                     Graphs
 #**********************************************************************************************
 
 
@@ -22,6 +22,9 @@ data1 = row.names(df)
 data1 = as.Date(data1, format = '%Y-%m-%d')
 
 df$data1 = data1
+
+
+
 
 #----- Plot CMAX  using ggplot2
 
@@ -113,22 +116,12 @@ g5
 
 
 
-###### Summary data
 
-library('moments')
 
-mom = function(x){
-  Máximo = max(x)
-  Mínimo = min(x)
-  Média = mean(x)
-  Variância = sd(x)
-  Curtose = kurtosis(x)
-  Assimetria = skewness(x)
-  rmom = data.frame(Máximo, Mínimo, Média, Variância, Curtose, Assimetria)
-  return(rmom)
-}
 
-mom(df$ret)
+
+
+
 
 
 
