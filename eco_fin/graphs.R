@@ -7,7 +7,7 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 
 library(ggplot2)
-
+library(reshape2)
 
 
 
@@ -25,6 +25,7 @@ df$data1 = data1
 
 #----- Plot CMAX  using ggplot2
 
+var1 = quantile(df$cmts, 0.05)
 
 
  
@@ -50,7 +51,7 @@ g2 = g1 +
   annotate(geom='text', x=as.Date('2020-03-10'), y=0.58, label = 'Crise do \n COVID-19', size=6) + 
   #annotate(geom='text', x=as.Date('2000-03-10'), y=0.6, label = 'Bolha da \n internet') +
   annotate(geom='text', x=as.Date('2001-9-13'), y=0.58, label = '11 de \n setembro', size=6) +
-  geom_hline(yintercept =var2, size=1)
+  geom_hline(yintercept =var1, size=1)
 
 
 
@@ -73,27 +74,12 @@ ggplot() +
 
 
 
-#### Crisis and AV
-
-
-
-ggplot() +
-  geom_line(data=df, aes(y = -3*av, x = data1), color='red') +
-  geom_line(data=df, aes(y=crise, x = data1), color='blue') +
-  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
-      axis.text.y = element_text(size=17), 
-      axis.title.x = element_text(colour = 'black', size=19),
-      axis.title.y = element_text(colour = 'black', size=19) ) + 
-  xlab('Anos') + 
-  ylab('Aversão ao Risco')  
 
 
 
 ### other way to do the same graph
 
-library(reshape2)
+
 
 df4 = df[, c('crise', 'av', 'data1')]
 df4$av = -df4$av
@@ -123,6 +109,30 @@ g5 = g4  + scale_colour_discrete(name="Variáveis",
 
 
 g5 
+
+
+
+
+###### Summary data
+
+library('moments')
+
+mom = function(x){
+  Máximo = max(x)
+  Mínimo = min(x)
+  Média = mean(x)
+  Variância = sd(x)
+  Curtose = kurtosis(x)
+  Assimetria = skewness(x)
+  rmom = data.frame(Máximo, Mínimo, Média, Variância, Curtose, Assimetria)
+  return(rmom)
+}
+
+mom(df$ret)
+
+
+
+
 
 
 
