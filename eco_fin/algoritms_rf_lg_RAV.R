@@ -64,7 +64,7 @@ prop.table(table(df3$crise2))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)    # ten fold
+control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 20)    # ten fold
 
 
 
@@ -79,7 +79,8 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)  
 model_d = train(as.factor(crise2) ~  gold + embi + oil + cb  + cdi, data=df3,  
                 trControl = control_train, 
                 method='multinom', 
-                family='binomial') 
+                family='binomial',
+                maxit=200) 
 
 
 cm_lg1 = confusionMatrix(model_d)
@@ -132,7 +133,8 @@ semrav = t(métricas)
 model_c = train(as.factor(crise2) ~  gold + embi + oil + cb + rexc + cdi, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
-                family='binomial') 
+                family='binomial',
+                maxit=200) 
 
 
 cm_lg2 = confusionMatrix(model_c)
@@ -180,7 +182,8 @@ comrav = t(métricas)
 model_m = train(as.factor(crise2) ~  rexc, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
-                family='binomial') 
+                family='binomial',
+                maxit=200) 
 
 
 cm_lg3 = confusionMatrix(model_m)
@@ -243,12 +246,12 @@ print(xtable(tab, type = "latex", digits=4), file = "tab.tex")
 ###########
 
 
-m1 = glm(crise2~rexc, data=df, family = 'binomial')
+m1 = glm(crise2~as.numeric(df$rexc), data=df, family = 'binomial')
 
 summary(m1)
 
 
-m2 = glm(crise2~rexc + gold + cdi + cb + oil + embi, data=df, family = 'binomial')
+m2 = glm(crise2~as.numeric(df$rexc) + gold + cdi + cb + oil + as.numeric(embi), data=df, family = 'binomial')
 
 summary(m2)
 
