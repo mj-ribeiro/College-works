@@ -11,6 +11,7 @@ setwd("D:/Git projects/college_works/eco_fin")
 metrics = function(cm){
   acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
   cpc = cm[["table"]][2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
+  epc = cm[["table"]][1,1] / ( cm[["table"]][2,1] + cm[["table"]][1,1] )
   sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
   especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
@@ -19,7 +20,7 @@ metrics = function(cm){
   DP = sqrt(pi)/3 * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
   gamma = sensibilidade - (1 - especificidade)
   BA = (1/2) * (sensibilidade + especificidade)
-  métricas = data.frame(acurácia, cpc, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
+  métricas = data.frame(acurácia, cpc, epc, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
 }
 
 
@@ -38,30 +39,19 @@ library('randomForest')
 df = readRDS('df.rds')
 
 
-# df2 = df
-# 
-# data = rownames(df2[2:242,])
-# 
-# rgold = diff(log(df2$gold))
-# roil = diff(log(df2$oil))
-# rcdi = diff(log(df2$cdi))
-# rcb = diff(log(df2$cb))
-# rembi = diff(log(as.numeric(df2$embi)))
-# crise = df2$crise[2:242]
-# rvix =  df2$rvix[2:242]
-# rav = df2$rav[2:242]
-# 
-# dff = data.frame(rgold, roil, rcdi, rcb, rembi, rvix, rav, crise)
+#df$rexc = as.numeric(df$rexc)
+#df$embi = as.numeric(df$embi)
 
-# rownames(dff) = data
+keep = c('crise2', 'gold',  'embi',  'oil', 'cb', 'rexc',  'cdi')
 
+df6 = df[,keep]
 
 
 #--- Rose library
 
 library(ROSE)
 
-df3 = ovun.sample(as.factor(crise2)~., data=df, method="both", p=0.50,
+df3 = ovun.sample(as.factor(crise2)~., data=df6, method="both", p=0.50,
                   subset=options("subset")$subset,
                   na.action=options("na.action")$na.action, seed=1)
 
@@ -110,9 +100,9 @@ cm_rf1 = confusionMatrix(model_h)
 #---------- create dataframe
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=10))
-row.names(métricas) = c('Logit',  'Random Forests')
-colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+métricas = data.frame(matrix(, nrow=2, ncol=11))
+row.names(métricas) = c('Logit',  'Florestas Aleatórias')
+colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
@@ -161,9 +151,9 @@ cm_rf2 = confusionMatrix(model_g)
 #---------- create dataframe
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=10))
-row.names(métricas) = c('Logit',  'Random Forests')
-colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+métricas = data.frame(matrix(, nrow=2, ncol=11))
+row.names(métricas) = c('Logit',  'Florestas Aleatórias')
+colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
@@ -214,9 +204,9 @@ cm_rf3 = confusionMatrix(model_r)
 #---------- create dataframe
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=10))
-row.names(métricas) = c('Logit',  'Random Forests')
-colnames(métricas) = c("Acurácia", "CPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+métricas = data.frame(matrix(, nrow=2, ncol=11))
+row.names(métricas) = c('Logit',  'Florestas Aleatórias')
+colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
@@ -252,10 +242,6 @@ print(xtable(tab, type = "latex", digits=4), file = "tab.tex")
 
 ###########
 
-
-
-df$rexc = as.numeric(df$rexc)
-df$embi = as.numeric(df$embi)
 
 m1 = glm(crise2~rexc, data=df, family = 'binomial')
 
