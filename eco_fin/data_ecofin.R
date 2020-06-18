@@ -397,7 +397,7 @@ df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold, rav, rvix, av
 
 saveRDS(df, 'df.rds')
 
-
+plot(df$rexc, type='l')
 
 
 

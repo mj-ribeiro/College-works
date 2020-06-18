@@ -61,14 +61,14 @@ df = readRDS('df.rds')
 
 library(ROSE)
 
-df3 = ovun.sample(as.factor(crise)~., data=df, method="both", p=0.50,
+df3 = ovun.sample(as.factor(crise2)~., data=df, method="both", p=0.50,
                   subset=options("subset")$subset,
                   na.action=options("na.action")$na.action, seed=1)
 
 df3 = data.frame(df3$data)
 
 
-prop.table(table(df3$crise))
+prop.table(table(df3$crise2))
 
 
 #---- Control train
@@ -86,19 +86,18 @@ control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 10)  
 
 # LOGIT
 
-model_d = train(as.factor(crise) ~  gold + embi + oil + cb  + cdi, data=df3,  
+model_d = train(as.factor(crise2) ~  gold + embi + oil + cb  + cdi, data=df3,  
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
 
 
-varImp(model_d)
 cm_lg1 = confusionMatrix(model_d)
 
 # RF
 
 
-model_h =train(as.factor(crise) ~  gold + embi + oil + cb + cdi, data=df3, 
+model_h =train(as.factor(crise2) ~  gold + embi + oil + cb + cdi, data=df3, 
                trControl = control_train, method='rf') 
 
 
@@ -140,7 +139,7 @@ semrav = t(métricas)
 # LOGIT
 
 
-model_c = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
+model_c = train(as.factor(crise2) ~  gold + embi + oil + cb + rexc + cdi, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
@@ -152,7 +151,7 @@ cm_lg2 = confusionMatrix(model_c)
 # RF
 
 
-model_g = train(as.factor(crise) ~  gold + embi + oil + cb + av + cdi, data=df3, 
+model_g = train(as.factor(crise2) ~  gold + embi + oil + cb + rexc + cdi, data=df3, 
                 trControl = control_train, method='rf'
                ) 
 
@@ -188,7 +187,7 @@ comrav = t(métricas)
 # LOGIT
 
 
-model_m = train(as.factor(crise) ~  av, data=df3, 
+model_m = train(as.factor(crise2) ~  rexc, data=df3, 
                 trControl = control_train, 
                 method='multinom', 
                 family='binomial') 
@@ -202,7 +201,7 @@ cm_lg3 = confusionMatrix(model_m)
 # RF
 
 
-model_r = train(as.factor(crise) ~ av, data=df3,
+model_r = train(as.factor(crise2) ~ rexc, data=df3,
                 trControl = control_train,
                 method='rf') 
 
@@ -253,36 +252,32 @@ print(xtable(tab, type = "latex", digits=4), file = "tab.tex")
 
 ###########
 
-#############################
-
-df3$av = -as.numeric(df3$av)
 
 
-summary(df3$av)
+df$rexc = as.numeric(df$rexc)
+df$embi = as.numeric(df$embi)
 
-model =glm(as.factor(crise) ~  gold  + oil +  cdi +
-             as.numeric(av) + cb +
-             as.numeric(embi),
-           family = 'binomial',  data=df3[-2,])
+m1 = glm(crise2~rexc, data=df, family = 'binomial')
 
-summary(model)
-
-plot(-3*as.numeric(df$av), type = 'l')
-abline(h=0)
-lines(df$crise)
+summary(m1)
 
 
-plot(df$vix/100, type = 'l', ylim = c(0,1))
-abline(h=0)
-lines(df$crise)
+m2 = glm(crise2~rexc + gold + cdi + cb + oil + embi, data=df, family = 'binomial')
+
+summary(m2)
+
 
 
 
 
 library(randomForest)
 
-rf = randomForest(as.factor(crise) ~  gold  + oil +  cdi  + embi + cb + av, data=df3)
+rf = randomForest(as.factor(crise2) ~ rexc   + oil +  cdi + cb + embi + gold, data=df, importance=T)
 
 importance(rf)
 varImpPlot(rf)
+
+
+
+
 

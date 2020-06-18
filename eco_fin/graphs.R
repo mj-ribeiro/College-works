@@ -118,28 +118,26 @@ windows()
 g5
 
 
-#####
 
 
 
 
-### crise and AV
+### crise2 and AV
 
 
 
-df4 = df[, c('crise', 'rexc', 'data1')]
 
-df4$rexc = as.numeric(df4$rexc)
-df4$rexc = df4$rexc/100 
+df5 = df[, c('crise2', 'rexc', 'data1')]
 
-
-df4 <- melt(data = df4, id.vars = "data1")
+df5$rexc = as.numeric(df5$rexc)
+df5$rexc = df5$rexc/100 
 
 
+df5 <- melt(data = df5, id.vars = "data1")
 
-# plot, using the aesthetics argument 'colour'
 
-g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
+
+g6 = ggplot(data = df5, aes(x = data1, y = value, colour = variable)) +
   geom_line(size=0.4) +
   scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
   theme_minimal() +
@@ -153,12 +151,12 @@ g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
   ylab('')  
 
 
-g5 = g4  + scale_colour_discrete(name="Variáveis",
-                                 breaks=c("crise", "rexc"),
+g7 = g6  + scale_colour_discrete(name="Variáveis",
+                                 breaks=c("crise2", "rexc"),
                                  labels=c(expression(D[t]), "AV"))
 
 windows()
-g5
+g7
 
 
 
