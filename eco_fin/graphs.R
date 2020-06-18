@@ -84,8 +84,11 @@ ggplot() +
 
 
 
-df4 = df[, c('crise', 'av', 'data1')]
-df4$av = df4$av
+df4 = df[, c('crise', 'rexc', 'data1')]
+
+df4$rexc = as.numeric(df4$rexc)
+df4$rexc = df4$rexc/100 
+
 
 df4 <- melt(data = df4, id.vars = "data1")
 
@@ -94,7 +97,7 @@ df4 <- melt(data = df4, id.vars = "data1")
 # plot, using the aesthetics argument 'colour'
 
 g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
-  geom_line(size=1.1) +
+  geom_line(size=0.4) +
   scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
@@ -108,26 +111,54 @@ g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
 
 
 g5 = g4  + scale_colour_discrete(name="Variáveis",
-                         breaks=c("crise", "av"),
+                         breaks=c("crise", "rexc"),
                          labels=c(expression(D[t]), "AV"))
-
-
 
 windows()
 g5
 
 
-
-
-
-
-
-
-
-
 #####
 
 
+
+
+### crise and AV
+
+
+
+df4 = df[, c('crise', 'rexc', 'data1')]
+
+df4$rexc = as.numeric(df4$rexc)
+df4$rexc = df4$rexc/100 
+
+
+df4 <- melt(data = df4, id.vars = "data1")
+
+
+
+# plot, using the aesthetics argument 'colour'
+
+g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
+  geom_line(size=0.4) +
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17)) + 
+  xlab('Anos') + 
+  ylab('')  
+
+
+g5 = g4  + scale_colour_discrete(name="Variáveis",
+                                 breaks=c("crise", "rexc"),
+                                 labels=c(expression(D[t]), "AV"))
+
+windows()
+g5
 
 
 
