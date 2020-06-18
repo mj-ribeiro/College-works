@@ -33,7 +33,9 @@ library(xtable)
 
 
 df = readRDS('df.rds')
-df$av = as.numeric(df$av)
+df$rexc = as.numeric(df$rexc)
+df$embi = as.numeric(df$embi)
+
 
 data1 = row.names(df)
 
@@ -50,9 +52,8 @@ kk = mom(df$ret)
 
 
 
-keep =  c('oil', 'gold', 'av', 'embi', 'cdi', 'cb')
+keep =  c('oil', 'gold', 'rexc', 'embi', 'cdi', 'cb')
 df5 = df[,keep]
-df5$embi = as.numeric(df5$embi)
 
 
 vna = c('Pétroleo', 'Ouro', 'AV', 'EMBI', 'CDI', 'INPC')
@@ -84,21 +85,4 @@ print(xtable(sda, type = "latex", digits=4), file = "sda.tex")
 
 
 
-
-summary(df5$embi)
-plot(df5$embi, type='l')
-
-
-
-
-k = c('cdi', 'ret')
-d = df[ ,k]
-
-d$cdi = d$cdi/100
-
-
-
-
-
-write.csv(d, file = "retcdi.csv")
 

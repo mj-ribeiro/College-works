@@ -101,7 +101,7 @@ cm_rf1 = confusionMatrix(model_h)
 
 
 métricas = data.frame(matrix(, nrow=2, ncol=11))
-row.names(métricas) = c('Logit',  'Florestas Aleatórias')
+row.names(métricas) = c('Logit',  'FA')
 colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
@@ -152,7 +152,7 @@ cm_rf2 = confusionMatrix(model_g)
 
 
 métricas = data.frame(matrix(, nrow=2, ncol=11))
-row.names(métricas) = c('Logit',  'Florestas Aleatórias')
+row.names(métricas) = c('Logit',  'FA')
 colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
@@ -205,7 +205,7 @@ cm_rf3 = confusionMatrix(model_r)
 
 
 métricas = data.frame(matrix(, nrow=2, ncol=11))
-row.names(métricas) = c('Logit',  'Florestas Aleatórias')
+row.names(métricas) = c('Logit',  'FA')
 colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
