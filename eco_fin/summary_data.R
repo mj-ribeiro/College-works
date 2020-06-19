@@ -55,6 +55,8 @@ kk = mom(df$ret)
 keep =  c('oil', 'gold', 'rexc', 'embi', 'cdi', 'cb')
 df5 = df[,keep]
 
+df5$cdi = df5$cdi/100
+
 
 vna = c('Pétroleo', 'Ouro', 'AV', 'EMBI', 'CDI', 'INPC')
 
@@ -76,7 +78,7 @@ for (i in 1:6) {
 }
 
 
-sda
+round(sda,4)
 
 
 print(xtable(sda, type = "latex", digits=4), file = "sda.tex")
