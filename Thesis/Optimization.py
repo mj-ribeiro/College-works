@@ -37,7 +37,9 @@ sol.fun
 
 
 opt = nlopt.opt(nlopt.LD_SLSQP, 10)
+
 opt.set_min_objective(obj(x1))
+
 x = opt.optimize(x1.flatten())
 
 
