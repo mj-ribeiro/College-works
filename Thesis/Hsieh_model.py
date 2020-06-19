@@ -234,7 +234,7 @@ def taus2():
     tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
     tau_w[0, : ] = tau_w[0, 0]
     
-    w =np.random.uniform(low=0.001, high=20, size=(i,r))
+    w =np.random.uniform(low=0.001, high=30, size=(i,r))
     w[:, r-1] = 1
     
     x1 = np.array( [tau_w, tau_h, w] )
@@ -315,19 +315,9 @@ res = calibration(5000)
 sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':100000})
 
 
-b1, b2, b3 = (2, 3), (0, 2), (0, 1)
 
+######## teste
 
-sol = minimize(obj, x1,  method='SLSQP', 
-               bounds = B, 
-               options={'maxiter':1000})
-
-sol
-
-len(B)
-len(x1)
-
-len(x1.flatten())
 
 btw1, btw2, btw3, btw4, btw5, btw6, btw7, btw8 = (-0.99, 0.999), (-0.99, 0.999), (-0.99, 0.999), (-0.99, 0.999), (-0.99, 0.999),(-0.99, 0.999), (-0.99, 0.999), (-0.99, 0.999)
 
@@ -336,14 +326,52 @@ bh1, bh2, bh3, bh4, bh5, bh6, bh7, bh8 =(-0.99, 40),(-0.99, 40),(-0.99, 40),(-0.
 bw1, bw2, bw3, bw4, bw5, bw6, bw7, bw8 = (0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),
 
 
-B = [btw1, btw2, btw3, btw4, btw5, btw6, btw7, btw8, bh1, bh2, bh3, bh4, bh5, bh6, bh7, bh8, bw1, bw2, bw3, bw4, bw5, bw6, bw7, bw8]
+Bd = (btw1, btw2, btw3, btw4, btw5, btw6, btw7, btw8, bh1, bh2, bh3, bh4, bh5, bh6, bh7, bh8, bw1, bw2, bw3, bw4, bw5, bw6, bw7, bw8)
 
-B = np.array(B)
+Bd = np.array(Bd)
+
+
+
+Bd
+
+def taus3():
+    global x3, tau_h, tau_w, w
+    par()        
+    tau_h = np.random.uniform(low=-0.99, high=40, size=(i,r))
+    tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
+    w =np.random.uniform(low=0.001, high=30, size=(i,r))
+    x3 = np.array( [tau_w, tau_h, w] )
+    return x3
+
+
+taus3()   
+ 
+#####  trust-constr 
+
+sol = minimize(obj, x1.flatten(),  method='trust-constr', 
+               bounds = Bd, 
+               options={'maxiter':1000})
+
+sol.fun
+
+
+
+
+
+
+
+
+
+
+
+
+sol
+
 
 len(B)
+len(x1)
 
-B = B.reshape((3, i, r))
-B
+len(x1.flatten())
 
 
 #--------- Multiple calibration
@@ -424,74 +452,6 @@ import nlopt
 opt = nlopt.opt(nlopt.LD_SLSQP, 10)
 opt.set_min_objective(obj(x1))
 x = opt.optimize(x1.flatten())
-
-
-
-
-
-##------------------------ tests
-
-
-
-
-def taus3():
-    global x2
-    par()
-        
-    tau_h = np.random.uniform(size=(i,r))
-    tau_h[0, :] = 0
-
-    tau_w = np.random.uniform(size=(i,r))
-    tau_w[0, : ] = tau_w[0, 0]
-    
-    w =np.random.uniform(size=(i,r))
-    w[:, r-1] = 1
-    
-    x2 = np.array( [tau_w, tau_h, w] )
-        
-    #x2 = np.concatenate((tau_w, tau_h, w), axis=0)
-    #x2 = x2.reshape(24)
-    
-    return x2
-
-
-taus3()
-
-
-s =np.reshape(np.repeat(-0.99, 8), (i,r) )
-
-
-b0 = [-0.99, 0.999]
-b1 = [-0.99, 40]
-b2 = [0.001, 20]
-
-bnd = [(-0.99, 0.999), (-0.99, 40), (0.001, 20)]
-
-len(bnd)
-
-sol2 = minimize(obj, x1, method='SLSQP', bounds=b0, options={'maxiter': 5000})
-
-
-
-
-
-
-
-
-from scipy.optimize import minimize_scalar
-
-minimize_scalar(obj, x2, method='bounded', bounds=bnd)
-
-
-
-
-
-
-
-
-
-
-
 
 
 
