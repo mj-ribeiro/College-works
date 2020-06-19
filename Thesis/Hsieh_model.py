@@ -54,12 +54,33 @@ def par():
     phi = [0.138, 0.174]
    
 
-par()
+
+
+#----------------------- Tau's  & w (TPF)
+
+
+    
+def taus2():
+    global x1, tau_h, tau_w, w
+    par()
+        
+    tau_h = np.random.uniform(low=-0.99, high=40, size=(i,r))
+    tau_h[0, :] = 0
+
+    tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
+    tau_w[0, : ] = tau_w[0, 0]
+    
+    w =np.random.uniform(low=0.001, high=30, size=(i,r))
+    w[:, r-1] = 1
+    
+    x1 = np.array( [tau_w, tau_h, w] )
+    
+    return x1
 
 
 
 
-#----------------------------------------- s - time spent at school   (eq 14)
+#--------------------------- s - time spent at school   (eq 14)
 
 
 def sf( ):
@@ -69,9 +90,6 @@ def sf( ):
     for c in range(i):
         s[c] = (1+ (1-eta)/ (beta*phi[c]) ) ** (-1)                        
     return s
-
-sf()
-s
 
 
 
@@ -95,10 +113,6 @@ def p_trf(x1):
     
     p_tr = k[i-1]/np.sum(k, axis=0)
     return p_tr
-
-taus2()
-p_trf(x1)
-
 
 
 #-------------------------------------- Human capital of teachers - eq 31
@@ -126,13 +140,6 @@ def H_trf(x1):
     
     return H_tr
  
-taus2()
-H_trf(x1)
-
-
-
-
-
 
 #----------------------------------------- w tilde  (Proposition 1)
 
@@ -206,9 +213,6 @@ def Wf(x1):
     return W
 
 
-taus2()
-Wf(x1)
-
 #--------- Simulated data 
 
 
@@ -219,29 +223,6 @@ def simul():
     W_t = np.exp(W_t)    
     p_t = np.array(([0.55, 0.4, 0.35, 0.77], [0.45, 0.6, 0.65, 0.23]))
 
-
-#----------------------- Tau's  & w (TPF)
-
-
-    
-def taus2():
-    global x1, tau_h, tau_w, w
-    par()
-        
-    tau_h = np.random.uniform(low=-0.99, high=40, size=(i,r))
-    tau_h[0, :] = 0
-
-    tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
-    tau_w[0, : ] = tau_w[0, 0]
-    
-    w =np.random.uniform(low=0.001, high=30, size=(i,r))
-    w[:, r-1] = 1
-    
-    x1 = np.array( [tau_w, tau_h, w] )
-    
-    return x1
-
-taus2()   
 
 
 #--------------------- OBJECTIVE FUNCTION
@@ -268,13 +249,9 @@ def obj(x1):
 
 #----------------------------- OPTIMIZATION Scipy
 
-taus2()
-obj(x1)
 
 
-
-
-def calibration(v):
+def calibration(v, x1):
     
     global D, s1
     start = time.time()
@@ -309,10 +286,6 @@ def calibration(v):
     return D
 
 
-res = calibration(5000)
-
-
-sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':100000})
 
 
 
@@ -332,7 +305,6 @@ Bd = np.array(Bd)
 
 
 
-Bd
 
 def taus3():
     global x3, tau_h, tau_w, w
@@ -344,34 +316,8 @@ def taus3():
     return x3
 
 
-taus3()   
  
-#####  trust-constr 
 
-sol = minimize(obj, x1.flatten(),  method='trust-constr', 
-               bounds = Bd, 
-               options={'maxiter':1000})
-
-sol.fun
-
-
-
-
-
-
-
-
-
-
-
-
-sol
-
-
-len(B)
-len(x1)
-
-len(x1.flatten())
 
 
 #--------- Multiple calibration
@@ -402,59 +348,6 @@ def hsieh(n, v, t=12):
     return opt, a
 
 
-hsieh(100, 5000, t=5)
-
-
-
-
-len(tt)
-
-import seaborn as sns
-
-fig, ax = plt.subplots(1, 2)
-ax[0].hist(tt)
-ax[1].plot(tt)
-
-
-
-summary(tt)
-
-
-#--------------- NLopt
-
-
-def obj2(x1):
-    global D
-    x1 = taus2()
-    x1 = x1.reshape((i, r, 3))    
-    
-    sf()
-    H_trf(x1)
-    w_tilf(x1)
-    p_irf(x1)
-    Wf(x1)
-    simul()
-    
-    D = np.sum((W/W_t - 1)**2 + (p_ir/p_t - 1)**2)
- 
-    return D
-
-
-obj2(x1)
-
-
-
-
-
-import nlopt 
-
-
-opt = nlopt.opt(nlopt.LD_SLSQP, 10)
-opt.set_min_objective(obj(x1))
-x = opt.optimize(x1.flatten())
-
-
-
 
 
 
@@ -465,6 +358,7 @@ x = opt.optimize(x1.flatten())
 
 
 def hsieh(n, t=12):
+    par( )
     global opt, k
     opt = [t]
     k = np.zeros((3, i, r))
@@ -520,7 +414,6 @@ def calibration2(v, t=12):
 
 
 
-calibration2(100000, 15)
 
 
 
