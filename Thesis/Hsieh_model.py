@@ -314,7 +314,36 @@ res = calibration(5000)
 
 sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':100000})
 
+
+b1, b2, b3 = (2, 3), (0, 2), (0, 1)
+
+
+sol = minimize(obj, x1,  method='SLSQP', 
+               bounds = B, 
+               options={'maxiter':1000})
+
 sol
+
+len(B)
+len(x1)
+
+len(x1.flatten())
+
+btw1, btw2, btw3, btw4, btw5, btw6, btw7, btw8 = (-0.99, 0.999), (-0.99, 0.999), (-0.99, 0.999), (-0.99, 0.999), (-0.99, 0.999),(-0.99, 0.999), (-0.99, 0.999), (-0.99, 0.999)
+
+bh1, bh2, bh3, bh4, bh5, bh6, bh7, bh8 =(-0.99, 40),(-0.99, 40),(-0.99, 40),(-0.99, 40),(-0.99, 40),(-0.99, 40),(-0.99, 40),(-0.99, 40)
+
+bw1, bw2, bw3, bw4, bw5, bw6, bw7, bw8 = (0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),(0.001, 30),
+
+
+B = [btw1, btw2, btw3, btw4, btw5, btw6, btw7, btw8, bh1, bh2, bh3, bh4, bh5, bh6, bh7, bh8, bw1, bw2, bw3, bw4, bw5, bw6, bw7, bw8]
+
+B = np.array(B)
+
+len(B)
+
+B = B.reshape((3, i, r))
+B
 
 
 #--------- Multiple calibration
