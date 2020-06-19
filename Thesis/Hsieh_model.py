@@ -71,7 +71,7 @@ def sf( ):
     return s
 
 sf()
-
+s
 
 
 
@@ -95,13 +95,9 @@ def p_trf(x1):
     
     p_tr = k[i-1]/np.sum(k, axis=0)
     return p_tr
-   
 
 taus2()
-np.around(p_trf(x1), 4 )
-
-
-
+p_trf(x1)
 
 
 
@@ -130,8 +126,8 @@ def H_trf(x1):
     
     return H_tr
  
-
 taus2()
+H_trf(x1)
 
 
 
@@ -164,11 +160,6 @@ def w_tilf(x1):
              
     return w_til 
  
-taus2()
-
-w_tilf(x1)
-A
-B
 
 
 #------------------------------------------ p_ir  (eq 19)
@@ -190,11 +181,6 @@ def p_irf(x1):
     return p_ir
 
  
-taus2()
-#w_tilf()
-np.around(p_irf(x1), 2)
-
-w_r
 
 
 #---------------------------------------  W (eq 27)
@@ -219,7 +205,6 @@ def Wf(x1):
             W[c, j] = A[c, j]*w_r2[j]
     return W
 
-w_r
 
 taus2()
 Wf(x1)
@@ -291,7 +276,7 @@ obj(x1)
 
 def calibration(v):
     
-    global D, s
+    global D, s1
     start = time.time()
     sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':v})
     end = time.time()
@@ -318,7 +303,7 @@ def calibration(v):
     print('   ') 
     
     print('{:*^50}'.format('End of calibration'))
-    s = sol.x
+    s1 = sol.x
     D = sol.fun
     
     return D
@@ -327,7 +312,7 @@ def calibration(v):
 res = calibration(5000)
 
 
-sol = minimize(obj, x1,  method='Nelder-Mead', options={'adaptive': True})
+sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':100000})
 
 sol
 
