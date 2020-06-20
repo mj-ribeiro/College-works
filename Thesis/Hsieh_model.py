@@ -58,7 +58,6 @@ def par():
 
 #----------------------- Tau's  & w (TPF)
 
-
     
 def taus2():
     global x1, tau_h, tau_w, w
@@ -117,11 +116,6 @@ def p_trf(x1):
 
 #-------------------------------------- Human capital of teachers - eq 31
 
-#x1 = np.array( [tau_w, tau_h, w] )
-
-
-
-
 def H_trf(x1):
     global H_tr
     
@@ -170,8 +164,7 @@ def w_tilf(x1):
 
 
 #------------------------------------------ p_ir  (eq 19)
-    
-        
+          
 def p_irf(x1):
     global p_ir, w_r 
     w_tilf(x1)
@@ -194,7 +187,9 @@ def p_irf(x1):
 
 
 def Wf(x1):
+    par()
     p_irf(x1)
+    sf()
     #taus2( )
     global W
     W = np.zeros((i, r))
@@ -226,8 +221,6 @@ def simul():
 
 #--------------------- OBJECTIVE FUNCTION
 
- 
-
 def obj(x1):
     global D
     x1 = taus2()
@@ -240,7 +233,7 @@ def obj(x1):
     Wf(x1)
     simul()
     
-    D = np.sum((W/W_t - 1)**2 + (p_ir/p_t - 1)**2)
+    D = np.sum( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2)
  
     return D
 

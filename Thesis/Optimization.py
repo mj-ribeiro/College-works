@@ -14,6 +14,7 @@ obj(x1)
 
 res = calibration(5000, taus2())
 
+
 #### Nelder Mead
 
 
@@ -27,11 +28,8 @@ sol.fun
 
 #####  trust-constr 
 
-np.around(x1,2)
 
-x1
-
-cons1 = x1[8:12] - 0  
+# constraints
 
 cons = ({'type': 'eq', 'fun': lambda x1: x1[8:12] - 0},
         {'type': 'eq', 'fun': lambda x1: x1[19] - 1},
@@ -41,27 +39,28 @@ cons = ({'type': 'eq', 'fun': lambda x1: x1[8:12] - 0},
         {'type': 'eq', 'fun': lambda x1: x1[2] - x1[3]})
 
 
+# optimization
 
 sol = minimize(obj, x1.flatten(),  method='trust-constr', 
                bounds = Bd, constraints= cons,
-               options={'maxiter':10000, 'verbose':3})
+               options={'maxiter':10000, 'verbose':3,
+                         'xtol': 1e-10, 
+                         'gtol': 1e-10, 
+                         'barrier_tol': 1e-10})
 
-sol.x
+x1=sol.x
 sol.fun
 
-  
+sol = minimize(obj, x1,  method='trust-constr', 
+               bounds = Bd, constraints= cons,
+               options={'maxiter':10000, 'verbose':3,
+                         'xtol': 1e-10, 
+                         'gtol': 1e-10, 
+                         'barrier_tol': 1e-10})
+
+
 ###### NLopt
 
-
-
-
-
-
-opt = nlopt.opt(nlopt.LD_SLSQP, 10)
-
-opt.set_min_objective(obj(x1))
-
-x = opt.optimize(x1.flatten())
 
 
 
