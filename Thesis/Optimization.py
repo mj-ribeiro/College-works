@@ -10,6 +10,7 @@ from scipy.optimize import minimize
 
 
 x1 = taus2()
+obj(x1)
 
 res = calibration(5000, taus2())
 
@@ -17,7 +18,8 @@ res = calibration(5000, taus2())
 
 
 
-sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':1000})
+sol = minimize(obj, x1,  method='Nelder-Mead',bounds = Bd, 
+               options={'maxiter':1000})
 
 sol.x
 sol.fun
@@ -25,15 +27,31 @@ sol.fun
 
 #####  trust-constr 
 
+np.around(x1,2)
+
+x1
+
+cons1 = x1[8:12] - 0  
+
+cons = ({'type': 'eq', 'fun': lambda x1: x1[8:12] - 0},
+        {'type': 'eq', 'fun': lambda x1: x1[19] - 1},
+        {'type': 'eq', 'fun': lambda x1: x1[23] - 1},
+        {'type': 'eq', 'fun': lambda x1: x1[0] - x1[1]},
+        {'type': 'eq', 'fun': lambda x1: x1[1] - x1[2]},
+        {'type': 'eq', 'fun': lambda x1: x1[2] - x1[3]})
+
+
+
 sol = minimize(obj, x1.flatten(),  method='trust-constr', 
-               bounds = Bd, 
-               options={'maxiter':1000})
+               bounds = Bd, constraints= cons,
+               options={'maxiter':10000, 'verbose':3})
 
 sol.x
 sol.fun
 
-
+  
 ###### NLopt
+
 
 
 
