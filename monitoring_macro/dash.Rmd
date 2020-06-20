@@ -47,9 +47,9 @@ g15 = ggplot(data = f2, aes(x=lld, y=ppc/10000))+
 
 
 g16 = g15 + 
-  ggtitle('PIB per capita and Life Satisfaction') + 
+  ggtitle('GDP per capita and Life Satisfaction') + 
   xlab('Life Satisfaction') +
-  ylab('PIB per capita') +
+  ylab('GDP per capita') +
   theme(axis.title.x = element_text(colour = 'black', size=13),
         axis.title.y = element_text(colour = 'black', size=13),
         plot.title = element_text(hjust = 0.5))
@@ -74,9 +74,9 @@ g9 = ggplot(data = f2, aes(x=hc, y=ppc/10000))+
 
 
 g10 = g9 + 
-  ggtitle('PIB per capita and HC') + 
+  ggtitle('GDP per capita and HC') + 
   xlab('Human capital') +
-  ylab('PIB per capita') +
+  ylab('GDP per capita') +
   theme(axis.title.x = element_text(colour = 'black', size=13),
         axis.title.y = element_text(colour = 'black', size=13),
         plot.title = element_text(hjust = 0.5))
@@ -99,9 +99,9 @@ g11 = ggplot(data = f2, aes(x=qinst, y=ppc/10000))+
 
 
 g12 = g11 + 
-  ggtitle('PIB per capita and Institutional Quality') + 
+  ggtitle('GDP per capita and Institutional Quality') + 
   xlab('Institutional Quality') +
-  ylab('PIB per capita') +
+  ylab('GDP per capita') +
   theme(axis.title.x = element_text(colour = 'black', size=13),
         axis.title.y = element_text(colour = 'black', size=13),
         plot.title = element_text(hjust = 0.5))
@@ -122,9 +122,9 @@ g13 = ggplot(data = f2, aes(x=crespop, y=ppc/10000))+
 
 
 g14 = g13 + 
-  ggtitle('PIB per capita and Population Growth') + 
+  ggtitle('GDP per capita and Population Growth') + 
   xlab('Population Growth') +
-  ylab('PIB per capita') +
+  ylab('GDP per capita') +
   theme(axis.title.x = element_text(colour = 'black', size=13),
         axis.title.y = element_text(colour = 'black', size=13),
         plot.title = element_text(hjust = 0.5))

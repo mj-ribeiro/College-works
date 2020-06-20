@@ -9,10 +9,13 @@ from Hsieh_model import *
 from scipy.optimize import minimize
 
 
+x1 = taus2()
 
 res = calibration(5000, taus2())
 
 #### Nelder Mead
+
+
 
 sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':1000})
 
