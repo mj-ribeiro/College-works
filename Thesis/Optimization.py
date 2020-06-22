@@ -41,6 +41,7 @@ cons = ({'type': 'eq', 'fun': lambda x1: x1[8:12] - 0},
 
 # optimization
 
+print('\033[1;033m')
 sol = minimize(obj, x1.flatten(),  method='trust-constr', 
                bounds = Bd, constraints= cons,
                options={'maxiter':10000, 'verbose':3,
