@@ -4,6 +4,10 @@ Created on Fri Jun 19 15:23:08 2020
 
 @author: Marcos J Ribeiro
 """
+# see:  https://notes.quantecon.org/submission/5b3db2ceb9eab00015b89f93
+
+
+
 import nlopt 
 from Hsieh_model import *
 from scipy.optimize import minimize
@@ -28,7 +32,7 @@ sol.fun
 
 #####  trust-constr 
 
-
+Bd
 # constraints
 
 cons = ({'type': 'eq', 'fun': lambda x1: x1[8:12] - 0},
@@ -41,6 +45,7 @@ cons = ({'type': 'eq', 'fun': lambda x1: x1[8:12] - 0},
 
 # optimization
 
+
 print('\033[1;033m')
 sol = minimize(obj, x1.flatten(),  method='trust-constr', 
                bounds = Bd, constraints= cons,
@@ -52,6 +57,7 @@ sol = minimize(obj, x1.flatten(),  method='trust-constr',
 x1=sol.x
 sol.fun
 
+sol.x
 sol = minimize(obj, x1,  method='trust-constr', 
                bounds = Bd, constraints= cons,
                options={'maxiter':10000, 'verbose':3,
