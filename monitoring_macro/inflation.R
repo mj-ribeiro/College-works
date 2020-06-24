@@ -25,7 +25,6 @@ inf = xts(inf, order.by = data)
 plot(inf)
 
 
-
 # unemployment  - Taxa de desocupação - PNADC
 
 

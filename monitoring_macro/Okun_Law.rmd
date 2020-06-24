@@ -1,0 +1,67 @@
+---
+title: "Lei de Okun em Python"
+author: "Marcos J Ribeiro"
+date: "24/06/2020"
+output: html_document
+---
+
+
+```{r setup, include=F}
+library(reticulate)
+knitr::include_graphics
+knitr::knit_engines$set(python = reticulate::eng_python)
+library(knitr)
+```
+
+### Lei de Okun em Python
+
+
+Primeiro vou importar as bibliotecas padrão.
+
+```{python import}
+import os
+os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = '/path/to/Anaconda3/Library/plugins/platforms'
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as sm
+```
+
+Criei uma função para pegar os dados do Banco Central.
+
+```{python}
+def get_bcb(cod_bcb):
+    url = 'http://api.bcb.gov.br/dados/serie/bcdata.sgs.{}/dados?formato=json'.format(cod_bcb)
+    df = pd.read_json(url)
+    df['data'] = pd.to_datetime(df['data'], dayfirst=True)
+    df.set_index('data', inplace=True)
+    return df 
+```
+
+
+
+Agora vou obter os dados do desemprego:
+
+```{python}
+des = get_bcb(24369)/100  # 24369 is the code of PNADC
+des.columns=['des']
+pd.DataFrame.head(des)  # head of data
+```
+
+Vou usar o matplotlib para plotar a evolução dO desemprego no Brasil.
+
+```{python pyplot, echo=FALSE}
+fig, ax = plt.subplots(figsize=(8,6))
+ax.plot(des)
+plt.title('Evolution of Unenployment in Brazil')
+plt.xlabel('Year')
+plt.ylabel('Unenployment')
+
+```
+
+
+
+
+
+
+
