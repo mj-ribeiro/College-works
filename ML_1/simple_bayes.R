@@ -80,6 +80,7 @@ pff = dnorm(8, m3f, v3f)
 
 PF = pf*phf*pwf*pff
 
+PF
 
 
 
