@@ -36,3 +36,35 @@ sd(I)
 hist(I, breaks = 30, col='lightgreen', main='Histogram of Integral values')
 
 
+
+
+####### Hierarquical model
+
+
+# simulate phi_i from beta(2,2)
+# simulate y_i from binom(10, phi_i)
+
+m = 1e+5
+
+y = numeric(m)
+phi = numeric(m)
+
+
+for(i in 1:m){
+  phi[i] = rbeta(1, 2, 2)
+  y[i] = rbinom(1, size = 10, phi[i])
+  
+}
+
+
+
+# othe way to do the same thing
+
+#vectorize
+
+phi = rbeta(m, 2, 2)
+y = rbinom(m, size = 10, phi)
+
+
+plot(table(y)/m, main='Beta Binomial distribution of y', ylab='Probability')
+
