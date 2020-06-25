@@ -32,3 +32,7 @@ for (j in 1:nn) {
 mean(I)
 sd(I)
 
+
+hist(I, breaks = 30, col='lightgreen', main='Histogram of Integral values')
+
+
