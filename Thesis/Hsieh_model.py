@@ -28,6 +28,7 @@ from scipy.optimize import minimize
 from math import gamma
 import itertools as itl
 import time
+import pandas as pd
 
 
 
@@ -45,13 +46,13 @@ def par():
     theta = 3.44
     rho = 0.19
     kappa = 1/(1- eta)
-    i = 2
-    r = 4
+    i = 7
+    r = 27
     gamma1 = gamma(1 - ( 1/(theta*(1-rho)) * 1/(1 - eta) ) )   
     z = 1 - (varphi/(1 - eta))    
     alfa = 1 - 1/(theta*(1-eta))
     sig = (eta*kappa)/z
-    phi = [0.138, 0.174]
+    phi = [0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168]
    
 
 
@@ -214,8 +215,15 @@ def Wf(x1):
 def simul():
     global W_t, p_t
     
-    W_t = np.array(([2.71, 2.81, 3.07, 2.7], [2.76, 2.85, 2.89, 2.8]))  
-    p_t = np.array(([0.55, 0.4, 0.35, 0.77], [0.45, 0.6, 0.65, 0.23]))
+    #W_t = np.array(([2.71, 2.81, 3.07, 2.7], [2.76, 2.85, 2.89, 2.8]))  
+    #p_t = np.array(([0.55, 0.4, 0.35, 0.77], [0.45, 0.6, 0.65, 0.23]))
+    p_t = pd.read_csv('pt.csv', sep=';')
+    p_t = p_t.iloc[0:7]
+    p_t.set_index('ocup', inplace=True)
+
+    W_t = pd.read_csv('wt.csv', sep=';')
+    W_t.set_index('ocup', inplace=True)
+
 
 
 
@@ -271,7 +279,9 @@ def calibration(v, x1):
     print(f'The minimun value to D is: {sol.fun}')
     print('   ') 
     
+    print(f'Converged:{sol.success}')
     print('{:*^50}'.format('End of calibration'))
+    
     s1 = sol.x
     D = sol.fun
     

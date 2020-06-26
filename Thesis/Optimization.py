@@ -6,24 +6,28 @@ Created on Fri Jun 19 15:23:08 2020
 """
 # see:  https://notes.quantecon.org/submission/5b3db2ceb9eab00015b89f93
 
+import os
+os.getcwd()
+os.chdir('D:\\Git projects\\college_works\\Thesis')
 
 
-import nlopt 
 from Hsieh_model import *
 from scipy.optimize import minimize
+import pandas as pd
+
 
 
 x1 = taus2()
 obj(x1)
 
-res = calibration(5000, taus2())
+res = calibration(500, taus2())
 
 
 #### Nelder Mead
 
 
 
-sol = minimize(obj, x1,  method='Nelder-Mead',bounds = Bd, 
+sol = minimize(obj, x1,  method='Nelder-Mead', 
                options={'maxiter':1000})
 
 sol.x
@@ -66,7 +70,7 @@ sol = minimize(obj, x1,  method='trust-constr',
                          'barrier_tol': 1e-10})
 
 
-###### NLopt
+
 
 
 
