@@ -11,7 +11,8 @@ setwd("D:/Git projects/college_works/Bayesian Simulation")
 #----- Discrete MC
 
 
-# Randon walk is a Markov process
+# Randon walk is a Markov process, note that the mean of next step is the previous step 
+# multiplied by phi
 
 
 set.seed(34)
@@ -21,7 +22,7 @@ x = numeric(n)
 phi = -0.6
 
 for (i in 2:n) {
-  x[i] = rnorm(1, mean=x[i-1]*phi, sd=1.0)
+  x[i] = rnorm(1, mean=x[i-1]*phi, sd=1)
 }
 
 plot.ts(x)
@@ -30,6 +31,7 @@ plot.ts(x)
 hist(x, freq = F, col = 'lightgreen', ylim = c(0,0.5))
 curve(dnorm(x), add=T)
 legend(2, 0.6, legend = 'Theoretical\n Stationary Dist.', col='red', lty=1, bty="n")
+
 
 
 #----- Continuous MC
@@ -98,6 +100,9 @@ round(Q100, 3)
 
 
 # Markov chain has estationary distribution
+
+
+
 
 
 

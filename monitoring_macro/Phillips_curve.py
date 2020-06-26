@@ -33,3 +33,38 @@ pi
 
 
 
+
+# prova 2 - Q4 - A
+
+n= 6
+pi = 0.02
+u_t = 0.04
+
+
+for i in range(n):
+    pi = 0.8 - u_t + pi
+    print(pi)
+
+
+
+# Q4 - B
+
+n= 6
+pi = 0.02
+u_t = 0.04
+ind = 0.6    # com indexação de salários
+
+
+
+for i in range(n):
+    pi = 1/(1-ind)*(0.8 - u_t) + pi
+    print(pi)
+
+
+500**(1/4)*1500**(3/4)
+
+0.045/0.03
+9/4
+
+
+
