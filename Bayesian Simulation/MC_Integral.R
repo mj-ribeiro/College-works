@@ -4,6 +4,9 @@
 
 # theta has gamma distribution
 
+
+setwd("D:/Git projects/college_works/Bayesian Simulation")
+
   
 f = function(a, b){
   theta* b^a/gamma(a) * theta^(a-1)*exp(-b*theta)
@@ -67,4 +70,17 @@ y = rbinom(m, size = 10, phi)
 
 
 plot(table(y)/m, main='Beta Binomial distribution of y', ylab='Probability')
+
+
+
+
+
+
+# see: https://d3c33hcgiwev3.cloudfront.net/_adadc80290e52a99b282ca9d7c1a41ee_background_MarkovChains.html?Expires=1593216000&Signature=eHP~MD0aQLT7TqSLR7fkmMqS5RjMXGsIGR0PU3HAGv8i-KGlb2Z0T3v8BS5C0GSjZlMbgq5~z26DWUAoCH0RfRloZLsBmTNsWVxnWjjjOjTtIfbIC32bT9rF04TugPv~F99EMtBM20hwjLJE11Y2GrmQgahkdC9EsVBkeSI1-8I_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A
+
+
+
+
+
+
 
