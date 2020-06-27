@@ -12,17 +12,6 @@ os.chdir('D:\\Git projects\\college_works\\Thesis')
 # see this: https://pastebin.com/cvYBvW3B
 # The model can be viewed in:  https://mj-ribeiro.github.io/blog/hsieh_model/
 
-#--- My functions
-
-def summary(y):  
-    import numpy as np
-      
-    mean = np.around(np.mean(y), 4)
-    mini = np.around(np.min(y), 4)
-    maxi = np.around(np.max(y), 4)
-    med = np.around(np.median(y), 4)
-    std = np.around(np.std(y), 4)
-    print(f'\033[1;033mMédia: {mean} \n Std: {std} \n Mínimo: {mini} \n Máximo: {maxi} \n Mediana: {med} ')
 
 #----- Libraries
 
@@ -57,7 +46,7 @@ def par():
     z = 1 - (varphi/(1 - eta))    
     alfa = 1 - 1/(theta*(1-eta))
     sig = (eta*kappa)/z
-    phi = np.array([0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168])
+    phi = np.array([0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168]).reshape(i, 1)
    
 
 
@@ -89,9 +78,8 @@ def taus2():
 
 
 def sf( ):
-    par()
     s = (1+ (1-eta)/ (beta*phi) ) ** (-1)
-    return s
+    return s.reshape(i, 1)
 
 
 
@@ -116,7 +104,7 @@ def p_trf(x1):
  
  
 
-#-------------------------------------- Human capital of teachers - eq 31
+#------------------------------------ Human capital of teachers - eq 31
 
 def H_trf(x1):
     
@@ -140,7 +128,7 @@ def w_tilf(x1):
 
     H_tr = H_trf(x1)     
              
-    C = (1 - s)**((1-eta)/beta)
+    C = ((1 - s)**((1-eta)/beta)).reshape(7, 1)
     A = (1 - x1[0]) / (  np.power( (1 + x1[1]), eta) )   
     
     pp = np.zeros((i))
@@ -152,6 +140,7 @@ def w_tilf(x1):
              
     return w_til 
  
+
 
  
 #------------------------------------------ p_ir  (eq 19)
@@ -167,8 +156,6 @@ def p_irf(x1):
     p_ir = w_til2 / w_r 
              
     return p_ir
-
- tt= p_irf(x1)
 
 
 #---------------------------------------  W (eq 27)
