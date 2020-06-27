@@ -57,7 +57,7 @@ def par():
     z = 1 - (varphi/(1 - eta))    
     alfa = 1 - 1/(theta*(1-eta))
     sig = (eta*kappa)/z
-    phi = np.array((0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168))
+    phi = np.array([0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168])
    
 
 
@@ -97,44 +97,39 @@ def sf( ):
 
 #-------------------------------------- p_tr (eq 29)
 
-def p_trf(x1):
+def p_trf(x1):    
+    s = sf( )
     
- 
     A = ( (1 - x1[0]) / ( (1 + x1[1]) ** eta) ) 
-    B[c, j] = x1[2, c, j]*s[c]**phi[c] 
     
-    C[c, j] = (1 - s[c])**((1-eta)/beta)
-    k[c, j] = (A[c, j]*B[c, j]*C[c, j] )**theta
+    b=np.zeros(i)  
+    for c in range(i): b[c] = np.power(s[c], phi[c])  
+    B = b.reshape(i,1)*x1[2] 
+    
+    C = np.power( (1 - s),((1-eta)/beta) )
+    
+    k = np.power((A*B*C), theta)
     
     p_tr = k[i-1]/np.sum(k, axis=0)
     return p_tr
-
-
-aa=p_trf(x1)
-
-x1[2]*s**phi  
-s
+ 
+ 
+ 
 
 #-------------------------------------- Human capital of teachers - eq 31
 
 def H_trf(x1):
-    global H_tr
     
     p_tr = p_trf(x1)  
-    A = np.zeros((i,r))        
-    H_tr = np.zeros(r)    
 
-    for c in range(i):
-        for j in range(r):
-            A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * x1[2, c, j]**sig 
+    A = ( (1 - x1[0]) / np.power((1 + x1[1]),eta) )  * np.power(x1[2], sig)     
+    A = A[i-1] 
     
-    A = A[i-1]
-    
-    for j in range(r):
-        H_tr[j] = p_tr[j]**(alfa/z) * (eta**eta * s[i-1]**phi[i-1])*A[j]*gamma1**z
-    
+    H_tr = np.power(p_tr, (alfa/z)) * (eta**eta * s[i-1]**phi[i-1])*A*gamma1**z    
+     
     return H_tr
- 
+   
+    
 
 #----------------------------------------- w tilde  (Proposition 1)
 
@@ -142,46 +137,38 @@ def H_trf(x1):
 
 
 def w_tilf(x1):
-    global w_til, A, B 
+
+    H_tr = H_trf(x1)     
+             
+    C = (1 - s)**((1-eta)/beta)
+    A = (1 - x1[0]) / (  np.power( (1 + x1[1]), eta) )   
     
-    par( )
-    H_trf(x1)     
-        
-    w_til = np.zeros((i, r))
-    A = np.zeros((i, r))
-    B = np.zeros((i, r))
-    C = np.zeros(i)
+    pp = np.zeros((i))
+    for c in range(i): pp[c] = np.power(s[c], phi[c])
     
-    for c in range(i):
-        C[c] = (1 - s[c])**((1-eta)/beta)
-        for j in range(r):
-            A[c, j] = (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta)  
-            B[c, j] = x1[2, c, j]*(H_tr[j]**varphi)*s[c]**phi[c]
+    B = x1[2]*np.power(H_tr, varphi)*pp.reshape(7,1)
         
-            w_til[c, j] =  A[c, j]*B[c, j]*C[c]
+    w_til =  A*B*C
              
     return w_til 
  
 
-
+ 
 #------------------------------------------ p_ir  (eq 19)
-          
+
+
 def p_irf(x1):
-    global p_ir, w_r 
-    w_tilf(x1)
+    
+    w_til = w_tilf(x1)
         
-    w_til2 = w_til**theta 
+    w_til2 = np.power(w_til, theta) 
     w_r = w_til2.sum(axis = 0)    
-    
-    p_ir = np.zeros((i, r))
-    
-    for c in range(i):
-        for j in range(r):
-            p_ir[c, j] = w_til2[c, j] / w_r[j] 
+        
+    p_ir = w_til2 / w_r 
              
     return p_ir
 
- 
+ tt= p_irf(x1)
 
 
 #---------------------------------------  W (eq 27)
@@ -209,14 +196,13 @@ def Wf(x1):
     return W
 
 
-#--------- Simulated data 
+#--------- PNAD data
 
 
 def simul():
     global W_t, p_t
     
-    #W_t = np.array(([2.71, 2.81, 3.07, 2.7], [2.76, 2.85, 2.89, 2.8]))  
-    #p_t = np.array(([0.55, 0.4, 0.35, 0.77], [0.45, 0.6, 0.65, 0.23]))
+
     p_t = pd.read_csv('pt.csv', sep=';')
     p_t = p_t.iloc[0:7]
     p_t.set_index('ocup', inplace=True)

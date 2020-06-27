@@ -100,8 +100,8 @@ def sf( ):
 #-------------------------------------- p_tr (eq 29)
 
 def p_trf(x1):
-    global  k
-    
+    global  k, A, B, C, gg
+    gg = np.zeros((i,r))
     A = np.zeros((i,r))
     B = np.zeros((i,r))
     C = np.zeros((i,r))
@@ -111,6 +111,7 @@ def p_trf(x1):
         for j in range(r):
             A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
             B[c, j] = x1[2, c, j]*s[c]**phi[c]
+            gg[c,j] = x1[2, c, j]*s[c]
             C[c, j] = (1 - s[c])**((1-eta)/beta)
             k[c, j] = (A[c, j]*B[c, j]*C[c, j] )**theta
     
@@ -121,23 +122,24 @@ def p_trf(x1):
 #-------------------------------------- Human capital of teachers - eq 31
 
 def H_trf(x1):
-    global H_tr
+    global H_tr, A, ff
     
     p_tr = p_trf(x1)  
     A = np.zeros((i,r))        
     H_tr = np.zeros(r)    
-
+    ff = np.zeros((i,r))
+    
     for c in range(i):
         for j in range(r):
-            A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * x1[2, c, j]**sig 
-    
+            A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) * x1[2, c, j]**sig
+            ff[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) )
     A = A[i-1]
     
     for j in range(r):
         H_tr[j] = p_tr[j]**(alfa/z) * (eta**eta * s[i-1]**phi[i-1])*A[j]*gamma1**z
     
     return H_tr
- 
+
 
 #----------------------------------------- w tilde  (Proposition 1)
 
@@ -166,8 +168,8 @@ def w_tilf(x1):
     return w_til 
  
 
-
 #------------------------------------------ p_ir  (eq 19)
+
           
 def p_irf(x1):
     global p_ir, w_r 
