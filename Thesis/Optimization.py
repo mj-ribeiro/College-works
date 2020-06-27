@@ -37,7 +37,7 @@ sol.success
 
 #####  trust-constr 
 
-Bd
+
 # constraints
 
  
@@ -78,9 +78,6 @@ cons = ({'type': 'eq', 'fun': lambda x1: x1[189:215] - 0},
         )
 
 
-np.where(x1.flatten()==1)
-
-x1.flatten().shape
 
 
 # optimization

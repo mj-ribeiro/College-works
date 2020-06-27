@@ -18,7 +18,6 @@ os.chdir('D:\\Git projects\\college_works\\Thesis')
 
 import numpy as np
 import matplotlib.pyplot as plt
-import math as mt
 from scipy.optimize import minimize
 from math import gamma
 import time
@@ -210,9 +209,6 @@ def obj(x1):
 
 
 
-taus2()
-
-obj(x1)
 
 
 
