@@ -78,6 +78,7 @@ def taus2():
 
 
 def sf( ):
+    par( )
     s = (1+ (1-eta)/ (beta*phi) ) ** (-1)
     return s.reshape(i, 1)
 
@@ -155,40 +156,31 @@ def p_irf(x1):
         
     p_ir = w_til2 / w_r 
              
-    return p_ir
+    return np.array(p_ir), np.array(w_r)
 
 
 #---------------------------------------  W (eq 27)
 
 
+
 def Wf(x1):
-    par()
-    p_irf(x1)
-    sf()
-    #taus2( )
-    global W
-    W = np.zeros((i, r))
-    A = np.zeros((i, r))
-    B = np.zeros(r)
+    s = sf()
+    p_ir, w_r = p_irf(x1)     
     
-    w_r2 = gamma1*eta*w_r**(1/(theta*(1 - eta)))
+    w_r2 = gamma1*eta*w_r**(1/(theta*(1 - eta)))    
+                           
+    A = ( (1 - s)**(-1/beta))/( 1 - x1[0] )
+                                             
+    W = A*w_r2
     
-    for c in range(i):
-        for j in range(r):
-                       
-            A[c, j] = ((1 - s[c])**(-1/beta))/( 1 - x1[0, c, j] )
-            
-                                 
-            W[c, j] = A[c, j]*w_r2[j]
     return W
 
 
+   
 #--------- PNAD data
 
 
 def simul():
-    global W_t, p_t
-    
 
     p_t = pd.read_csv('pt.csv', sep=';')
     p_t = p_t.iloc[0:7]
@@ -197,22 +189,21 @@ def simul():
     W_t = pd.read_csv('wt.csv', sep=';')
     W_t.set_index('ocup', inplace=True)
 
+    return p_t, W_t
 
 
 
 #--------------------- OBJECTIVE FUNCTION
 
 def obj(x1):
-    global D
-    x1 = taus2()
-    x1 = x1.reshape((3, i, r))    
     
-    sf()
-    H_trf(x1)
-    w_tilf(x1)
-    p_irf(x1)
-    Wf(x1)
-    simul()
+    x1 = x1.reshape((3, i, r)) 
+    
+    p_ir, w_r = p_irf(x1)
+    
+    W = Wf(x1)
+    
+    p_t, W_t = simul()
     
     D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()
  

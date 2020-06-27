@@ -51,9 +51,10 @@ cons = ({'type': 'eq', 'fun': lambda x1: x1[189:215] - 0})
 
 # optimization
 
-x1[1].flatten()
+Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 30), )*189
+Bd = np.array(Bd)
 
-189+26
+
 
 print('\033[1;033m')
 sol = minimize(obj, x1.flatten(),  method='trust-constr', 
