@@ -15,12 +15,12 @@ os.chdir('D:\\Git projects\\college_works\\Thesis')
 
 #----- Libraries
 
+
 import numpy as np
 import matplotlib.pyplot as plt
 import math as mt
 from scipy.optimize import minimize
 from math import gamma
-import itertools as itl
 import time
 import pandas as pd
 
@@ -78,7 +78,6 @@ def taus2():
 
 
 def sf( ):
-    par( )
     s = (1+ (1-eta)/ (beta*phi) ) ** (-1)
     return s.reshape(i, 1)
 
@@ -103,13 +102,12 @@ def p_trf(x1):
     return p_tr
  
  
- 
-
 #------------------------------------ Human capital of teachers - eq 31
 
 def H_trf(x1):
     
     p_tr = p_trf(x1)  
+    s = sf()
 
     A = ( (1 - x1[0]) / np.power((1 + x1[1]),eta) )  * np.power(x1[2], sig)     
     A = A[i-1] 
@@ -118,7 +116,7 @@ def H_trf(x1):
      
     return H_tr
    
-    
+
 
 #----------------------------------------- w tilde  (Proposition 1)
 
@@ -128,7 +126,8 @@ def H_trf(x1):
 def w_tilf(x1):
 
     H_tr = H_trf(x1)     
-             
+    s = sf()
+    
     C = ((1 - s)**((1-eta)/beta)).reshape(7, 1)
     A = (1 - x1[0]) / (  np.power( (1 + x1[1]), eta) )   
     
@@ -143,7 +142,6 @@ def w_tilf(x1):
  
 
 
- 
 #------------------------------------------ p_ir  (eq 19)
 
 
@@ -174,7 +172,6 @@ def Wf(x1):
     W = A*w_r2
     
     return W
-
 
    
 #--------- PNAD data
@@ -208,5 +205,14 @@ def obj(x1):
     D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()
  
     return D
+
+
+
+
+
+taus2()
+
+obj(x1)
+
 
 
