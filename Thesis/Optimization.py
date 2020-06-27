@@ -22,24 +22,26 @@ obj(x1)
 
 res = calibration(500, taus2())
 
+pd.DataFrame(x1[2])
 
 #### Nelder Mead
 
 
 
 sol = minimize(obj, x1,  method='Nelder-Mead', 
-               options={'maxiter':1000})
+               options={'maxiter':50})
 
 sol.x
 sol.fun
-
+sol.success
 
 #####  trust-constr 
 
 Bd
 # constraints
 
-cons = ({'type': 'eq', 'fun': lambda x1: x1[8:12] - 0},
+cons = ({'type': 'eq', 'fun': lambda x1: x1[189:215] - 0})
+        
         {'type': 'eq', 'fun': lambda x1: x1[19] - 1},
         {'type': 'eq', 'fun': lambda x1: x1[23] - 1},
         {'type': 'eq', 'fun': lambda x1: x1[0] - x1[1]},
@@ -49,10 +51,13 @@ cons = ({'type': 'eq', 'fun': lambda x1: x1[8:12] - 0},
 
 # optimization
 
+x1[1].flatten()
+
+189+26
 
 print('\033[1;033m')
 sol = minimize(obj, x1.flatten(),  method='trust-constr', 
-               bounds = Bd, constraints= cons,
+               constraints= cons, bounds=Bd,
                options={'maxiter':10000, 'verbose':3,
                          'xtol': 1e-10, 
                          'gtol': 1e-10, 

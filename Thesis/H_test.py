@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Mar  3 10:18:22 2020
+Created on Fri Jun 26 21:38:08 2020
 
 @author: Marcos J Ribeiro
 """
+
 import os
 os.getcwd()
 os.chdir('D:\\Git projects\\college_works\\Thesis')
@@ -56,7 +57,7 @@ def par():
     z = 1 - (varphi/(1 - eta))    
     alfa = 1 - 1/(theta*(1-eta))
     sig = (eta*kappa)/z
-    phi = [0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168]
+    phi = np.array((0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168))
    
 
 
@@ -88,11 +89,8 @@ def taus2():
 
 
 def sf( ):
-    global s
-    s = np.zeros((i, 1))
-    
-    for c in range(i):
-        s[c] = (1+ (1-eta)/ (beta*phi[c]) ) ** (-1)                        
+    par()
+    s = (1+ (1-eta)/ (beta*phi) ) ** (-1)
     return s
 
 
@@ -100,24 +98,23 @@ def sf( ):
 #-------------------------------------- p_tr (eq 29)
 
 def p_trf(x1):
-    global  k
     
-    A = np.zeros((i,r))
-    B = np.zeros((i,r))
-    C = np.zeros((i,r))
-    k = np.zeros((i,r))
+ 
+    A = ( (1 - x1[0]) / ( (1 + x1[1]) ** eta) ) 
+    B[c, j] = x1[2, c, j]*s[c]**phi[c] 
     
-    for c in range(i):
-        for j in range(r):
-            A[c, j] = ( (1 - x1[0, c, j]) / ( (1 + x1[1, c, j]) ** eta) ) 
-            B[c, j] = x1[2, c, j]*s[c]**phi[c]
-            C[c, j] = (1 - s[c])**((1-eta)/beta)
-            k[c, j] = (A[c, j]*B[c, j]*C[c, j] )**theta
+    C[c, j] = (1 - s[c])**((1-eta)/beta)
+    k[c, j] = (A[c, j]*B[c, j]*C[c, j] )**theta
     
     p_tr = k[i-1]/np.sum(k, axis=0)
     return p_tr
 
- 
+
+aa=p_trf(x1)
+
+x1[2]*s**phi  
+s
+
 #-------------------------------------- Human capital of teachers - eq 31
 
 def H_trf(x1):
@@ -249,182 +246,3 @@ def obj(x1):
     return D
 
 
-
-
-#----------------------------- OPTIMIZATION Scipy
-
-
-
-def calibration(v, x1):
-    
-    global D, s1
-    start = time.time()
-    sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':v})
-    end = time.time()
-            
-    print('\033[1;033m=-'*25)
-    print('{:*^50}'.format('Hsieh Model'))
-    print('=-'*25)
-    print('   ')
-    
-    print('\033[1;033mElapsed time:', (end - start))
-    print('   ')
-        
-
-    print(f'tau_w is given by: \n {np.around(sol.x[0:8].reshape(i, r), decimals=4)}')
-    print('   ')
-
-    print(f'tau_h is given by: \n {np.around(sol.x[8:16].reshape(i, r), decimals=4)}')
-    print('   ')
-
-    print(f'w is given by: \n {np.around(sol.x[16:24].reshape(i, r), decimals=4) }')
-    print('   ')
-
-    print(f'The minimun value to D is: {sol.fun}')
-    print('   ') 
-    
-    print(f'Converged:{sol.success}')
-    print('{:*^50}'.format('End of calibration'))
-    
-    s1 = sol.x
-    D = sol.fun
-    
-    return D
-
-
-
-
-
-######## bounds
-
-
-
-
-Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 30), )*189
-
-
-Bd = np.array(Bd)
-
-
-
-
-
-
-
-def taus3():
-    global x3, tau_h, tau_w, w
-    par()        
-    tau_h = np.random.uniform(low=-0.99, high=40, size=(i,r))
-    tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
-    w =np.random.uniform(low=0.001, high=30, size=(i,r))
-    x3 = np.array( [tau_w, tau_h, w] )
-    return x3
-
-
- 
-
-
-
-#--------- Multiple calibration
-
-
-def hsieh(n, v, t=12):
-    global opt, k, tt
-    opt = [t]
-    tt = np.zeros(n+1)
-    for z in itl.count():
-        
-        if z < n+1:
-
-            sol = minimize(obj, x1,  method='Nelder-Mead', options={'maxiter':v})
-            res = sol.fun
-            print(f'\033[1;033mTentativa: {z}, D = {res} ')
-
-            k = sol.x
-            tt[z] = res
-            
-            if res < opt[0]:
-                opt.remove(opt[0])
-                opt.append(res)
-                
-                a = k                
-        else: 
-            break
-    return opt, a
-
-
-
-
-
-
-
-#--------------------------- OPTIMIZATION Marcos's Algorithm
-
-
-
-def hsieh(n, t=12):
-    par( )
-    global opt, k
-    opt = [t]
-    k = np.zeros((3, i, r))
-
-    for z in itl.count():
-        
-        if z < n+1:
-            taus2()
-            res = obj(x1)
-            print(z)
-            
-            if res < opt[0]:
-                opt.remove(opt[0])
-                opt.append(res)
-                k = x1
-        else: 
-            break
-
-
-
-
-
-
-
-def calibration2(v, t=12):
-    
-    start = time.time()
-    hsieh(v, t)
-    end = time.time()
-            
-    print('\033[1;033m=-'*25)
-    print('{:*^50}'.format('Hsieh Model'))
-    print('=-'*25)
-    print('   ')
-    
-    print('\033[1;033mElapsed time:', (end - start))
-    print('   ')
-        
-
-    print(f'tau_w is given by: \n {k[0]}')
-    print('   ')
-
-    print(f'tau_h is given by: \n {k[1]}')
-    print('   ')
-
-    print(f'w is given by: \n {k[2]}')
-    print('   ')
-
-    print(f'The minimun value to D is: {opt}')
-    print('   ') 
-    
-    print('{:*^50}'.format('End of calibration'))
-
-
-
-
-
-
-
-
-
-
-
-###################  END
