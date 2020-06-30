@@ -55,7 +55,6 @@ pd.DataFrame.head(GDP)
 pd.DataFrame.describe(GDP)
 
 
-
 GDP = GDP['20120301':'20200401']
 
 
@@ -72,7 +71,7 @@ plt.ylabel('GDP')
 
 # GPD Growth
 
-gy = pib.pct_change() 
+gy = GDP.pct_change() 
 
 
 fig, ax = plt.subplots(figsize=(8,6))

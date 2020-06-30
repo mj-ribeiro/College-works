@@ -128,7 +128,7 @@ def w_tilf(x1):
     s = sf()
     
     C = ((1 - s)**((1-eta)/beta)).reshape(7, 1)
-    A = (1 - x1[0]) / (  np.power( (1 + x1[1]), eta) )   
+    A = (1 - x1[0]) / (  np.power( (1 + x1[1]), eta) ) 
     
     pp = np.zeros((i))
     for c in range(i): pp[c] = np.power(s[c], phi[c])
@@ -159,7 +159,6 @@ def p_irf(x1):
 #---------------------------------------  W (eq 27)
 
 
-
 def Wf(x1):
     s = sf()
     p_ir, w_r = p_irf(x1)     
@@ -188,12 +187,14 @@ def simul():
     return p_t, W_t
 
 
-
 #--------------------- OBJECTIVE FUNCTION
 
 def obj(x1):
     
     x1 = x1.reshape((3, i, r)) 
+    x1[0, 0, : ] = x1[0, 0, 0]    
+    x1[1, 0, :] = 0
+    x1[2, :, r-1] = 1
     
     p_ir, w_r = p_irf(x1)
     
@@ -204,10 +205,6 @@ def obj(x1):
     D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()
  
     return D
-
-
-
-
 
 
 

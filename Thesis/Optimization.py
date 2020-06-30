@@ -11,7 +11,7 @@ os.getcwd()
 os.chdir('D:\\Git projects\\college_works\\Thesis')
 
 
-from Hsieh_model import *
+from H_test import *
 from scipy.optimize import minimize
 import pandas as pd
 
@@ -29,7 +29,7 @@ pd.DataFrame(x1[2])
 
 
 sol = minimize(obj, x1,  method='Nelder-Mead', 
-               options={'maxiter':50})
+               options={'maxiter':1000})
 
 sol.x
 sol.fun
@@ -40,7 +40,6 @@ sol.success
 
 # constraints
 
- 
 cons = ({'type': 'eq', 'fun': lambda x1: x1[189:215] - 0},        
         {'type': 'eq', 'fun': lambda x1: x1[404] - 1},
         {'type': 'eq', 'fun': lambda x1: x1[431] - 1},
@@ -79,7 +78,6 @@ cons = ({'type': 'eq', 'fun': lambda x1: x1[189:215] - 0},
 
 
 
-
 # optimization
 
 Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 30), )*189
@@ -88,23 +86,40 @@ Bd = np.array(Bd)
 
 
 print('\033[1;033m')
-sol = minimize(obj, x1.flatten(),  method='trust-constr', 
+sol = minimize(obj, x1.flatten(),  method='trust-constr',
                constraints= cons, bounds=Bd,
                options={'maxiter':10000, 'verbose':3,
                          'xtol': 1e-10, 
                          'gtol': 1e-10, 
                          'barrier_tol': 1e-10})
+ 
 
-x1=sol.x
+
+
+
+print('\033[1;033m')
+sol= minimize(obj, taus2().flatten(),  method='L-BFGS-B', bounds = Bd,
+                    options={'maxiter':20000, 'iprint':100})
+
+ 
+
+sol
+x1=sol.x 
 sol.fun
+sol.success
 
-sol.x
-sol = minimize(obj, x1,  method='trust-constr', 
-               bounds = Bd, constraints= cons,
-               options={'maxiter':10000, 'verbose':3,
-                         'xtol': 1e-10, 
-                         'gtol': 1e-10, 
-                         'barrier_tol': 1e-10})
+x1.reshape((3, 7, 27))[2, :, 26] 
+
+ 
+
+#see: https://stackoverflow.com/questions/38648727/scipy-optimize-minimize-is-taking-too-long
+
+
+
+print('\033[1;033m')
+sol= minimize(obj, taus2().flatten(),  method='COBYLA', bounds = Bd,
+                    options={'maxiter':20000, 'iprint':0,'disp': True})
+
 
 
 
