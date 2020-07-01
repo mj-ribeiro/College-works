@@ -86,30 +86,38 @@ Bd = np.array(Bd)
 
 
 print('\033[1;033m')
-sol = minimize(obj, x1.flatten(),  method='trust-constr',
+sol = minimize(obj, z1.flatten(),  method='trust-constr',
                constraints= cons, bounds=Bd,
                options={'maxiter':10000, 'verbose':3,
-                         'xtol': 1e-10, 
-                         'gtol': 1e-10, 
-                         'barrier_tol': 1e-10})
+                         'xtol': 1e-4, 
+                         'gtol': 1e-4, 
+                         'barrier_tol': 1e-4})
  
 
 
 
 
-print('\033[1;033m')
-sol= minimize(obj, taus2().flatten(),  method='L-BFGS-B', bounds = Bd,
-                    options={'maxiter':20000, 'iprint':100})
 
- 
+c = 0
+while opt>50:
+    start = time.time()
+    sol= minimize(obj, z1,  method='L-BFGS-B', bounds = Bd, options={'maxiter':20000, 'maxfun':30000})
+    end = time.time()
+    opt = sol.fun
+    z1 = sol.x 
+    c = c +  1
+    print(f'\033[1;033mIteração:{c}, Objetivo: {np.around(opt, 4)}, sucesso: {sol.success}, Elapsed time: {np.around((end - start), 2)}')
 
-sol
-x1=sol.x 
+
+
+sol 
+z1=sol.x 
 sol.fun
 sol.success
 
-x1.reshape((3, 7, 27))[2, :, 26] 
 
+x1.reshape((3, 7, 27))[2, :, 26] 
+obj(z1)
  
 
 #see: https://stackoverflow.com/questions/38648727/scipy-optimize-minimize-is-taking-too-long

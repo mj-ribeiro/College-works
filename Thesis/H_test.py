@@ -169,14 +169,14 @@ def Wf(x1):
                                              
     W = A*w_r2
     
-    return W
+    return W, p_ir
 
    
 #--------- PNAD data
 
 
 def simul():
-
+    global p_t, W_t
     p_t = pd.read_csv('pt.csv', sep=';')
     p_t = p_t.iloc[0:7]
     p_t.set_index('ocup', inplace=True)
@@ -186,8 +186,10 @@ def simul():
 
     return p_t, W_t
 
+simul()
 
 #--------------------- OBJECTIVE FUNCTION
+
 
 def obj(x1):
     
@@ -195,13 +197,9 @@ def obj(x1):
     x1[0, 0, : ] = x1[0, 0, 0]    
     x1[1, 0, :] = 0
     x1[2, :, r-1] = 1
-    
-    p_ir, w_r = p_irf(x1)
-    
-    W = Wf(x1)
-    
-    p_t, W_t = simul()
-    
+            
+    W, p_ir = Wf(x1)
+        
     D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()
  
     return D
