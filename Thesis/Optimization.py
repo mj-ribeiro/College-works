@@ -22,7 +22,6 @@ obj(x1)
 
 res = calibration(500, taus2())
 
-pd.DataFrame(x1[2])
 
 #### Nelder Mead
 
@@ -95,13 +94,14 @@ sol = minimize(obj, z1.flatten(),  method='trust-constr',
  
 
 
-
-
-
+# L-BFGS-B
+ 
+opt = 150
+z1=x1
 c = 0
 while opt>50:
     start = time.time()
-    sol= minimize(obj, z1,  method='L-BFGS-B', bounds = Bd, options={'maxiter':20000, 'maxfun':30000})
+    sol= minimize(obj, z1,  method='L-BFGS-B', bounds = Bd, options={'maxiter':20000, 'maxfun':1000})
     end = time.time()
     opt = sol.fun
     z1 = sol.x 
@@ -125,8 +125,8 @@ obj(z1)
 
 
 print('\033[1;033m')
-sol= minimize(obj, taus2().flatten(),  method='COBYLA', bounds = Bd,
-                    options={'maxiter':20000, 'iprint':0,'disp': True})
+sol= minimize(obj, z1,  method='SLSQP', bounds = Bd,
+                    options={'maxiter':20000, 'iprint':2,'disp': True})
 
 
 
