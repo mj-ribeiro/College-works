@@ -20,6 +20,7 @@ import pandas as pd
 x1 = taus2()
 obj(x1)
 
+
 res = calibration(500, taus2())
 
 
@@ -96,10 +97,11 @@ sol = minimize(obj, z1.flatten(),  method='trust-constr',
 
 # L-BFGS-B
  
-opt = 150
+opt = 50
 z1=x1
+
 c = 0
-while opt>50:
+while opt>2:
     start = time.time()
     sol= minimize(obj, z1,  method='L-BFGS-B', bounds = Bd, options={'maxiter':20000, 'maxfun':1000})
     end = time.time()
@@ -108,17 +110,20 @@ while opt>50:
     c = c +  1
     print(f'\033[1;033mIteração:{c}, Objetivo: {np.around(opt, 4)}, sucesso: {sol.success}, Elapsed time: {np.around((end - start), 2)}')
 
-
+ 
 
 sol 
 z1=sol.x 
 sol.fun
 sol.success
 
-
+z1
 x1.reshape((3, 7, 27))[2, :, 26] 
+taus2()
 obj(z1)
- 
+
+obj2(z1) 
+
 
 #see: https://stackoverflow.com/questions/38648727/scipy-optimize-minimize-is-taking-too-long
 

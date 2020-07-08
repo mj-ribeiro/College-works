@@ -183,12 +183,13 @@ def simul():
 
     W_t = pd.read_csv('wt.csv', sep=';')
     W_t.set_index('ocup', inplace=True)
-
+        
     return p_t, W_t
 
 simul()
 
 #--------------------- OBJECTIVE FUNCTION
+
 
 
 def obj(x1):
@@ -199,11 +200,23 @@ def obj(x1):
     x1[2, :, r-1] = 1
             
     W, p_ir = Wf(x1)
-        
+    
     D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()
- 
+    D = np.log(D)
+    
     return D
 
+ 
+def obj2(x1):
+    
+    x1 = x1.reshape((3, i, r)) 
+    x1[0, 0, : ] = x1[0, 0, 0]    
+    x1[1, 0, :] = 0
+    x1[2, :, r-1] = 1
+            
+    W, p_ir = Wf(x1)
+    
+    D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()    
+    return D
 
-
-
+ 
