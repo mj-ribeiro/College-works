@@ -8,7 +8,6 @@
 setwd("D:/Git projects/college_works/Bayesian Simulation")
 
 
-install.packages('rjags')
 
 library('rjags')
 
@@ -24,8 +23,41 @@ mod = " model{
 } "
 
 
+# set up the model
+set.seed(50)
+
+y = c(1.2, 1.4, -0.5, 0.3, 0.9, 2.3, 1.0, 0.1, 1.3, 1.9)
+
+n = length(y)
+
+data_jags = list(y=y, n=n)
+params = c('mu')
+
+inits = function(){
+  inits = list('mu'= 0.0)
+}
+
+mod = jags.model(textConnection(mod), 
+                 data = data_jags,
+                 inits = inits)
 
 
 
+# Run MCMC
+
+update(mod, 500)
+
+
+mod_sim = coda.samples(model = mod,
+                       variable.names = params,
+                       n.iter = 1000)
+
+
+# Post processing
+library(coda)
+
+
+plot(mod_sim)
+summary(mod_sim)
 
 
