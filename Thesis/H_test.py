@@ -176,10 +176,12 @@ def simul():
     p_t = pd.read_csv('pt.csv', sep=';')
     p_t = p_t.iloc[0:7]
     p_t.set_index('ocup', inplace=True)
-
+    p_t = np.array(p_t)
+    
     W_t = pd.read_csv('wt.csv', sep=';')
     W_t.set_index('ocup', inplace=True)
-        
+    W_t = np.array(W_t)
+    
     return p_t, W_t
 
 simul()
