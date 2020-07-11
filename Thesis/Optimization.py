@@ -26,10 +26,14 @@ res = calibration(500, taus2())
 
 #### Nelder Mead
 
+def callback(x):
+    fobj = obj(x)
+    print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}') 
 
 
-sol = minimize(obj, x1,  method='Nelder-Mead', 
-               options={'maxiter':1000})
+sol = minimize(obj, x1,  method='Nelder-Mead', callback=callback,
+               options={'maxiter':1e5})
+
 
 sol.x
 sol.fun
@@ -85,14 +89,21 @@ Bd = np.array(Bd)
 
 
 
+def hessp(x, l):
+    return np.zeros((3, i, r))
+
+
+
 print('\033[1;033m')
-sol = minimize(obj, z1.flatten(),  method='trust-constr',
-               constraints= cons, bounds=Bd,
+sol = minimize(obj, x1.flatten(),  method='trust-constr',
+               constraints= cons, bounds=Bd, hessp=hessp,
                options={'maxiter':10000, 'verbose':3,
                          'xtol': 1e-4, 
                          'gtol': 1e-4, 
                          'barrier_tol': 1e-4})
- 
+
+
+
 
 
 # L-BFGS-B

@@ -89,22 +89,23 @@ def p_trf(x1):
     
     A = ( (1 - x1[0]) / ( (1 + x1[1]) ** eta) ) 
     
-    b = s**phi 
+    b = np.power(s, phi) 
     B = b.reshape(i,1)*x1[2] 
     
     C = np.power( (1 - s),((1-eta)/beta) )
     
-    k = np.power((A*B*C), theta)
+    d = A*B*C
+    k = np.power(d, theta)
     
     p_tr = k[i-1]/np.sum(k, axis=0)
     return p_tr
  
- 
+
+
 #------------------------------------ Human capital of teachers - eq 31
 
 def H_trf(x1):    
     p_tr = p_trf(x1)  
-#    s = sf()
 
     A = ( (1 - x1[0]) / np.power((1 + x1[1]),eta) )  * np.power(x1[2], sig)     
     A = A[i-1] 
@@ -189,7 +190,6 @@ simul()
 #--------------------- OBJECTIVE FUNCTION
 
 
-
 def obj(x1):
     
     x1 = x1.reshape((3, i, r)) 
@@ -200,9 +200,13 @@ def obj(x1):
     W, p_ir = Wf(x1)
     
     D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()
-    D = np.log(D)
-    
+    #D = np.log(D)    
     return D
+
+
+
+
+
 
  
 def obj2(x1):
