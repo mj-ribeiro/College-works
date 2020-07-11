@@ -77,9 +77,9 @@ def taus2():
 
 
 def sf( ):
+    global s
     s = (1+ (1-eta)/ (beta*phi) ) ** (-1)
     return s.reshape(i, 1)
-
 
 
 #-------------------------------------- p_tr (eq 29)
@@ -89,8 +89,7 @@ def p_trf(x1):
     
     A = ( (1 - x1[0]) / ( (1 + x1[1]) ** eta) ) 
     
-    b=np.zeros(i)  
-    for c in range(i): b[c] = np.power(s[c], phi[c])  
+    b = s**phi 
     B = b.reshape(i,1)*x1[2] 
     
     C = np.power( (1 - s),((1-eta)/beta) )
@@ -103,10 +102,9 @@ def p_trf(x1):
  
 #------------------------------------ Human capital of teachers - eq 31
 
-def H_trf(x1):
-    
+def H_trf(x1):    
     p_tr = p_trf(x1)  
-    s = sf()
+#    s = sf()
 
     A = ( (1 - x1[0]) / np.power((1 + x1[1]),eta) )  * np.power(x1[2], sig)     
     A = A[i-1] 
@@ -125,13 +123,11 @@ def H_trf(x1):
 def w_tilf(x1):
 
     H_tr = H_trf(x1)     
-    s = sf()
     
     C = ((1 - s)**((1-eta)/beta)).reshape(7, 1)
     A = (1 - x1[0]) / (  np.power( (1 + x1[1]), eta) ) 
     
-    pp = np.zeros((i))
-    for c in range(i): pp[c] = np.power(s[c], phi[c])
+    pp = np.power(s, phi)
     
     B = x1[2]*np.power(H_tr, varphi)*pp.reshape(7,1)
         
