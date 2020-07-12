@@ -38,16 +38,14 @@ def par():
     varphi = 0.25
     theta = 3.44
     rho = 0.19
-    kappa = 1/(1- eta)
+    kappa = np.divide(1, (1- eta) )
     i = 7
     r = 27
-    gamma1 = gamma(1 - ( 1/(theta*(1-rho)) * 1/(1 - eta) ) )   
-    z = 1 - (varphi/(1 - eta))    
+    gamma1 = gamma(   1 - (   np.divide(1, (theta*(1-rho)) ) * np.divide(1, (1 - eta) ) ) )   
+    z = 1 - np.divide(varphi, (1 - eta))    
     alfa = 1 - 1/(theta*(1-eta))
     sig = (eta*kappa)/z
     phi = np.array([0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168]).reshape(i, 1)
-   
-
 
 
 #----------------------- Tau's  & w (TPF)
@@ -75,44 +73,43 @@ def taus2():
 
 #--------------------------- s - time spent at school   (eq 14)
 
-
 def sf( ):
     global s
-    s = (1+ (1-eta)/ (beta*phi) ) ** (-1)
-    return s.reshape(i, 1)
+    s = np.power( (1+ np.divide( (1-eta), (beta*phi) ) ), -1 )
+    s = s.reshape(i, 1)
+    return s
+
 
 
 #-------------------------------------- p_tr (eq 29)
 
 def p_trf(x1):    
-    s = sf( )
-    
-    A = ( (1 - x1[0]) / np.power( (1 + x1[1]), eta) ) 
-    
-    b = np.power(s, phi) 
-    B = b.reshape(i,1)*x1[2] 
-    
-    C = np.power( (1 - s),((1-eta)/beta) )
-    
-    d = A*B*C
+    s = sf( )    
+    A = np.divide( (1 - x1[0]) , np.power( (1 + x1[1]), eta) )     
+    b = np.power(s, phi ) 
+    B = np.multiply(b.reshape(i,1), x1[2] )     
+    C = np.power( (1 - s), np.divide((1-eta), beta) )
+    d = np.multiply(np.multiply(A, B), C )
     k = np.power(d, theta)
-    
-    p_tr = k[i-1]/np.sum(k, axis=0)
+    p_tr = np.divide( k[i-1], np.sum(k, axis=0) )
     return p_tr
- 
 
 
 #------------------------------------ Human capital of teachers - eq 31
 
+
 def H_trf(x1):    
     p_tr = p_trf(x1)  
 
-    A = ( (1 - x1[0]) / np.power((1 + x1[1]),eta) )  * np.power(x1[2], sig)     
+    A = np.multiply( np.divide( (1 - x1[0]), np.power((1 + x1[1]),eta) ), np.power(x1[2], sig) )    
     A = A[i-1] 
     
-    H_tr = np.power(p_tr, (alfa/z)) * np.power(eta, eta) * np.power(s[i-1], phi[i-1])*A*np.power(gamma1, z)    
-     
+    h = np.multiply(np.power(p_tr, (alfa/z)), np.power(eta, eta) )
+    c = np.multiply( np.power(s[i-1], phi[i-1]), np.power(gamma1, z) )
+    
+    H_tr = np.multiply(np.multiply(h, A), c )       
     return H_tr
+
    
 
 
@@ -121,19 +118,18 @@ def H_trf(x1):
 
 
 def w_tilf(x1):
-
     H_tr = H_trf(x1)     
-    m = (1-eta)/beta
-    
+    m = np.divide( (1-eta), beta )    
     C = np.power((1 - s), (m)).reshape(7, 1)
-    A = (1 - x1[0]) / (  np.power( (1 + x1[1]), eta) ) 
-    
+    A = np.divide( (1 - x1[0]) , ( np.power( (1 + x1[1]), eta) ) ) 
     pp = np.power(s, phi)
     
-    B = x1[2]*np.power(H_tr, varphi)*pp.reshape(7,1)
-        
-    w_til =  A*B*C
-             
+    b = np.multiply( x1[2], np.power(H_tr, varphi) )
+    
+    B = np.multiply(b, pp.reshape(7,1))
+   
+    w_til =  np.multiply(np.multiply(A, B), C )
+    
     return w_til 
  
 
@@ -141,38 +137,28 @@ def w_tilf(x1):
 #------------------------------------------ p_ir  (eq 19)
 
 
-def p_irf(x1):
-    
+
+def p_irf(x1):    
     w_til = w_tilf(x1)
-        
     w_til2 = np.power(w_til, theta) 
     w_r = w_til2.sum(axis = 0)    
-        
-    p_ir = w_til2 / w_r 
-             
+    p_ir = np.divide(w_til2 , w_r ) 
     return np.array(p_ir), np.array(w_r)
 
 
 #---------------------------------------  W (eq 27)
 
-
 def Wf(x1):
-    s = sf()
-    p_ir, w_r = p_irf(x1)     
-    z = gamma1*eta*w_r
-    t = 1 / (theta*(1 - eta))
-    
-    w_r2 = np.power(z, t)    
-                           
-    A = np.power( (1 - s), (-1/beta) )/( 1 - x1[0] )
-                                             
-    W = A*w_r2
-    
+    p_ir, w_r = p_irf(x1)         
+    z = np.multiply(np.multiply(gamma1, eta), w_r )
+    t = np.divide(1, np.multiply(theta, (1 - eta)) )    
+    w_r2 = np.power(z, t)
+    A = np.divide( np.power( (1 - s), (-1/beta) ), ( 1 - x1[0] )  )                
+    W = np.multiply(A, w_r2)
     return W, p_ir
 
    
 #--------- PNAD data
-
 
 def simul():
     global p_t, W_t
@@ -189,8 +175,8 @@ def simul():
 
 simul()
 
-#--------------------- OBJECTIVE FUNCTION
 
+#--------------------- OBJECTIVE FUNCTION
 
 def obj(x1):
     
@@ -201,26 +187,9 @@ def obj(x1):
             
     W, p_ir = Wf(x1)
     
-    D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()
-    D = np.log(D)    
+    D =  (np.power(np.divide( (W-W_t), W_t ), 2) + np.power(np.divide( (p_ir-p_t), p_t ), 2) ).sum()
+    D = np.log(D)
+    
     return D
 
 
-
-
-
-
- 
-def obj2(x1):
-    
-    x1 = x1.reshape((3, i, r)) 
-    x1[0, 0, : ] = x1[0, 0, 0]    
-    x1[1, 0, :] = 0
-    x1[2, :, r-1] = 1
-            
-    W, p_ir = Wf(x1)
-    
-    D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()    
-    return D
-
- 

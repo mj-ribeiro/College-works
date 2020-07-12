@@ -45,6 +45,10 @@ reg = lm(linfant ~ lincome, data=Leinhardt)
 summary(reg)
 
 
+library('olsrr')
+reg0 = ols_regress(linfant ~ lincome, data=Leinhardt)
+
+
 dat = na.omit(Leinhardt)
 
 
@@ -96,6 +100,26 @@ mod1_sim = coda.samples(model=mod1,
 
 mod1_csim = do.call(rbind, mod1_sim)
 
+
+
+
+
+# plots' model
+
+windows()
+plot(mod1_sim)
+
+
+# diagnostics
+
+gelman.diag(mod1_sim)
+
+autocorr.diag(mod1_sim)
+
+
+effectiveSize(mod1_sim)
+
+summary(mod1_sim)
 
 
 
