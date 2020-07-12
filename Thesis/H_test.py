@@ -75,7 +75,7 @@ def taus2():
 
 def sf( ):
     global s
-    s = np.power( (1+ np.divide( (1-eta), (beta*phi) ) ), -1 )
+    s = np.power( (1+ np.divide( (1-eta), ( np.multiply(beta, phi) ) ) ), -1 )
     s = s.reshape(i, 1)
     return s
 

@@ -18,7 +18,8 @@ import pandas as pd
 
 
 x1 = taus2()
-obj(x1)
+
+obj(z1)
 
 
 res = calibration(500, taus2())
@@ -93,17 +94,15 @@ def hessp(x, l):
     return np.zeros((3, i, r))
 
 
-
 print('\033[1;033m')
-sol = minimize(obj, x1.flatten(),  method='trust-constr',
-               constraints= cons, bounds=Bd, hessp=hessp,
+sol = minimize(obj, z1.flatten(),  method='trust-constr',
+               constraints= cons, bounds=Bd, 
                options={'maxiter':10000, 'verbose':3,
                          'xtol': 1e-4, 
                          'gtol': 1e-4, 
                          'barrier_tol': 1e-4})
 
-
-
+z1.reshape(3, i, r)[2, :, 26]
 
 
 # L-BFGS-B
@@ -129,21 +128,14 @@ z1=sol.x
 sol.fun
 sol.success
 
-z1
-x1.reshape((3, 7, 27))[2, :, 26] 
-taus2()
-obj(z1)
 
-obj2(z1) 
+
+
+
 
 
 #see: https://stackoverflow.com/questions/38648727/scipy-optimize-minimize-is-taking-too-long
 
-
-
-print('\033[1;033m')
-sol= minimize(obj, z1,  method='SLSQP', bounds = Bd,
-                    options={'maxiter':20000, 'iprint':2,'disp': True})
 
 
 
