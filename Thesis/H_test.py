@@ -54,7 +54,7 @@ def par():
 
     
 def taus2():
-    global x1, tau_h, tau_w, w
+    global x1
     par()
         
     tau_h = np.random.uniform(low=-0.99, high=40, size=(i,r))
@@ -87,7 +87,7 @@ def sf( ):
 def p_trf(x1):    
     s = sf( )
     
-    A = ( (1 - x1[0]) / ( (1 + x1[1]) ** eta) ) 
+    A = ( (1 - x1[0]) / np.power( (1 + x1[1]), eta) ) 
     
     b = np.power(s, phi) 
     B = b.reshape(i,1)*x1[2] 
@@ -110,7 +110,7 @@ def H_trf(x1):
     A = ( (1 - x1[0]) / np.power((1 + x1[1]),eta) )  * np.power(x1[2], sig)     
     A = A[i-1] 
     
-    H_tr = np.power(p_tr, (alfa/z)) * (eta**eta * s[i-1]**phi[i-1])*A*gamma1**z    
+    H_tr = np.power(p_tr, (alfa/z)) * np.power(eta, eta) * np.power(s[i-1], phi[i-1])*A*np.power(gamma1, z)    
      
     return H_tr
    
@@ -118,14 +118,14 @@ def H_trf(x1):
 
 #----------------------------------------- w tilde  (Proposition 1)
 
-#    x1 = np.array( [tau_w, tau_h, w] )
 
 
 def w_tilf(x1):
 
     H_tr = H_trf(x1)     
+    m = (1-eta)/beta
     
-    C = ((1 - s)**((1-eta)/beta)).reshape(7, 1)
+    C = np.power((1 - s), (m)).reshape(7, 1)
     A = (1 - x1[0]) / (  np.power( (1 + x1[1]), eta) ) 
     
     pp = np.power(s, phi)
@@ -159,10 +159,12 @@ def p_irf(x1):
 def Wf(x1):
     s = sf()
     p_ir, w_r = p_irf(x1)     
+    z = gamma1*eta*w_r
+    t = 1 / (theta*(1 - eta))
     
-    w_r2 = gamma1*eta*w_r**(1/(theta*(1 - eta)))    
+    w_r2 = np.power(z, t)    
                            
-    A = ( (1 - s)**(-1/beta))/( 1 - x1[0] )
+    A = np.power( (1 - s), (-1/beta) )/( 1 - x1[0] )
                                              
     W = A*w_r2
     
@@ -200,7 +202,7 @@ def obj(x1):
     W, p_ir = Wf(x1)
     
     D = ( ( (W-W_t)/W_t )**2 + ( (p_ir-p_t)/p_t )**2).sum().sum()
-    #D = np.log(D)    
+    D = np.log(D)    
     return D
 
 

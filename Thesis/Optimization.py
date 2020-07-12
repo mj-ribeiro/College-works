@@ -107,8 +107,9 @@ sol = minimize(obj, x1.flatten(),  method='trust-constr',
 
 
 # L-BFGS-B
- 
-opt = 50
+
+taus2()
+opt = 12
 z1=x1
 
 c = 0
