@@ -85,6 +85,10 @@ model_d = train(as.factor(crise2) ~  gold + embi + oil + cb  + cdi, data=df3,
 
 cm_lg1 = confusionMatrix(model_d)
 
+
+
+predict(model_d, newdata = df3[,-1],  type = "raw" )
+
 # RF
 
 

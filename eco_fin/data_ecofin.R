@@ -291,11 +291,6 @@ var1 = quantile(cm2, 0.05)
 var2 = quantile(cm2, 0.1)
 
 
-hist(cm2, breaks = 15, col='lightgreen', 
-     probability = T,
-     main='Histograma para o CMAX diário \n com 24 janelas')
-abline(v=var1)
-
 
 lim = mean(cm2)-2*sd(cm2)
 
@@ -326,13 +321,17 @@ crise = matrix(nrow = length(cmts))
 
 crise = ifelse(cm2<var1, 1, 0)
 
-pos = which(crise==1)   # pegar a posição onde crise== 1
-pos
+pos0 = which(crise==1)   # pegar a posição onde crise== 1
+pos0
 
 
 for(i in 2:length(pos)){
   crise[(pos[i]-12):pos[i]] = 1
 }
+
+
+pos1 = which(crise==1)   # pegar a posição onde crise== 1
+pos1
 
 
 table(crise)
@@ -355,9 +354,17 @@ pos2 = which(crise2==1)   # pegar a posição onde crise== 1
 pos2
 
 
-for(i in 2:length(pos2)){
-  crise2[(pos2[i]-12):pos2[i]] = 1
+for(i in 1:length(pos2)){
+  a = (pos2[i]-12)
+  if(a<0){
+    a = 1
+  }
+  crise2[a:pos2[i]] = 1
 }
+
+
+pos3 = which(crise2==1)   # pegar a posição onde crise== 1
+pos3
 
 
 
@@ -396,8 +403,6 @@ df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold, rav, rvix, av
 ### save in rds file
 
 saveRDS(df, 'df.rds')
-
-plot(df$rexc, type='l')
 
 
 

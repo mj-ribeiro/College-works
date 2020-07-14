@@ -30,14 +30,15 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}') 
 
 
-sol = minimize(obj, z1,  method='Nelder-Mead', callback=callback,
-               options={'maxiter':1e100})
+%time sol2 = minimize(obj, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
 
 
-sol.x
-sol.fun
-sol.success
 
+z1=sol2.x
+sol2.fun
+sol2.success
+
+obj(z1)
 
 
 #####  trust-constr 
@@ -63,10 +64,10 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}') 
 
 
+    
+%time sol= minimize(obj, x1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-11, options={'maxiter':1e6, 'maxfun':1e1000})
+              
 
-sol= minimize(obj, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, 
-              options={'maxiter':1e1000, 'maxfun':1e1000})
- 
 
 
 sol 

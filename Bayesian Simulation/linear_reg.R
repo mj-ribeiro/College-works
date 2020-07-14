@@ -122,5 +122,3 @@ effectiveSize(mod1_sim)
 summary(mod1_sim)
 
 
-
-
