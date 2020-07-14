@@ -36,7 +36,7 @@ library('randomForest')
 
 #--- load variables
 
-df = readRDS('df.rds')
+df1 = readRDS('df.rds')
 
 
 #df$rexc = as.numeric(df$rexc)
@@ -44,7 +44,7 @@ df = readRDS('df.rds')
 
 keep = c('crise2', 'gold',  'embi',  'oil', 'cb', 'rexc',  'cdi')
 
-df6 = df[,keep]
+df6 = df1[,keep]
 
 
 #--- Rose library

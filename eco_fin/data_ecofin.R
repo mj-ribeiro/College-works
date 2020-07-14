@@ -325,8 +325,8 @@ pos0 = which(crise==1)   # pegar a posição onde crise== 1
 pos0
 
 
-for(i in 2:length(pos)){
-  crise[(pos[i]-12):pos[i]] = 1
+for(i in 2:length(pos0)){
+  crise[(pos0[i]-12):pos0[i]] = 1
 }
 
 
