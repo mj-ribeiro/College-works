@@ -74,6 +74,7 @@ obj(z1)
 
 k1 = pd.DataFrame(z1)
 
+k1.to_excel("output.xlsx")  
 
 
 if __name__ == "__main__":

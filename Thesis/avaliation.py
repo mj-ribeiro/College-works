@@ -45,13 +45,6 @@ p_t.columns = names
 
 # plots
 
-plt.scatter(p_ir, p_t)
-
-
-
-plt.scatter(W, W_t)
-
-
 fig, ax = plt.subplots(1, 2, figsize=(12,6))
 ax[0].scatter(p_ir, p_t)
 ax[0].set_xlabel('p_ir Model')
@@ -70,7 +63,7 @@ ax[1].set_ylabel('W_ir PNAD Data')
 
 tau_w =  pd.DataFrame( z1.reshape(3, i, r)[0] )
 tau_w.columns = names
-#tau_w[0, 0] = 0.5319
+
 
 tau_h = pd.DataFrame( z1.reshape(3, i, r)[1] )
 tau_h.columns = names
