@@ -97,7 +97,7 @@ df4 <- melt(data = df4, id.vars = "data1")
 # plot, using the aesthetics argument 'colour'
 
 g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
-  geom_line(size=0.4) +
+  geom_line(size=0.8) +
   scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
@@ -105,14 +105,15 @@ g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
         axis.title.x = element_text(colour = 'black', size=19),
         axis.title.y = element_text(colour = 'black', size=19),
         legend.title=element_blank(),
-        legend.text = element_text(colour="black", size = 17)) + 
+        legend.text = element_text(colour="black", size = 17),
+        legend.position="bottom" ) + 
   xlab('Anos') + 
   ylab('')  
 
 
 g5 = g4  + scale_colour_discrete(name="Variáveis",
                          breaks=c("crise", "rexc"),
-                         labels=c(expression(D[t]), "AV"))
+                         labels=c(expression(D[t]), "AV")) 
 
 windows()
 g5
@@ -170,13 +171,13 @@ df$rexc = as.numeric(df$rexc)
 
 d1 = ggplot(data=df, aes(x = data1, y = rexc)) + 
       geom_line()  +
-      scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+      scale_x_date(date_labels="%Y",date_breaks  ="2 year") +
       scale_y_continuous(breaks = seq(-50, 100, by = 20)) +
       theme_minimal() +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
             axis.text.y = element_text(size=17), 
-            axis.title.x = element_text(colour = 'black', size=19),
-            axis.title.y = element_text(colour = 'black', size=19),
+            axis.title.x = element_text(colour = 'black', size=17),
+            axis.title.y = element_text(colour = 'black', size=17),
             legend.title=element_blank(),
             legend.text = element_text(colour="black", size = 17)) + 
       xlab('Anos') + 
@@ -187,13 +188,13 @@ d1 = ggplot(data=df, aes(x = data1, y = rexc)) +
 
 d2 = ggplot(data=df, aes(x = data1, y = cb)) + 
   geom_line()  +
-  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_x_date(date_labels="%Y",date_breaks  ="2 year") +
   scale_y_continuous(breaks = seq(60, 215, by = 20)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
         axis.text.y = element_text(size=17), 
-        axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19),
+        axis.title.x = element_text(colour = 'black', size=17),
+        axis.title.y = element_text(colour = 'black', size=17),
         legend.title=element_blank(),
         legend.text = element_text(colour="black", size = 17)) + 
   xlab('Anos') + 
@@ -206,13 +207,13 @@ d2 = ggplot(data=df, aes(x = data1, y = cb)) +
 
 d3 = ggplot(data=df, aes(x = data1, y = cdi)) + 
   geom_line()  +
-  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_x_date(date_labels="%Y",date_breaks  ="2 year") +
   scale_y_continuous(breaks = seq(0.2, 3, by = 0.3)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
         axis.text.y = element_text(size=17), 
-        axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19),
+        axis.title.x = element_text(colour = 'black', size=17),
+        axis.title.y = element_text(colour = 'black', size=17),
         legend.title=element_blank(),
         legend.text = element_text(colour="black", size = 17)) + 
   xlab('Anos') + 
@@ -226,13 +227,13 @@ df$embi = as.numeric(df$embi)
 
 d4 = ggplot(data=df, aes(x = data1, y = embi)) + 
   geom_line()  +
-  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_x_date(date_labels="%Y",date_breaks  ="2 year") +
   scale_y_continuous(breaks = seq(100, 2300, by = 300)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
         axis.text.y = element_text(size=17), 
-        axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19),
+        axis.title.x = element_text(colour = 'black', size=17),
+        axis.title.y = element_text(colour = 'black', size=17),
         legend.title=element_blank(),
         legend.text = element_text(colour="black", size = 17)) + 
   xlab('Anos') + 
@@ -246,13 +247,13 @@ d4 = ggplot(data=df, aes(x = data1, y = embi)) +
 
 d5 = ggplot(data=df, aes(x = data1, y = oil)) + 
   geom_line()  +
-  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_x_date(date_labels="%Y",date_breaks  ="2 year") +
   scale_y_continuous(breaks = seq(10, 150, by = 20)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
         axis.text.y = element_text(size=17), 
-        axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19),
+        axis.title.x = element_text(colour = 'black', size=17),
+        axis.title.y = element_text(colour = 'black', size=17),
         legend.title=element_blank(),
         legend.text = element_text(colour="black", size = 17)) + 
   xlab('Anos') + 
@@ -264,13 +265,13 @@ d5 = ggplot(data=df, aes(x = data1, y = oil)) +
 
 d6 = ggplot(data=df, aes(x = data1, y = gold)) + 
   geom_line()  +
-  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_x_date(date_labels="%Y",date_breaks  ="2 year") +
   scale_y_continuous(breaks = seq(250, 1850, by = 250)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
         axis.text.y = element_text(size=17), 
-        axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19),
+        axis.title.x = element_text(colour = 'black', size=17),
+        axis.title.y = element_text(colour = 'black', size=17),
         legend.title=element_blank(),
         legend.text = element_text(colour="black", size = 17)) + 
   xlab('Anos') + 
@@ -280,6 +281,6 @@ d6 = ggplot(data=df, aes(x = data1, y = gold)) +
 
 library("ggpubr")
 
-ggarrange(d5, d6, d1, d4, d3, d2)
+ggarrange(d5, d6, d1, d4, d3, d2, nrow=3, ncol=2)
 
 

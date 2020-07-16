@@ -113,14 +113,12 @@ model_h =train(as.factor(crise2) ~  gold + embi + oil + cb + cdi, data=df3,
 cm_rf1 = confusionMatrix(model_h)
 
 
+####### ROC
+
 
 x_h = evalm(model_h)
 
-
-
-
 roc_rf1 = data.frame( x_h$roc$data[,c(2,1)] ) 
-
 
 roc_lg1$feature="Logit"
 roc_rf1$feature="FAs"
@@ -128,21 +126,25 @@ roc_rf1$feature="FAs"
 m_sav = rbind(roc_lg1, roc_rf1)
 
 
-ggplot(m_sav, aes(FPR, SENS, colour=feature)) +
-  geom_line(size=0.8) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
-        axis.text.y = element_text(size=17), 
-        axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19),
-        legend.title=element_blank(),
-        legend.text = element_text(colour="black", size = 17)) + 
-  xlab('Falso Positivo') + 
-  ylab('Verdadeiro Positivo')  
+roc1 = ggplot(m_sav, aes(FPR, SENS, colour=feature)) +
+          geom_line(size=0.8) +
+          theme_minimal() +
+          theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+                axis.text.y = element_text(size=17), 
+                axis.title.x = element_text(colour = 'black', size=17),
+                axis.title.y = element_text(colour = 'black', size=17),
+                legend.title=element_blank(),
+                legend.text = element_text(colour="black", size = 17),
+                plot.title = element_text(hjust = 0.5, size=19)) +
+          xlab('Falso Positivo') + 
+          ylab('Verdadeiro Positivo') +
+          ggtitle('Sem AV')
 
 
 
-#---------- create dataframe
+
+############# create dataframe
+
 
 
 métricas = data.frame(matrix(, nrow=2, ncol=11))
@@ -171,7 +173,7 @@ semrav = t(métricas)
 
 
 
-# LOGIT
+#----- LOGIT
 
 
 model_c = train(as.factor(crise2) ~  gold + embi + oil + cb + rexc + cdi, data=df3, 
@@ -184,7 +186,15 @@ model_c = train(as.factor(crise2) ~  gold + embi + oil + cb + rexc + cdi, data=d
 cm_lg2 = confusionMatrix(model_c)
 
 
-# RF
+x_c = evalm(model_c)
+
+
+roc_lg2 = data.frame( x_c$roc$data[,c(2,1)] ) 
+
+
+
+#------- RF
+
 
 
 model_g = train(as.factor(crise2) ~  gold + embi + oil + cb + rexc + cdi, data=df3, 
@@ -194,7 +204,38 @@ model_g = train(as.factor(crise2) ~  gold + embi + oil + cb + rexc + cdi, data=d
 cm_rf2 = confusionMatrix(model_g)
 
 
-#---------- create dataframe
+
+################ ROC
+
+
+x_g = evalm(model_g)
+
+roc_rf2 = data.frame( x_g$roc$data[,c(2,1)] ) 
+
+
+roc_lg2$feature="Logit"
+roc_rf2$feature="FAs"
+
+m_sav2 = rbind(roc_lg2, roc_rf2)
+
+
+roc2 = ggplot(m_sav2, aes(FPR, SENS, colour=feature)) +
+          geom_line(size=0.8) +
+          theme_minimal() +
+          theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+                axis.text.y = element_text(size=17), 
+                axis.title.x = element_text(colour = 'black', size=17),
+                axis.title.y = element_text(colour = 'black', size=17),
+                legend.title=element_blank(),
+                legend.text = element_text(colour="black", size = 17),
+                plot.title = element_text(hjust = 0.5, size=19) )  + 
+          xlab('Falso Positivo') + 
+          ylab('Verdadeiro Positivo') +
+          ggtitle('Com AV')
+        
+
+
+############# create dataframe
 
 
 métricas = data.frame(matrix(, nrow=2, ncol=11))
@@ -220,7 +261,7 @@ comrav = t(métricas)
 #                                     Somente  RAV
 ###############################################################################################
 
-# LOGIT
+#---------- LOGIT
 
 
 model_m = train(as.factor(crise2) ~  rexc, data=df3, 
@@ -234,8 +275,15 @@ cm_lg3 = confusionMatrix(model_m)
 
 
 
+x_m = evalm(model_m)
 
-# RF
+
+roc_lg3 = data.frame( x_m$roc$data[,c(2,1)] ) 
+
+
+
+
+#---------- RF
 
 
 model_r = train(as.factor(crise2) ~ rexc, data=df3,
@@ -248,7 +296,38 @@ cm_rf3 = confusionMatrix(model_r)
 
 
 
-#---------- create dataframe
+########### ROC
+
+
+x_r = evalm(model_r)
+
+roc_rf3 = data.frame( x_r$roc$data[,c(2,1)] ) 
+
+
+roc_lg3$feature="Logit"
+roc_rf3$feature="FAs"
+
+m_sav3 = rbind(roc_lg3, roc_rf3)
+
+
+roc3 = ggplot(m_sav3, aes(FPR, SENS, colour=feature)) +
+  geom_line(size=0.8) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=17),
+        axis.title.y = element_text(colour = 'black', size=17),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17),
+        plot.title = element_text(hjust = 0.5, size=19)) + 
+  xlab('Falso Positivo') + 
+  ylab('Verdadeiro Positivo') +
+  ggtitle('Somente AV')
+
+
+
+############ create dataframe
+
 
 
 métricas = data.frame(matrix(, nrow=2, ncol=11))
@@ -266,6 +345,9 @@ métricas = round( métricas, 4)
 sorav = t(métricas)
 
 
+
+
+######## Join dataframe
 
 
 semrav
@@ -305,13 +387,28 @@ summary(m2)
 
 library(randomForest)
 
-rf = randomForest(as.factor(crise2) ~ rexc   + oil +  cdi + cb + embi + gold, data=df6)
+rf = randomForest(as.factor(crise2) ~ rexc   + oil +  cdi + cb + embi + gold, data=df6, importance=T)
 rf
 
+rf$importance
 
 importance(rf)
 varImpPlot(rf, sort = T)
 
+#see https://www.youtube.com/watch?v=Zze7SKuz9QQ
+
+
+
+
+library("ggpubr")
+
+g_roc = ggarrange(roc1, roc2, roc3, nrow=1, 
+          common.legend = T, 
+          legend = 'bottom')
+
+
+
+saveRDS(g_roc, 'roc_curve.rds')
 
 
 
