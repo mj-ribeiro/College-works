@@ -161,10 +161,125 @@ g7
 
 
 
+### Selected variables 
+
+
+df$rexc = as.numeric(df$rexc)
+
+# AV
+
+d1 = ggplot(data=df, aes(x = data1, y = rexc)) + 
+      geom_line()  +
+      scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+      scale_y_continuous(breaks = seq(-50, 100, by = 20)) +
+      theme_minimal() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+            axis.text.y = element_text(size=17), 
+            axis.title.x = element_text(colour = 'black', size=19),
+            axis.title.y = element_text(colour = 'black', size=19),
+            legend.title=element_blank(),
+            legend.text = element_text(colour="black", size = 17)) + 
+      xlab('Anos') + 
+      ylab('AV')  
+
+
+# CB       
+
+d2 = ggplot(data=df, aes(x = data1, y = cb)) + 
+  geom_line()  +
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_y_continuous(breaks = seq(60, 215, by = 20)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17)) + 
+  xlab('Anos') + 
+  ylab('INPC')  
 
 
 
 
+# Cdi       
 
+d3 = ggplot(data=df, aes(x = data1, y = cdi)) + 
+  geom_line()  +
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_y_continuous(breaks = seq(0.2, 3, by = 0.3)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17)) + 
+  xlab('Anos') + 
+  ylab('CDI')  
+
+
+
+# EMBI
+
+df$embi = as.numeric(df$embi)
+
+d4 = ggplot(data=df, aes(x = data1, y = embi)) + 
+  geom_line()  +
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_y_continuous(breaks = seq(100, 2300, by = 300)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17)) + 
+  xlab('Anos') + 
+  ylab('EMBI')  
+
+
+
+
+# OIL
+
+
+d5 = ggplot(data=df, aes(x = data1, y = oil)) + 
+  geom_line()  +
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_y_continuous(breaks = seq(10, 150, by = 20)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17)) + 
+  xlab('Anos') + 
+  ylab('Petróleo')  
+
+
+# GOLD
+
+
+d6 = ggplot(data=df, aes(x = data1, y = gold)) + 
+  geom_line()  +
+  scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
+  scale_y_continuous(breaks = seq(250, 1850, by = 250)) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17)) + 
+  xlab('Anos') + 
+  ylab('Ouro')  
+
+
+
+library("ggpubr")
+
+ggarrange(d5, d6, d1, d4, d3, d2)
 
 

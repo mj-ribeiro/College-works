@@ -64,7 +64,12 @@ prop.table(table(df3$crise2))
 #---- Control train
 
 
-control_train = trainControl(method = 'repeatedcv', number = 10, repeats = 20)    # ten fold
+control_train = trainControl(method = 'repeatedcv', 
+                             number = 10, 
+                             repeats = 10,
+                             savePredictions = TRUE, 
+                             classProbs = TRUE, 
+                             verboseIter = TRUE)    # ten fold
 
 
 
@@ -97,6 +102,10 @@ model_h =train(as.factor(crise2) ~  gold + embi + oil + cb + cdi, data=df3,
 cm_rf1 = confusionMatrix(model_h)
 
 
+
+library(MLeval)
+
+x = evalm(model_h)
 
 
 
@@ -241,19 +250,19 @@ tab = tab[,-1]
 
 
 
-print(xtable(tab, type = "latex", digits=4), file = "tab.tex")
+print(xtable(tab, type = "latex", digits=4), file = "tab1.tex")
 
 
 
 ###########
 
 
-m1 = glm(crise2~as.numeric(df$rexc), data=df, family = 'binomial')
+m1 = glm(crise2~as.numeric(df6$rexc), data=df6, family = 'binomial')
 
 summary(m1)
 
 
-m2 = glm(crise2~as.numeric(df$rexc) + gold + cdi + cb + oil + as.numeric(embi), data=df, family = 'binomial')
+m2 = glm(crise2~as.numeric(df6$rexc) + gold + cdi + cb + oil + as.numeric(embi), data=df6, family = 'binomial')
 
 summary(m2)
 
@@ -263,10 +272,12 @@ summary(m2)
 
 library(randomForest)
 
-rf = randomForest(as.factor(crise2) ~ rexc   + oil +  cdi + cb + embi + gold, data=df, importance=T)
+rf = randomForest(as.factor(crise2) ~ rexc   + oil +  cdi + cb + embi + gold, data=df6)
+rf
+
 
 importance(rf)
-varImpPlot(rf)
+varImpPlot(rf, sort = T)
 
 
 
