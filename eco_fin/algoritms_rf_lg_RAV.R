@@ -31,6 +31,7 @@ library('xtable')
 library(caret)
 library(ROSE)
 library('randomForest')
+library(MLeval) # to get ROC curve
 
 
 
@@ -60,6 +61,8 @@ df3 = data.frame(df3$data)
 
 prop.table(table(df3$crise2))
 
+
+df3$crise2 = ifelse(df3$crise2==1, 'yes', 'no')
 
 #---- Control train
 
@@ -92,7 +95,15 @@ cm_lg1 = confusionMatrix(model_d)
 
 
 
-# RF
+x_d = evalm(model_d)
+
+
+roc_lg1 = data.frame( x_d$roc$data[,c(2,1)] ) 
+
+
+
+
+#---- RF
 
 
 model_h =train(as.factor(crise2) ~  gold + embi + oil + cb + cdi, data=df3, 
@@ -103,9 +114,31 @@ cm_rf1 = confusionMatrix(model_h)
 
 
 
-library(MLeval)
+x_h = evalm(model_h)
 
-x = evalm(model_h)
+
+
+
+roc_rf1 = data.frame( x_h$roc$data[,c(2,1)] ) 
+
+
+roc_lg1$feature="Logit"
+roc_rf1$feature="FAs"
+
+m_sav = rbind(roc_lg1, roc_rf1)
+
+
+ggplot(m_sav, aes(FPR, SENS, colour=feature)) +
+  geom_line(size=0.8) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17)) + 
+  xlab('Falso Positivo') + 
+  ylab('Verdadeiro Positivo')  
 
 
 
