@@ -48,6 +48,14 @@ keep = c('crise2', 'gold',  'embi',  'oil', 'cb', 'rexc',  'cdi')
 df6 = df1[,keep]
 
 
+
+### correlation
+
+correl = round(cor(df6[,-c(1)]), 4 )
+print(xtable(correl, type = "latex", digits=4), file = "correl.tex")
+
+
+
 #--- Rose library
 
 library(ROSE)
@@ -369,7 +377,24 @@ print(xtable(tab, type = "latex", digits=4), file = "tab1.tex")
 
 
 
-###########
+########### Join ROC 
+
+
+
+
+
+library("ggpubr")
+
+g_roc = ggarrange(roc1, roc2, roc3, nrow=1, 
+                  common.legend = T, 
+                  legend = 'bottom')
+
+
+
+saveRDS(g_roc, 'roc_curve.rds')
+
+
+#### Logit traditional
 
 
 m1 = glm(crise2~as.numeric(df6$rexc), data=df6, family = 'binomial')
@@ -383,32 +408,48 @@ summary(m2)
 
 
 
-
+#### Importance plots
 
 library(randomForest)
 
 rf = randomForest(as.factor(crise2) ~ rexc   + oil +  cdi + cb + embi + gold, data=df6, importance=T)
 rf
 
-rf$importance
+imp = rf$importance
 
-importance(rf)
-varImpPlot(rf, sort = T)
+imp[1, 4] = 19.5254
+r_names = c('AV', 'Petróleo', 'CDI', 'INPC', 'EMBI', 'Ouro')
+
+length(imp)
+length(r_names)
+
+row.names(imp) = r_names
+
+imp = imp[,4]
+
+
+imp = data.frame(imp)
+colnames(imp) = 'variáveis'
+
+
+vimp = ggplot(imp, aes(variáveis, r_names) ) +
+        geom_point(size=2, col='blue') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+        axis.text.y = element_text(size=17), 
+        axis.title.x = element_text(colour = 'black', size=19),
+        axis.title.y = element_text(colour = 'black', size=19),
+        legend.title=element_blank(),
+        legend.text = element_text(colour="black", size = 17),
+        legend.position="bottom" ) + 
+  xlab('Diminuição média no Gini') + 
+  ylab('Variáveis')  
+
+
+
 
 #see https://www.youtube.com/watch?v=Zze7SKuz9QQ
 
-
-
-
-library("ggpubr")
-
-g_roc = ggarrange(roc1, roc2, roc3, nrow=1, 
-          common.legend = T, 
-          legend = 'bottom')
-
-
-
-saveRDS(g_roc, 'roc_curve.rds')
 
 
 

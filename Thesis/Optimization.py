@@ -6,6 +6,8 @@ Created on Fri Jun 19 15:23:08 2020
 """
 # see:  https://notes.quantecon.org/submission/5b3db2ceb9eab00015b89f93
 
+
+
 import os
 os.getcwd()
 os.chdir('D:\\Git projects\\college_works\\Thesis')
@@ -31,7 +33,7 @@ def callback(x):
 
 
     
-%time sol= minimize(obj, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e5, 'maxfun':1e1000})
+%time sol= minimize(obj, x1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e5, 'maxfun':1e1000})
               
 
 
@@ -76,9 +78,6 @@ k1 = pd.DataFrame(z1)
 
 k1.to_excel("output.xlsx")  
 
-
-if __name__ == "__main__":
-    main()
 
 
 
