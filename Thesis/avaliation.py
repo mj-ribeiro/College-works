@@ -35,7 +35,7 @@ W, p_ir = Wf(z1.reshape(3, i, r))
 W = pd.DataFrame(W)
 p_ir = pd.DataFrame(p_ir)
 
-
+ 
 # PNAD data
 
 p_t, W_t = simul()   
@@ -61,15 +61,13 @@ p_t.columns = names
 
 # plots
 
-fig, ax = plt.subplots(1, 2, figsize=(12,6))
+fig, ax = plt.subplots(1, 2, figsize=(16,8))
 ax[0].scatter(p_ir, p_t)
 ax[0].set_xlabel('p_ir Model')
 ax[0].set_ylabel('p_ir PNAD Data')
 ax[1].scatter(W, W_t)
 ax[1].set_xlabel('W_ir Model')
 ax[1].set_ylabel('W_ir PNAD Data')
-
-
 
 
 

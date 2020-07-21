@@ -32,19 +32,18 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}') 
 
 
+if __name__ == '__main__':
     
-%time sol= minimize(obj, x1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e5, 'maxfun':1e1000})
+    %time sol= minimize(obj, x1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e5, 'maxfun':1e1000})
               
-
-
-
-sol 
-z1=sol.x 
-sol.fun 
-sol.success
-
-
-obj(z1)
+    
+    sol 
+    z1=sol.x 
+    sol.fun 
+    sol.success
+    
+    
+    obj(z1)
 
 
 
@@ -59,24 +58,23 @@ def callback(x):
     fobj = obj(x)
     print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}') 
 
+if __name__ == '__main__':
 
-%time sol2 = minimize(obj, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
+    %time sol2 = minimize(obj, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
 
 
-
-
-z1=sol2.x
-sol2.fun
-sol2.success
-
-obj(z1)
+    
+    z1=sol2.x
+    sol2.fun
+    sol2.success
+    
+    obj(z1)
  
 
 
+    k1 = pd.DataFrame(z1)
 
-k1 = pd.DataFrame(z1)
-
-k1.to_excel("output.xlsx")  
+    k1.to_excel("output.xlsx")  
 
 
 

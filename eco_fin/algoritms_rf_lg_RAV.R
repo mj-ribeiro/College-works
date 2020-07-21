@@ -10,8 +10,6 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 metrics = function(cm){
   acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
-  cpc = cm[["table"]][2,2] / ( cm[["table"]][1,2] + cm[["table"]][2,2] )
-  epc = cm[["table"]][1,1] / ( cm[["table"]][2,1] + cm[["table"]][1,1] )
   sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
   especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
@@ -155,9 +153,9 @@ roc1 = ggplot(m_sav, aes(FPR, SENS, colour=feature)) +
 
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=11))
+métricas = data.frame(matrix(, nrow=2, ncol=9))
 row.names(métricas) = c('Logit',  'FA')
-colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+colnames(métricas) = c("Acurácia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
@@ -246,9 +244,9 @@ roc2 = ggplot(m_sav2, aes(FPR, SENS, colour=feature)) +
 ############# create dataframe
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=11))
+métricas = data.frame(matrix(, nrow=2, ncol=9))
 row.names(métricas) = c('Logit',  'FA')
-colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+colnames(métricas) = c("Acurácia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
@@ -338,9 +336,9 @@ roc3 = ggplot(m_sav3, aes(FPR, SENS, colour=feature)) +
 
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=11))
+métricas = data.frame(matrix(, nrow=2, ncol=9))
 row.names(métricas) = c('Logit',  'FA')
-colnames(métricas) = c("Acurácia", "CPC", "EPC", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+colnames(métricas) = c("Acurácia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 

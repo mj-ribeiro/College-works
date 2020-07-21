@@ -98,20 +98,18 @@ def p_trf(x1):
 #------------------------------------ Human capital of teachers - eq 31
 
 
+
 def H_trf(x1):    
     p_tr = p_trf(x1)  
 
-    A = np.multiply( np.divide( (1 - x1[0]), np.power((1 + x1[1]),eta) ), np.power(x1[2], sig) )    
+    A = np.power(np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ), sig )    
     A = A[i-1] 
     
-    h = np.multiply(np.power(p_tr, (alfa/z)), np.power(eta, eta) )
-    c = np.multiply( np.power(s[i-1], phi[i-1]), np.power(gamma1, z) )
+    h = np.multiply(np.power(p_tr, (alfa/z)), np.power(eta, (eta*kappa/z) ) )
+    c = np.multiply( np.power(s[i-1], (phi[i-1]*kappa/z) ), np.power(gamma1, 1/z) )
     
     H_tr = np.multiply(np.multiply(h, A), c )       
     return H_tr
-
-   
-
 
 #----------------------------------------- w tilde  (Proposition 1)
 
@@ -150,11 +148,9 @@ def p_irf(x1):
 
 def Wf(x1):
     p_ir, w_r = p_irf(x1)         
-    z = np.multiply(np.multiply(gamma1, eta), w_r )
-    t = np.divide(1, np.multiply(theta, (1 - eta)) )    
-    w_r2 = np.power(z, t)
+    z = np.multiply(np.multiply(gamma1, eta), np.power(w_r, np.divide(1, np.multiply(theta, (1 - eta)) ) ) )
     A = np.divide( np.power( (1 - s), (-1/beta) ), ( 1 - x1[0] )  )                
-    W = np.multiply(A, w_r2)
+    W = np.multiply(A, z)
     return W, p_ir
 
    
@@ -251,8 +247,6 @@ Bd = np.array(Bd)
 def hessp(x, l):
     return np.zeros((3, i, r))
 
-
-print(f'\033[1;033mOlá mundo!')
 
 
 
