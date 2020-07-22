@@ -208,7 +208,10 @@ def H_irf(x1):
 
 
 
-
+def Y_f(x1):
+    H_ir = H_irf(x1) 
+    Y = np.multiply(x1[2], H_ir).sum(axis=0)
+    return Y
 
 
 Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 30), )*189

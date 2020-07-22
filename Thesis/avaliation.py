@@ -48,7 +48,11 @@ p_t =  pd.DataFrame(p_t)
 n = pd.read_csv('pt.csv', sep=';')
 n = n.iloc[0:7]
 n.set_index('ocup', inplace=True)
-names = list(n)
+names = n.columns.str.strip("'")
+
+
+
+
 
 # set colnamens
 
@@ -59,18 +63,34 @@ W_t.columns = names
 p_t.columns = names
 
 
+
+names  = np.array(names).repeat(7) 
+
+
+
+p_t = p_t.values.flatten() 
+p_ir = p_ir.values.flatten()
+
+W = W.values.flatten()
+W_t = W_t.values.flatten()
+
 # plots
 
 fig, ax = plt.subplots(1, 2, figsize=(16,8))
-ax[0].scatter(p_ir, p_t, s=100)
+ax[0].scatter(p_ir, p_t, s=0)
+for i, txt in enumerate(names):
+    ax[0].annotate(txt, (p_ir[i], p_t[i]), size=20) 
 ax[0].set_xlabel('p_ir Model', fontsize=20)
 ax[0].set_ylabel('p_ir PNAD Data', fontsize=20)
 ax[0].plot([0, 0.5], [0, 0.5], 'k-', lw=2)
-ax[1].scatter(W, W_t, s=100)
+ax[1].scatter(W, W_t, s=0)
+for i, txt in enumerate(names):
+    ax[1].annotate(txt, (W[i], W_t[i]), size=20) 
 ax[1].set_xlabel('W_ir Model', fontsize=20)
 ax[1].set_ylabel('W_ir PNAD Data', fontsize=20)
 ax[1].plot([1, 4.5], [1, 4.5], 'k-', lw=2)
 
+ 
 
 
 # z1
@@ -84,6 +104,23 @@ tau_h.columns = names
 
 w = pd.DataFrame( z1.reshape(3, i, r)[2] )
 w.columns = names
+
+
+
+
+
+Y = Y_f(z1)
+tpf = np.log(z1[2].sum(axis=0) )
+names2 = n.columns.str.strip("'")
+
+
+plt.scatter(Y, tpf, s=10)
+(m, b) = np.polyfit(Y, tpf, 1)
+yp = np.polyval([m, b], Y)
+plt.plot(Y, yp)
+for i, txt in enumerate(names2):
+    plt.annotate(txt, (Y[i], tpf[i]), size=20) 
+plt.grid(True)
 
 
 
