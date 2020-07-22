@@ -27,10 +27,10 @@ def par():
     varphi = 0.25
     theta = 3.44
     rho = 0.19
+    alfa = 0.6
     kappa = np.divide(1, (1- eta) )
     nu = 1 + np.multiply(alfa, np.multiply(varphi, kappa))
-    pi = 1 - np.multiply(np.multiply( (1 - alfa), varphi), kappa )
-    alfa = 1
+    pi = 1 - np.multiply(np.multiply( (1 - alfa), varphi), kappa )    
     sig = (eta*kappa)/pi
     psi = np.multiply(np.power(eta, eta), np.power( (1-eta), (1-eta) ) )
     i = 7
@@ -38,7 +38,7 @@ def par():
     gamma1 = gamma(   1 - np.multiply( np.divide(1, np.multiply(theta, (1-rho)) ), np.divide(1, (1 - eta) ) ) )   
     phi = np.array([0.138, 0.174, 0.136, 0.1, 0.051, 0.084, 0.168]).reshape(i, 1)
    
-
+    
 
 
 ## Guess
@@ -163,6 +163,7 @@ def simul():
     
     return p_t, W_t
 
+simul()
 
 ## Objective - EQ 31
 
