@@ -53,17 +53,6 @@ names = n.columns.str.strip("'")
 
 
 
-
-# set colnamens
-
-W.columns = names
-p_ir.columns = names
-
-W_t.columns = names
-p_t.columns = names
-
-
-
 names  = np.array(names).repeat(7) 
 
 
@@ -83,12 +72,15 @@ for i, txt in enumerate(names):
 ax[0].set_xlabel('p_ir Model', fontsize=20)
 ax[0].set_ylabel('p_ir PNAD Data', fontsize=20)
 ax[0].plot([0, 0.5], [0, 0.5], 'k-', lw=2)
+ax[0].grid(True)
 ax[1].scatter(W, W_t, s=0)
 for i, txt in enumerate(names):
     ax[1].annotate(txt, (W[i], W_t[i]), size=20) 
 ax[1].set_xlabel('W_ir Model', fontsize=20)
 ax[1].set_ylabel('W_ir PNAD Data', fontsize=20)
 ax[1].plot([1, 4.5], [1, 4.5], 'k-', lw=2)
+ax[1].grid(True)
+plt.tight_layout()    
 
  
 
@@ -117,11 +109,14 @@ names2 = n.columns.str.strip("'")
 plt.scatter(Y, tpf, s=10)
 (m, b) = np.polyfit(Y, tpf, 1)
 yp = np.polyval([m, b], Y)
-plt.plot(Y, yp)
+plt.plot(Y, yp, label='Regression Line')
 for i, txt in enumerate(names2):
     plt.annotate(txt, (Y[i], tpf[i]), size=20) 
 plt.grid(True)
+plt.legend(loc="lower left", prop={'size': 20})
+plt.xlabel("Log of TFP - model", fontsize=20)
+plt.ylabel("GDP per worker - model", fontsize=20)
+plt.tight_layout()    
 
 
-
-
+ 
