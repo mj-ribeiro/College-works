@@ -31,8 +31,9 @@ def par():
     kappa = np.divide(1, (1- eta) )
     nu = 1 + np.multiply(alfa, np.multiply(varphi, kappa))
     pi = 1 - np.multiply(np.multiply( (1 - alfa), varphi), kappa )    
-    sig = (eta*kappa)/pi
-    psi = np.multiply(np.power(eta, eta), np.power( (1-eta), (1-eta) ) )
+    sig = np.divide(np.multiply(eta, kappa), pi )
+    #psi = np.multiply(np.power(eta, eta), np.power( (1-eta), (1-eta) ) )
+    psi = 1
     i = 7
     r = 27
     gamma1 = gamma(   1 - np.multiply( np.divide(1, np.multiply(theta, (1-rho)) ), np.divide(1, (1 - eta) ) ) )   
@@ -92,33 +93,31 @@ def p_trf(x1):
 
 ## Teachers human's capital - EQ 30
 
+
 def H_trf(x1):    
     p_tr = p_trf(x1)  
     A = np.power(np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ), sig )    
     A = A[i-1]     
-    m = np.divide(np.multiply(eta, kappa), pi )
-    h = np.multiply(np.power(p_tr, (nu/pi)), np.power(eta, m ) )
+    P = np.multiply(np.power(p_tr, (nu/pi)), np.power(eta, sig ) )
     g = np.divide(np.multiply(phi[i-1], kappa ), pi )
-    C = np.multiply( np.power(s[i-1], g ), np.power(gamma1, 1/pi) )
-    H_tr = np.multiply(np.multiply(h, A), C )       
+    C = np.multiply( np.power(s[i-1], g ), np.power(gamma1, np.divide(1, pi) ) )
+    H_tr = np.multiply(np.multiply(P, A), C )       
     return H_tr
-
 
 
 
 ## Liquid reward - PROPOSITION 1
 
-
 def w_tilf(x1):
     H_tr = H_trf(x1) 
-    p_tr = p_trf(x1)     
-    m = np.divide( (1-eta), beta )        
-    C = np.power((1 - s), (m)).reshape(7, 1)
+    p_tr = p_trf(x1)                 
+    C = np.power((1 - s), np.divide( (1-eta), beta )).reshape(7, 1)
     pp = np.power(s, phi)        
-    A = np.multiply(psi, np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ) )    
+    A = np.multiply(psi, np.multiply( np.divide( (1 - x1[0]), np.power( (1 + x1[1]), eta ) ), x1[2] ) )    
     b = np.power(np.multiply(np.power(p_tr, alfa), np.power(H_tr, (1-alfa) ) ), varphi )    
     B = np.multiply(b, pp.reshape(7,1))
     w_til =  np.multiply(np.multiply(A, B), C )
+    return w_til 
     return w_til 
 
 
@@ -168,7 +167,7 @@ simul()
 ## Objective - EQ 31
 
 
-def obj(x1):
+def obj2(x1):
     
     x1 = x1.reshape((3, i, r)) 
     x1[0, 0, : ] = x1[0, 0, 0]    
@@ -182,4 +181,36 @@ def obj(x1):
     
     return D
 
+
+
+## h_til
+
+def h_tilf(x1):
+    H_tr = H_trf(x1) 
+    p_tr = p_trf(x1) 
+    A = np.power(np.multiply(np.power(p_tr, alfa), np.power(H_tr, (1-alfa) ) ), varphi )    
+    B = np.multiply(np.power(s, phi), np.power(eta, eta) )
+    h_til = np.power(np.multiply(A, B), kappa )
+    return h_til
+
+
+
+## Human capital - EQ 23
+
+def H_irf(x1):
+    p_ir = p_irf(x1)[0]
+    h_til = h_tilf(x1)
+    A = np.multiply(h_til, p_ir)    
+    B = np.power(np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ), np.divide(eta, (1-eta) ) )       
+    C = np.multiply(np.power(p_ir, np.divide(-kappa, theta)) , gamma1 )
+    H_ir = np.multiply(np.multiply(A, B), C )
+    return H_ir
+
+
+
+
+
+
+Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 30), )*189
+Bd = np.array(Bd)
 
