@@ -34,7 +34,7 @@ def callback(x):
 
 if __name__ == '__main__':
     
-    %time sol= minimize(obj, x1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e5, 'maxfun':1e1000})
+    %time sol= minimize(obj, x1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':4e4, 'maxfun':1e1000})
               
     
     sol 
@@ -53,10 +53,12 @@ if __name__ == '__main__':
 #### Nelder Mead
 #trava no 3.57
 
-
+cc = 0
 def callback(x):
+    global cc 
+    cc = cc + 1
     fobj = obj(x)
-    print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}') 
+    print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}, Iter:{cc}') 
 
 if __name__ == '__main__':
 
@@ -74,7 +76,7 @@ if __name__ == '__main__':
 
     k1 = pd.DataFrame(z1)
 
-    k1.to_excel("output.xlsx")  
+    k1.to_excel("k1.xlsx")  
 
 
 

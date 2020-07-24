@@ -73,6 +73,7 @@ df3$crise2 = ifelse(df3$crise2==1, 'yes', 'no')
 #---- Control train
 
 
+
 control_train = trainControl(method = 'repeatedcv', 
                              number = 10, 
                              repeats = 10,
@@ -404,6 +405,8 @@ m2 = glm(crise2~as.numeric(df6$rexc) + gold + cdi + cb + oil + as.numeric(embi),
 
 summary(m2)
 
+print(xtable(m2, type = "latex", digits=4), file = "reg1.tex")
+
 
 
 #### Importance plots
@@ -443,7 +446,7 @@ vimp = ggplot(imp, aes(variáveis, r_names) ) +
   xlab('Diminuição média no Gini') + 
   ylab('Variáveis')  
 
-
+vimp
 
 
 #see https://www.youtube.com/watch?v=Zze7SKuz9QQ
