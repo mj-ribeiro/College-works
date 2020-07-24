@@ -18,14 +18,14 @@ taus2()
 
 
 
-z1 = pd.read_excel('k1.xlsx') # i replace z1 by k1 to test
+z1 = pd.read_excel('z1.xlsx') # i replace z1 by k1 to test
 
 z1 = np.array(z1)
 
 z1 = z1.reshape(3, i, r)
 
 
-np.exp( obj(z1) )
+np.exp( obj2(z1) )
 
 
 
@@ -137,11 +137,11 @@ plt.plot(tpf, yp, label='Regression Line')
 for tt, txt in enumerate(names2):
     plt.annotate(txt, (tpf[tt], Y[tt]), size=20) 
 plt.grid(True)
-plt.legend(loc="lower left", prop={'size': 20})
+plt.legend(loc="lower right", prop={'size': 20})
 plt.xlabel(" TFP - model", fontsize=20)
 plt.ylabel("GDP per worker - model", fontsize=20)
 plt.tight_layout()    
-
+ 
 
 
 
