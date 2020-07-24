@@ -35,7 +35,6 @@ def callback(x):
     fobj = obj2(x)
     print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}, iter: {cc}') 
 
-
     
 %time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e5, 'maxfun':1e1000})
 
@@ -47,7 +46,7 @@ sol.fun
 sol.success
 
 
-obj(z1)
+obj2(z1)
 
 
 
@@ -74,13 +73,14 @@ z1=sol2.x
 sol2.fun
 sol2.success
 
-obj(z1)
- 
+obj2(z1)
  
 
-k1 = pd.DataFrame(z1)
+ 
 
-k1.to_excel("z1.xlsx")  
+kk1 = pd.DataFrame(z1)
+
+kk1.to_excel("z1.xlsx")  
 
 
 

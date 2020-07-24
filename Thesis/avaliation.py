@@ -78,10 +78,10 @@ for ii, txt in enumerate(names):
     ax.annotate(txt, (W[ii], W_t[ii]), size=20) 
 ax.set_xlabel('W_ir Model', fontsize=20)
 ax.set_ylabel('W_ir PNAD Data', fontsize=20)
-ax.plot([1, 4.5], [1, 4.5], 'k-', lw=2)
+ax.plot([1, 4.5], [1, 4.5], 'k-', lw=2, label='45° line')
 ax.grid(True)
 plt.tight_layout()    
-ax.legend( prop={'size': 20})
+ax.legend( prop={'size': 18})
 
 
 
@@ -112,10 +112,10 @@ for ii, txt in enumerate(names):
     ax.annotate(txt, (p_ir[ii], p_t[ii]), size=20) 
 ax.set_xlabel('p_ir Model', fontsize=20)
 ax.set_ylabel('p_ir PNAD Data', fontsize=20)
-ax.plot([0, 0.5], [0, 0.5], 'k-', lw=2)
+ax.plot([0, 0.5], [0, 0.5], 'k-', lw=2, label='45° line')
 ax.grid(True)
 plt.tight_layout()    
-ax.legend( prop={'size': 20})
+ax.legend( prop={'size': 18})
 
 
  
