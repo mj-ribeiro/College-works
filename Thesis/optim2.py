@@ -13,10 +13,14 @@ from scipy.optimize import minimize
 import pandas as pd
 
 
+z1 = pd.read_excel('z1.xlsx') 
+
+z1 = np.array(z1)
+
 
 x1 = taus2()
 
-obj(x1)
+obj2(z1)
 
 
 
@@ -24,10 +28,12 @@ obj(x1)
 
 # L-BFGS-B
 
-
+cc = 0
 def callback(x):
+    global cc
+    cc += 1
     fobj = obj2(x)
-    print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}') 
+    print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}, iter: {cc}') 
 
 
     
@@ -49,12 +55,18 @@ obj(z1)
 #### Nelder Mead
 
 
+
+cc = 0
 def callback(x):
-    fobj = obj(x)
-    print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}') 
+    global cc
+    cc += 1
+    fobj = obj2(x)
+    print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}, iter: {cc}') 
 
 
-%time sol2 = minimize(obj, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
+
+
+%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
 
 
 

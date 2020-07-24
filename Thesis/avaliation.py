@@ -81,7 +81,7 @@ ax.set_ylabel('W_ir PNAD Data', fontsize=20)
 ax.plot([1, 4.5], [1, 4.5], 'k-', lw=2)
 ax.grid(True)
 plt.tight_layout()    
-ax.legend()
+ax.legend( prop={'size': 20})
 
 
 
@@ -115,7 +115,7 @@ ax.set_ylabel('p_ir PNAD Data', fontsize=20)
 ax.plot([0, 0.5], [0, 0.5], 'k-', lw=2)
 ax.grid(True)
 plt.tight_layout()    
-ax.legend()
+ax.legend( prop={'size': 20})
 
 
  
