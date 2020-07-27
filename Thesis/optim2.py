@@ -25,7 +25,6 @@ obj2(z1)
 
 
 
-
 # L-BFGS-B
 
 cc = 0

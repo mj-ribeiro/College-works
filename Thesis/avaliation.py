@@ -148,7 +148,7 @@ plt.tight_layout()
 # gpd per worker and hc - fig5
 
 H_tr = H_trf(z1)
-Y = Y_f(z1)
+Y = Y_f(z1).sum(axis=0)
 names2 = n.columns.str.strip("'")
 
 
@@ -198,9 +198,12 @@ plt.tight_layout()
 
 
 
+a = np.array(([1, 2], [3, 5]))
+b = np.array(([-1, 0]))
 
-
-
+a
+b
+np.multiply(a, b)
 
 
 

@@ -56,13 +56,13 @@ def taus2():
     
     w =np.random.uniform(low=0.001, high=30, size=(i,r))
     w[:, r-1] = 1
+    w[1:6, :] = w[0, :] 
     
     x1 = np.array( [tau_w, tau_h, w] )
     
     return x1
 
-taus2()
-
+x1 = taus2()
 
 
 # Time spent in school - EQ 14
@@ -166,14 +166,13 @@ simul()
 
 ## Objective - EQ 31
 
-
 def obj2(x1):
     
     x1 = x1.reshape((3, i, r)) 
     x1[0, 0, : ] = x1[0, 0, 0]    
     x1[1, 0, :] = 0
     x1[2, :, r-1] = 1
-            
+    x1[2, 1:6, :] = x1[2, 0, :]
     W, p_ir = Wf(x1)
     
     D =  (np.power(np.divide( (W-W_t), W_t ), 2) + np.power(np.divide( (p_ir-p_t), p_t ), 2) ).sum()
@@ -192,7 +191,6 @@ def h_tilf(x1):
     B = np.multiply(np.power(s, phi), np.power(eta, eta) )
     h_til = np.power(np.multiply(A, B), kappa )
     return h_til
-
 
 
 ## Human capital - EQ 23
