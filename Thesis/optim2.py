@@ -35,7 +35,7 @@ def callback(x):
 
     
 %time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':3e4, 'maxfun':1e1000})
-
+    
           
 
 sol 
@@ -45,7 +45,6 @@ sol.success
 
 
 obj2(z1)
-
 
 
 
