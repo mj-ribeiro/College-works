@@ -119,7 +119,7 @@ ax.legend( prop={'size': 18})
 
  
 
-## tpf and GDP plots
+## tpf and GDP plots - fig 3
 
 Y = Y_f(z1).sum(axis=0)
 tpf = z1[2].sum(axis=0)
@@ -145,14 +145,12 @@ plt.tight_layout()
 
 
 
-# gpd per worker and hc
+# gpd per worker and hc - fig5
 
 H_tr = H_trf(z1)
 Y = Y_f(z1)
 names2 = n.columns.str.strip("'")
 
-
- 
 
 plt.scatter(H_tr, Y, s=10)
 plt.xticks(fontsize=20)
@@ -169,18 +167,34 @@ plt.ylabel("GDP per worker - model", fontsize=20)
 plt.tight_layout()    
  
 
-HH = H_irf(z1)
-z1[2]
 
 
 
+## p_ir x teachers wage - fig4
 
 
+p_tr = p_trf(z1)
+twg = np.divide(z1[2, i-1, :], z1[2].sum(axis=0) )
 
 
+names2 = n.columns.str.strip("'")
 
+ 
+plt.scatter(twg, p_tr, s=10)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+(m, b) = np.polyfit(twg, p_tr, 1)
+yp = np.polyval([m, b], twg)
+plt.plot(twg, yp, label='Regression Line')
+for tt, txt in enumerate(names2):
+    plt.annotate(txt, (twg[tt], p_tr[tt]), size=20) 
+plt.grid(True)
+plt.legend(loc="upper left", prop={'size': 20})
+plt.xlabel(" Teachers wage relative to other occupations - model", fontsize=20)
+plt.ylabel("Proportion of teachers - model", fontsize=20)
+plt.tight_layout()    
 
-
+  
 
 
 
