@@ -102,10 +102,9 @@ ff = pd.DataFrame(dict(x=p_ir, y=p_t, label=ocn))
 groups2 = ff.groupby('label')
 
 fig, ax = plt.subplots()
-ax.margins(0.05) # Optional, just adds 5% padding to the autoscaling
+ax.margins(0.05) 
 for ocn, group in groups2:
     ax.plot(group.x, group.y, marker='o', linestyle='', ms=12, label=ocn)
-ax.scatter(p_ir, p_t, s=0)
 ax.xaxis.set_tick_params(labelsize=20)
 ax.yaxis.set_tick_params(labelsize=20)
 for ii, txt in enumerate(names):
@@ -122,11 +121,11 @@ ax.legend( prop={'size': 18})
 
 ## tpf and GDP plots
 
-Y = Y_f(z1)
-tpf = z1[2].sum(axis=0) 
+Y = Y_f(z1).sum(axis=0)
+tpf = z1[2].sum(axis=0)
 names2 = n.columns.str.strip("'")
 
- 
+
 
 plt.scatter(tpf, Y, s=10)
 plt.xticks(fontsize=20)
@@ -142,6 +141,49 @@ plt.xlabel(" TFP - model", fontsize=20)
 plt.ylabel("GDP per worker - model", fontsize=20)
 plt.tight_layout()    
  
+
+
+
+
+# gpd per worker and hc
+
+H_tr = H_trf(z1)
+Y = Y_f(z1)
+names2 = n.columns.str.strip("'")
+
+
+ 
+
+plt.scatter(H_tr, Y, s=10)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+(m, b) = np.polyfit(H_tr, Y, 1)
+yp = np.polyval([m, b], H_tr)
+plt.plot(H_tr, yp, label='Regression Line')
+for tt, txt in enumerate(names2):
+    plt.annotate(txt, (H_tr[tt], Y[tt]), size=20) 
+plt.grid(True)
+plt.legend(loc="lower right", prop={'size': 20})
+plt.xlabel(" Human capital of teachers - model", fontsize=20)
+plt.ylabel("GDP per worker - model", fontsize=20)
+plt.tight_layout()    
+ 
+
+HH = H_irf(z1)
+z1[2]
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
