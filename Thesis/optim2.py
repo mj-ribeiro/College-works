@@ -33,7 +33,7 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
     
-%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':2e4, 'maxfun':1e1000})
+%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e4, 'maxfun':1e1000,  'maxcor': 100, 'eps': 1e-08,})
     
           
 
@@ -55,7 +55,7 @@ def callback(x):
     global cc
     cc += 1
     fobj = obj2(x)
-    print(f'\033[1;033mObjetivo: {np.around(fobj, 4)}, iter: {cc}') 
+    print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
 
 

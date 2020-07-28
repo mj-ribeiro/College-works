@@ -174,7 +174,9 @@ plt.tight_layout()
 
 
 p_tr = p_trf(z1)
-twg = np.divide(z1[2, i-1, :], z1[2].sum(axis=0) )
+
+twg = np.array(W).reshape(i, r)[(i-1), :]/np.array(W).reshape(i, r).sum(axis=0)
+ 
 
 
 names2 = n.columns.str.strip("'")
