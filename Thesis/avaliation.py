@@ -122,7 +122,7 @@ ax.legend( prop={'size': 18})
 ## tpf and GDP plots - fig 3
 
 Y = Y_f(z1).sum(axis=0)
-tpf = z1[2].sum(axis=0)
+tpf = z1[2, 0, :]
 names2 = n.columns.str.strip("'")
 
 
@@ -197,13 +197,6 @@ plt.tight_layout()
   
 
 
-
-a = np.array(([1, 2], [3, 5]))
-b = np.array(([-1, 0]))
-
-a
-b
-np.multiply(a, b)
 
 
 

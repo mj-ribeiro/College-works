@@ -54,9 +54,9 @@ def taus2():
     tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
     tau_w[0, : ] = tau_w[0, 0]
     
-    w =np.random.uniform(low=0.001, high=30, size=(i,r))
+    w =np.random.uniform(low=0.001, high=40, size=(i,r))
     w[:, r-1] = 1
-    w[1:6, :] = w[0, :] 
+    w[0:7, :] = w[0, :] 
     
     x1 = np.array( [tau_w, tau_h, w] )
     
@@ -118,7 +118,6 @@ def w_tilf(x1):
     B = np.multiply(b, pp.reshape(7,1))
     w_til =  np.multiply(np.multiply(A, B), C )
     return w_til 
-    return w_til 
 
 
 
@@ -147,7 +146,9 @@ def Wf(x1):
     W = np.multiply(A, z)
     return W, p_ir
 
+
 ## PNAD data
+
 
 def simul():
     global p_t, W_t
@@ -172,7 +173,7 @@ def obj2(x1):
     x1[0, 0, : ] = x1[0, 0, 0]    
     x1[1, 0, :] = 0
     x1[2, :, r-1] = 1
-    x1[2, 1:6, :] = x1[2, 0, :]
+    x1[2, 0:7, :] = x1[2, 0, :]
     W, p_ir = Wf(x1)
     
     D =  (np.power(np.divide( (W-W_t), W_t ), 2) + np.power(np.divide( (p_ir-p_t), p_t ), 2) ).sum()
@@ -214,6 +215,6 @@ def Y_f(x1):
 
 
 
-Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 30), )*189
+Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 40), )*189
 Bd = np.array(Bd)
 

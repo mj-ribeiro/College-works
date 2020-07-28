@@ -23,7 +23,6 @@ x1 = taus2()
 obj2(z1)
 
 
-
 # L-BFGS-B
 
 cc = 0
@@ -34,7 +33,7 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
     
-%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':3e4, 'maxfun':1e1000})
+%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':2e4, 'maxfun':1e1000})
     
           
 
@@ -45,7 +44,6 @@ sol.success
 
 
 obj2(z1)
-
 
 
 #### Nelder Mead
