@@ -54,7 +54,7 @@ def callback(x):
     global cc
     cc += 1
     fobj = obj2(x)
-    print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
+    print(f'\033[1;033mObjetivo: {np.around(fobj, 6)}, iter: {cc}') 
 
 
 
@@ -71,11 +71,10 @@ sol2.success
 
 obj2(z1)
  
-
+ 
 
 kk1 = pd.DataFrame(z1)
 
 kk1.to_excel("z1.xlsx")  
 
-z1.reshape(3, i, r)[2, :, 2]
 

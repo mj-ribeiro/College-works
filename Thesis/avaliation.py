@@ -18,7 +18,7 @@ taus2()
 
 
 
-z1 = pd.read_excel('z1.xlsx') # i replace z1 by k1 to test
+z1 = pd.read_excel('z1.xlsx')
 
 z1 = np.array(z1)
 
@@ -200,7 +200,80 @@ plt.tight_layout()
 
 
 
+
+## increase one unit in tau_h and effect in gpd
+
+dd = np.arange(0,21)
+
+n = len(dd) 
+Y_th = np.zeros((n))
+
+
+for nn in dd: 
+    g1 = z1[0] 
+    g2 = z1[1] + nn
+    g3 = z1[2]
+    G = np.array([g1, g2, g3])
+    Y_th[nn] = Y_f(G).sum() 
+    
+
+
+plt.plot(dd, Y_th)
+plt.xticks(np.arange(min(dd), max(dd)+2, 2.0))
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+plt.grid()
+plt.xlabel(r"Increases in $\tau^h_{ir}$", fontsize=20)
+plt.ylabel("GDP - model", fontsize=20)
+plt.tight_layout()    
+
+
+
+
+
+## increase one unit in tau_w and effect in gpd
+
+
+
+bb = np.arange(-20, 1)
+n = len(bb) 
+Y_tw = []
+
+
+
+for nn in bb: 
+    c1 = z1[0] + nn
+    c2 = z1[1] 
+    c3 = z1[2]
+    C = np.array([c1, c2, c3])
+    Y_tw.append(Y_f(C).sum())  
+    
+plt.plot(bb, Y_tw)
+plt.xticks(np.arange(min(bb), max(bb)+2, 2.0))
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+plt.grid()
+plt.xlabel(r"Increases in $\tau^w_{ir}$ ", fontsize=20)
+plt.ylabel("GDP - model", fontsize=20)
+plt.tight_layout()    
+
+
+
+
+
+
+
+
+
+
 # z1
+
+n = pd.read_csv('pt.csv', sep=';')
+n = n.iloc[0:7]
+n.set_index('ocup', inplace=True)
+names = n.columns.str.strip("'")
+
+
 
 tau_w =  pd.DataFrame( z1.reshape(3, i, r)[0] )
 tau_w.columns = names
@@ -212,4 +285,26 @@ tau_h.columns = names
 w = pd.DataFrame( z1.reshape(3, i, r)[2] )
 w.columns = names
 
- 
+
+
+### exercise
+
+gdp2 = Y_f(z1).sum(axis=0)
+names2
+
+
+names2[gdp2.argsort()[-3:][::-1]] # get 3 largest gdps
+
+
+names2[np.argsort(H_trf(z1))[-3:][::-1]]  # get the 3 largest ATHCs
+
+
+jj = z1.reshape(3, i, r)
+
+
+
+
+
+
+
+
