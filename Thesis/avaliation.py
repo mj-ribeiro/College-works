@@ -287,7 +287,7 @@ w.columns = names
 
 
 
-### exercise
+###### exercise 1
 
 gdp2 = Y_f(z1).sum(axis=0)
 names2
@@ -299,12 +299,84 @@ names2[gdp2.argsort()[-3:][::-1]] # get 3 largest gdps
 names2[np.argsort(H_trf(z1))[-3:][::-1]]  # get the 3 largest ATHCs
 
 
-jj = z1.reshape(3, i, r)
+ 
+# Put the distortion of DF in all states
+
+jj = np.array(z1, copy=True)
+
+for vv in range(27):
+    jj[0, :, vv] = jj[0,:,26]
+
+
+for vv in range(27):
+    jj[1, :, vv] = jj[1,:,26]
 
 
 
 
+gpd_z1 = Y_f(z1).sum(axis=0)
+gpd_c = Y_f(jj).sum(axis=0)
 
 
+
+plt.scatter(gpd_z1, gpd_c)
+plt.yticks(fontsize=20)
+plt.xticks(fontsize=20)
+for tt, txt in enumerate(names2):
+    plt.annotate(txt, (gpd_z1[tt], gpd_c[tt]), size=20)                                                    
+plt.grid(True)
+plt.xlabel("GDP before change friction - model", fontsize=20)
+plt.ylabel("GDP after change friction highest - model", fontsize=20)
+plt.tight_layout()    
+
+
+Y_f(z1).sum()
+
+Y_f(jj).sum()   # GDP of all states after change 
+
+
+### exercise 2
+
+# get the smallest gdp
+
+
+jj2 = np.array(z1, copy=True)
+
+np.argmin(gdp2) 
+names2[8]
+
+
+
+
+for vv in range(27):
+    jj2[0, :, vv] = jj2[0,:,8]
+
+
+for vv in range(27):
+    jj2[1, :, vv] = jj2[1, :, 8]
+
+
+
+gpd_z1 = Y_f(z1).sum(axis=0)
+gpd_c2 = Y_f(jj2).sum(axis=0)
+
+
+plt.scatter(gpd_z1, gpd_c2)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+for tt, txt in enumerate(names2):
+    plt.annotate(txt, (gpd_z1[tt], gpd_c2[tt]), size=20)                                                    
+plt.grid(True)
+plt.xlabel("GDP before change friction - model", fontsize=20)
+plt.ylabel("GDP after change friction Smallest - model", fontsize=20)
+plt.tight_layout()    
+plt.plot([4.4, 7], [4.4, 7], 'k-', lw=2, label='45° line')
+plt.legend(loc="upper left", prop={'size': 20})
+
+
+
+Y_f(z1).sum()
+
+Y_f(jj2).sum()   # GDP of all states after change 
 
 
