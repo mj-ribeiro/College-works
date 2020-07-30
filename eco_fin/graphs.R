@@ -32,16 +32,15 @@ var2 = quantile(df$cmts, 0.1)
 
 
  
-windows()
 
 
 g1 = ggplot(data=df, aes(y=cmts, x=data1))+geom_line(size=0.4) +
   scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
-        axis.text.y = element_text(size=17), 
-        axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19) ) + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=20), 
+        axis.text.y = element_text(size=20), 
+        axis.title.x = element_text(colour = 'black', size=21),
+        axis.title.y = element_text(colour = 'black', size=21) ) + 
   ylim(0.4, 1) +
   xlab('Anos') + 
   ylab('CMAX')  
@@ -50,14 +49,15 @@ g1 = ggplot(data=df, aes(y=cmts, x=data1))+geom_line(size=0.4) +
 
 
 g2 = g1 +
-  annotate(geom='text', x=as.Date('2008-10-10'), y=0.47, label= 'Crise \n de 2008', size=6) +
-  annotate(geom='text', x=as.Date('2020-03-10'), y=0.58, label = 'Crise do \n COVID-19', size=6) + 
-  #annotate(geom='text', x=as.Date('2000-03-10'), y=0.6, label = 'Bolha da \n internet') +
-  annotate(geom='text', x=as.Date('2001-9-13'), y=0.58, label = '11 de \n setembro', size=6) +
+  annotate(geom='text', x=as.Date('2008-10-10'), y=0.47, label= 'Crise \n de 2008', size=8) +
+  annotate(geom='text', x=as.Date('2020-02-10'), y=0.58, label = 'Crise do \n COVID-19', size=8) + 
+  annotate(geom='text', x=as.Date('2016-03-10'), y=0.68, label = 'Instabilidade \n política', size=8) +
+  annotate(geom='text', x=as.Date('2001-9-13'), y=0.58, label = '11 de \n setembro', size=8) +
   geom_hline(yintercept =var2, size=1)
 
 
 
+windows()
 g2 
 
 
@@ -100,12 +100,12 @@ g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
   geom_line(size=0.8) +
   scale_x_date(date_labels="%Y",date_breaks  ="1 year") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
-        axis.text.y = element_text(size=17), 
-        axis.title.x = element_text(colour = 'black', size=19),
-        axis.title.y = element_text(colour = 'black', size=19),
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=20), 
+        axis.text.y = element_text(size=20), 
+        axis.title.x = element_text(colour = 'black', size=21),
+        axis.title.y = element_text(colour = 'black', size=21),
         legend.title=element_blank(),
-        legend.text = element_text(colour="black", size = 17),
+        legend.text = element_text(colour="black", size = 21),
         legend.position="bottom" ) + 
   xlab('Anos') + 
   ylab('')  

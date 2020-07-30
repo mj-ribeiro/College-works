@@ -35,7 +35,6 @@ def callback(x):
     
 %time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e4, 'maxfun':1e1000,  'maxcor': 100, 'eps': 1e-08,})
     
-          
 
 sol 
 z1 = sol.x 
@@ -59,8 +58,10 @@ def callback(x):
 
 
 
-
+ 
 %time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
+
+
 
 
 
@@ -71,11 +72,10 @@ sol2.success
 obj2(z1)
  
 
- 
 
 kk1 = pd.DataFrame(z1)
 
 kk1.to_excel("z1.xlsx")  
 
-
+z1.reshape(3, i, r)[2, :, 2]
 

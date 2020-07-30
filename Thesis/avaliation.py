@@ -76,14 +76,14 @@ ax.xaxis.set_tick_params(labelsize=20)
 ax.yaxis.set_tick_params(labelsize=20)
 for ii, txt in enumerate(names):
     ax.annotate(txt, (W[ii], W_t[ii]), size=20) 
-ax.set_xlabel('W_ir Model', fontsize=20)
-ax.set_ylabel('W_ir PNAD Data', fontsize=20)
-ax.plot([1, 4.5], [1, 4.5], 'k-', lw=2, label='45° line')
+ax.set_xlabel('Wage - Model', fontsize=20)
+ax.set_ylabel('Wage - PNAD Data', fontsize=20)
+ax.plot([1, 4.1], [1, 4.1], 'k-', lw=2, label='45° line')
 ax.grid(True)
 plt.tight_layout()    
 ax.legend( prop={'size': 18})
 
-
+  
 
 ## p_ir and p_t
 
@@ -109,8 +109,8 @@ ax.xaxis.set_tick_params(labelsize=20)
 ax.yaxis.set_tick_params(labelsize=20)
 for ii, txt in enumerate(names):
     ax.annotate(txt, (p_ir[ii], p_t[ii]), size=20) 
-ax.set_xlabel('p_ir Model', fontsize=20)
-ax.set_ylabel('p_ir PNAD Data', fontsize=20)
+ax.set_xlabel('Proportion of workers - Model', fontsize=20)
+ax.set_ylabel('Proportion of workers - PNAD Data', fontsize=20)
 ax.plot([0, 0.5], [0, 0.5], 'k-', lw=2, label='45° line')
 ax.grid(True)
 plt.tight_layout()    
@@ -124,7 +124,6 @@ ax.legend( prop={'size': 18})
 Y = Y_f(z1).sum(axis=0)
 tpf = z1[2, 0, :]
 names2 = n.columns.str.strip("'")
-
 
 
 plt.scatter(tpf, Y, s=10)
@@ -150,6 +149,7 @@ plt.tight_layout()
 H_tr = H_trf(z1)
 Y = Y_f(z1).sum(axis=0)
 names2 = n.columns.str.strip("'")
+names2 = np.array(names2)
 
 
 plt.scatter(H_tr, Y, s=10)
@@ -197,9 +197,6 @@ plt.ylabel("Proportion of teachers - model", fontsize=20)
 plt.tight_layout()    
 
   
-
-
-
 
 
 

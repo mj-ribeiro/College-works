@@ -143,8 +143,8 @@ roc1 = ggplot(m_sav, aes(FPR, SENS, colour=feature)) +
                 legend.title=element_blank(),
                 legend.text = element_text(colour="black", size = 17),
                 plot.title = element_text(hjust = 0.5, size=19)) +
-          xlab('Falso Positivo') + 
-          ylab('Verdadeiro Positivo') +
+          xlab('CPI') + 
+          ylab('EPC') +
           ggtitle('Sem AV')
 
 
@@ -236,8 +236,8 @@ roc2 = ggplot(m_sav2, aes(FPR, SENS, colour=feature)) +
                 legend.title=element_blank(),
                 legend.text = element_text(colour="black", size = 17),
                 plot.title = element_text(hjust = 0.5, size=19) )  + 
-          xlab('Falso Positivo') + 
-          ylab('Verdadeiro Positivo') +
+          xlab('CPI') + 
+          ylab('EPC') +
           ggtitle('Com AV')
         
 
@@ -327,8 +327,8 @@ roc3 = ggplot(m_sav3, aes(FPR, SENS, colour=feature)) +
         legend.title=element_blank(),
         legend.text = element_text(colour="black", size = 17),
         plot.title = element_text(hjust = 0.5, size=19)) + 
-  xlab('Falso Positivo') + 
-  ylab('Verdadeiro Positivo') +
+  xlab('CPI') + 
+  ylab('EPC') +
   ggtitle('Somente AV')
 
 

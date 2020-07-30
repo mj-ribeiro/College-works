@@ -29,7 +29,7 @@ def par():
     rho = 0.19
     alfa = 0.6
     kappa = np.divide(1, (1- eta) )
-    nu = 1 + np.multiply(alfa, np.multiply(varphi, kappa))
+    nu = 1 + np.multiply(alfa, np.multiply(varphi, kappa)) - np.divide(kappa, theta)
     pi = 1 - np.multiply(np.multiply( (1 - alfa), varphi), kappa )    
     sig = np.divide(np.multiply(eta, kappa), pi )
     #psi = np.multiply(np.power(eta, eta), np.power( (1-eta), (1-eta) ) )
@@ -93,19 +93,18 @@ def p_trf(x1):
 
 ## Teachers human's capital - EQ 30
 
-
+  
 def H_trf(x1):    
     p_tr = p_trf(x1)  
     A = np.power(np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ), sig )    
     A = A[i-1]     
-    P = np.multiply(np.power(p_tr, (nu/pi)), np.power(eta, sig ) )
+    P = np.multiply(np.power(p_tr, ( np.divide(nu, pi) )), np.power(eta, sig ) )
     g = np.divide(np.multiply(phi[i-1], kappa ), pi )
     C = np.multiply( np.power(s[i-1], g ), np.power(gamma1, np.divide(1, pi) ) )
     H_tr = np.multiply(np.multiply(P, A), C )       
     return H_tr
 
-
-
+ 
 ## Liquid reward - PROPOSITION 1
 
 def w_tilf(x1):
@@ -167,20 +166,16 @@ simul()
 
 ## Objective - EQ 31
 
-def obj2(x1):
-    
+def obj2(x1):    
     x1 = x1.reshape((3, i, r)) 
     x1[0, 0, : ] = x1[0, 0, 0]    
     x1[1, 0, :] = 0
-    x1[2, :, r-1] = 1
+    x1[2, :, 0] = 1
     x1[2, 0:7, :] = x1[2, 0, :]
-    W, p_ir = Wf(x1)
-    
+    W, p_ir = Wf(x1)    
     D =  (np.power(np.divide( (W-W_t), W_t ), 2) + np.power(np.divide( (p_ir-p_t), p_t ), 2) ).sum()
-    D = np.log(D)
-    
+    D = np.log(D)    
     return D
-
 
 
 ## h_til
@@ -199,17 +194,17 @@ def h_tilf(x1):
 def H_irf(x1):
     p_ir = p_irf(x1)[0]
     h_til = h_tilf(x1)
-    A = np.multiply(h_til, p_ir)    
-    B = np.power(np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ), np.divide(eta, (1-eta) ) )       
-    C = np.multiply(np.power(p_ir, np.divide(-kappa, theta)) , gamma1 )
-    H_ir = np.multiply(np.multiply(A, B), C )
+    A = np.multiply(h_til, np.power(p_ir, (1-kappa/theta) ) )
+    B = np.power(np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ), np.multiply(eta, kappa ) )       
+    H_ir = np.multiply(np.multiply(A, B), gamma1 )
     return H_ir
+    
 
 
 
 def Y_f(x1):
     H_ir = H_irf(x1) 
-    Y = np.multiply(x1[2].sum(axis=0), H_ir)
+    Y = np.multiply(x1[2, 0, :], H_ir)
     return Y
 
 
