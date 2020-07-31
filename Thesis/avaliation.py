@@ -289,6 +289,7 @@ w.columns = names
 
 ###### exercise 1
 
+
 gdp2 = Y_f(z1).sum(axis=0)
 names2
 
@@ -300,7 +301,8 @@ names2[np.argsort(H_trf(z1))[-3:][::-1]]  # get the 3 largest ATHCs
 
 
  
-# Put the distortion of DF in all states
+# I put the frictions of DF because DF have the largest gdp
+ 
 
 jj = np.array(z1, copy=True)
 
@@ -310,7 +312,6 @@ for vv in range(27):
 
 for vv in range(27):
     jj[1, :, vv] = jj[1,:,26]
-
 
 
 
@@ -328,6 +329,10 @@ plt.grid(True)
 plt.xlabel("GDP before change friction - model", fontsize=20)
 plt.ylabel("GDP after change friction highest - model", fontsize=20)
 plt.tight_layout()    
+plt.plot([4.4, 7], [4.4, 7], 'k-', lw=2, label='45° line')
+plt.legend(loc="upper left", prop={'size': 20})
+
+
 
 
 Y_f(z1).sum()
@@ -335,17 +340,22 @@ Y_f(z1).sum()
 Y_f(jj).sum()   # GDP of all states after change 
 
 
-### exercise 2
+
+################### exercise 2
+
 
 # get the smallest gdp
 
 
 jj2 = np.array(z1, copy=True)
 
+
+
+# I put the frictions of PI because PI have the smallest gdp
+
+
 np.argmin(gdp2) 
 names2[8]
-
-
 
 
 for vv in range(27):
