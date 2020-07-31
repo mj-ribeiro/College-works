@@ -260,12 +260,6 @@ plt.tight_layout()
 
 
 
-
-
-
-
-
-
 # z1
 
 n = pd.read_csv('pt.csv', sep=';')
@@ -297,21 +291,21 @@ names2
 names2[gdp2.argsort()[-3:][::-1]] # get 3 largest gdps
 
 
-names2[np.argsort(H_trf(z1))[-3:][::-1]]  # get the 3 largest ATHCs
+names2[np.argsort(H_trf(z1))[-3:][::-1]]  # get the 3 largest ATHC
 
 
  
-# I put the frictions of DF because DF have the largest gdp
+# I put the frictions of RO because RO have the largest ATHC
  
 
 jj = np.array(z1, copy=True)
 
 for vv in range(27):
-    jj[0, :, vv] = jj[0,:,26]
+    jj[0, :, vv] = jj[0,:,0]
 
 
 for vv in range(27):
-    jj[1, :, vv] = jj[1,:,26]
+    jj[1, :, vv] = jj[1,:,0]
 
 
 
@@ -339,31 +333,30 @@ Y_f(z1).sum()
 
 Y_f(jj).sum()   # GDP of all states after change 
 
+# Put the distortion of RO the total GDP increase 
+
 
 
 ################### exercise 2
-
-
-# get the smallest gdp
 
 
 jj2 = np.array(z1, copy=True)
 
 
 
-# I put the frictions of PI because PI have the smallest gdp
 
+# the smallest ATHC is SP
 
-np.argmin(gdp2) 
-names2[8]
+names2[np.argmin(H_trf(z1))]
 
-
-for vv in range(27):
-    jj2[0, :, vv] = jj2[0,:,8]
 
 
 for vv in range(27):
-    jj2[1, :, vv] = jj2[1, :, 8]
+    jj2[0, :, vv] = jj2[0,:,19]
+
+
+for vv in range(27):
+    jj2[1, :, vv] = jj2[1, :, 19]
 
 
 
@@ -371,6 +364,7 @@ gpd_z1 = Y_f(z1).sum(axis=0)
 gpd_c2 = Y_f(jj2).sum(axis=0)
 
 
+plt.subplots(figsize=(10,8))  
 plt.scatter(gpd_z1, gpd_c2)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
@@ -378,7 +372,7 @@ for tt, txt in enumerate(names2):
     plt.annotate(txt, (gpd_z1[tt], gpd_c2[tt]), size=20)                                                    
 plt.grid(True)
 plt.xlabel("GDP before change friction - model", fontsize=20)
-plt.ylabel("GDP after change friction Smallest - model", fontsize=20)
+plt.ylabel('GDP after placing state distortions \n with smallest ATHC - model', fontsize=20)
 plt.tight_layout()    
 plt.plot([4.4, 7], [4.4, 7], 'k-', lw=2, label='45° line')
 plt.legend(loc="upper left", prop={'size': 20})
@@ -390,3 +384,8 @@ Y_f(z1).sum()
 Y_f(jj2).sum()   # GDP of all states after change 
 
 
+
+
+### END
+
+  
