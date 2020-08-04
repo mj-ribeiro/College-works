@@ -170,7 +170,7 @@ def obj2(x1):
     x1 = x1.reshape((3, i, r)) 
     x1[0, 0, : ] = x1[0, 0, 0]    
     x1[1, 0, :] = 0
-    x1[2, :, 0] = 1
+    x1[2, :, 2] = 1
     x1[2, 0:7, :] = x1[2, 0, :]
     W, p_ir = Wf(x1)    
     D =  (np.power(np.divide( (W-W_t), W_t ), 2) + np.power(np.divide( (p_ir-p_t), p_t ), 2) ).sum()

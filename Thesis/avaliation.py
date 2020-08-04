@@ -321,10 +321,11 @@ for tt, txt in enumerate(names2):
     plt.annotate(txt, (gpd_z1[tt], gpd_c[tt]), size=20)                                                    
 plt.grid(True)
 plt.xlabel("GDP before change friction - model", fontsize=20)
-plt.ylabel("GDP after change friction highest - model", fontsize=20)
+plt.ylabel('GDP after placing state distortions \n with higher ATHC - model', fontsize=20)
 plt.tight_layout()    
-plt.plot([4.4, 7], [4.4, 7], 'k-', lw=2, label='45° line')
+plt.plot([4, 7], [4, 7], 'k-', lw=2, label='45° line')
 plt.legend(loc="upper left", prop={'size': 20})
+
 
 
 
@@ -364,7 +365,6 @@ gpd_z1 = Y_f(z1).sum(axis=0)
 gpd_c2 = Y_f(jj2).sum(axis=0)
 
 
-plt.subplots(figsize=(10,8))  
 plt.scatter(gpd_z1, gpd_c2)
 plt.xticks(fontsize=20)
 plt.yticks(fontsize=20)
