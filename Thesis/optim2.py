@@ -13,14 +13,15 @@ from scipy.optimize import minimize
 import pandas as pd
 
 
-z1 = pd.read_excel('AM.xlsx') 
+z1 = pd.read_excel('MG.xlsx') 
 
 z1 = np.array(z1)
 
 
-x1 = taus2()
+z1 = taus2()
 
 obj2(z1)
+
 
 # L-BFGS-B
 
@@ -41,6 +42,10 @@ z1 = sol.x
 sol.fun 
 sol.success
 
+z1.reshape(3, i, r)[2, 0, :].sum()
+ 
+# sum 251 obj 2.18
+
 
 obj2(z1)
 
@@ -59,7 +64,7 @@ def callback(x):
 
 
  
-%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':3e5})
+%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':8e5})
 
 
 

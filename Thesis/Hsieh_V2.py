@@ -27,13 +27,12 @@ def par():
     varphi = 0.25
     theta = 3.44
     rho = 0.19
-    alfa = 0.6
+    alfa = 0.3
     kappa = np.divide(1, (1- eta) )
     nu = 1 + np.multiply(alfa, np.multiply(varphi, kappa)) - np.divide(kappa, theta)
     pi = 1 - np.multiply(np.multiply( (1 - alfa), varphi), kappa )    
     sig = np.divide(np.multiply(eta, kappa), pi )
-    #psi = np.multiply(np.power(eta, eta), np.power( (1-eta), (1-eta) ) )
-    psi = 1
+    psi = np.multiply(np.power(eta, eta), np.power( (1-eta), (1-eta) ) )
     i = 7
     r = 27
     gamma1 = gamma(   1 - np.multiply( np.divide(1, np.multiply(theta, (1-rho)) ), np.divide(1, (1 - eta) ) ) )   
@@ -54,7 +53,7 @@ def taus2():
     tau_w = np.random.uniform(low=-0.99, high=0.999, size=(i,r))
     tau_w[0, : ] = tau_w[0, 0]
     
-    w =np.random.uniform(low=0.001, high=40, size=(i,r))
+    w =np.random.uniform(low=0.001, high=12, size=(i,r))
     w[:, r-1] = 1
     w[0:7, :] = w[0, :] 
     
@@ -154,20 +153,21 @@ def simul():
     p_t = pd.read_csv('pt.csv', sep=';')
     p_t = p_t.iloc[0:7]
     p_t.set_index('ocup', inplace=True)
-    p_t = np.array(p_t[0:6])
-        
+    p_t = np.array(p_t)
     W_t = pd.read_csv('wt.csv', sep=';')
     W_t.set_index('ocup', inplace=True)
-    W_t = np.array(W_t[0:6])
+    W_t = np.array(W_t)
     
     return p_t, W_t
 
+
 simul()
+
 
 ## Objective - EQ 31
 
+
 p_t2 = np.array(p_t[0:6])
-W_t2 = np.array(W_t[0:6])
     
 def obj2(x1):       
     x1 = x1.reshape((3, i, r)) 
@@ -176,11 +176,11 @@ def obj2(x1):
     x1[2, :, 6] = 1
     x1[2, 0:7, :] = x1[2, 0, :]
     W, p_ir = Wf(x1)    
-    W = W[0:6]
     p_ir = p_ir[0:6]
-    D =  (np.power(np.divide( (W-W_t2), W_t2 ), 2) + np.power(np.divide( (p_ir-p_t2), p_t2 ), 2) ).sum()
+    D =   (np.power(np.divide( (W-W_t), W_t ), 2)).sum() + (np.power(np.divide( (p_ir-p_t2), p_t2 ), 2)).sum() 
     D = np.log(D)    
     return D
+
 
 
 
@@ -216,6 +216,6 @@ def Y_f(x1):
 
 
 
-Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 40), )*189
+Bd = ((-0.99, 0.999), )*189 + ((-0.99, 40), )*189 + ((0.001, 12), )*189
 Bd = np.array(Bd)
 

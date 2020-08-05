@@ -84,7 +84,7 @@ ggplot() +
 
 
 
-df4 = df[, c('crise', 'rexc', 'data1')]
+df4 = df[, c('crise2', 'rexc', 'data1')]
 
 df4$rexc = as.numeric(df4$rexc)
 df4$rexc = df4$rexc/100 
