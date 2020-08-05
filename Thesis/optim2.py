@@ -13,7 +13,7 @@ from scipy.optimize import minimize
 import pandas as pd
 
 
-z1 = pd.read_excel('z1.xlsx') 
+z1 = pd.read_excel('AM.xlsx') 
 
 z1 = np.array(z1)
 
@@ -21,7 +21,6 @@ z1 = np.array(z1)
 x1 = taus2()
 
 obj2(z1)
-
 
 # L-BFGS-B
 
@@ -33,8 +32,9 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
     
-%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':1e4, 'maxfun':1e1000,  'maxcor': 100, 'eps': 1e-08,})
-    
+%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':2e3, 'maxfun':1e1000,  'maxcor': 100, 'eps': 1e-08,})
+
+
 
 sol 
 z1 = sol.x 
@@ -59,7 +59,7 @@ def callback(x):
 
 
  
-%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
+%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':3e5})
 
 
 
@@ -71,11 +71,18 @@ sol2.success
 
 obj2(np.array(z1))
  
-z1 = pd.read_excel('AM.xlsx')
  
 
-AM = pd.DataFrame(z1)
+MG = pd.DataFrame(z1)
 
-AM.to_excel("AM.xlsx")  
+MG.to_excel("MG.xlsx")  
+
+
+
+
+
+
+
+
 
 

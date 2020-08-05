@@ -154,11 +154,11 @@ def simul():
     p_t = pd.read_csv('pt.csv', sep=';')
     p_t = p_t.iloc[0:7]
     p_t.set_index('ocup', inplace=True)
-    p_t = np.array(p_t)
-    
+    p_t = np.array(p_t[0:6])
+        
     W_t = pd.read_csv('wt.csv', sep=';')
     W_t.set_index('ocup', inplace=True)
-    W_t = np.array(W_t)
+    W_t = np.array(W_t[0:6])
     
     return p_t, W_t
 
@@ -166,16 +166,22 @@ simul()
 
 ## Objective - EQ 31
 
-def obj2(x1):    
+p_t2 = np.array(p_t[0:6])
+W_t2 = np.array(W_t[0:6])
+    
+def obj2(x1):       
     x1 = x1.reshape((3, i, r)) 
     x1[0, 0, : ] = x1[0, 0, 0]    
     x1[1, 0, :] = 0
-    x1[2, :, 2] = 1
+    x1[2, :, 6] = 1
     x1[2, 0:7, :] = x1[2, 0, :]
     W, p_ir = Wf(x1)    
-    D =  (np.power(np.divide( (W-W_t), W_t ), 2) + np.power(np.divide( (p_ir-p_t), p_t ), 2) ).sum()
+    W = W[0:6]
+    p_ir = p_ir[0:6]
+    D =  (np.power(np.divide( (W-W_t2), W_t2 ), 2) + np.power(np.divide( (p_ir-p_t2), p_t2 ), 2) ).sum()
     D = np.log(D)    
     return D
+
 
 
 ## h_til
