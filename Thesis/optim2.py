@@ -69,12 +69,13 @@ z1=sol2.x
 sol2.fun
 sol2.success
 
-obj2(z1)
+obj2(np.array(z1))
  
+z1 = pd.read_excel('AM.xlsx')
  
 
-kk1 = pd.DataFrame(z1)
+AM = pd.DataFrame(z1)
 
-kk1.to_excel("z1.xlsx")  
+AM.to_excel("AM.xlsx")  
 
 
