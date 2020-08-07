@@ -13,11 +13,11 @@ from scipy.optimize import minimize
 import pandas as pd
 
 
-z1 = pd.read_excel('z1.xlsx') 
+z1 = pd.read_excel('MG.xlsx') 
 
 z1 = np.array(z1)
 
-
+z1 = taus2()
 
 obj2(z1)
 
@@ -60,8 +60,7 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 6)}, iter: {cc}') 
 
  
-%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e5})
-
+%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', tol=1e-2, callback=callback, options={'maxiter':1e6})
 
 
 
