@@ -13,12 +13,11 @@ from scipy.optimize import minimize
 import pandas as pd
 
 
-z1 = pd.read_excel('MG.xlsx') 
+z1 = pd.read_excel('z1.xlsx') 
 
 z1 = np.array(z1)
 
 
-z1 = taus2()
 
 obj2(z1)
 
@@ -33,7 +32,7 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
     
-%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-15, options={'maxiter':2e3, 'maxfun':1e1000,  'maxcor': 100, 'eps': 1e-08,})
+%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-20, options={'maxiter':1e3, 'maxfun':1e100,  'maxcor': 100, 'eps': 1e-08,})
 
 
 
@@ -44,16 +43,15 @@ sol.success
 
 z1.reshape(3, i, r)[2, 0, :].sum()
  
-# sum 251 obj 2.18
-
 
 obj2(z1)
+
+z1.reshape(3, i, r)[2, 0,:] 
 
 
 #### Nelder Mead
 
-
-
+ 
 cc = 0
 def callback(x):
     global cc
@@ -61,10 +59,8 @@ def callback(x):
     fobj = obj2(x)
     print(f'\033[1;033mObjetivo: {np.around(fobj, 6)}, iter: {cc}') 
 
-
-
  
-%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':8e5})
+%time sol2 = minimize(obj2, z1,  method='Nelder-Mead', callback=callback, options={'maxiter':1e5})
 
 
 
@@ -78,9 +74,9 @@ obj2(np.array(z1))
  
  
 
-MG = pd.DataFrame(z1)
+z1 = pd.DataFrame(z1)
 
-MG.to_excel("MG.xlsx")  
+z1.to_excel("z1.xlsx")  
 
 
 

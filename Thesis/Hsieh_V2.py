@@ -27,12 +27,13 @@ def par():
     varphi = 0.25
     theta = 3.44
     rho = 0.19
-    alfa = 0.3
+    alfa = 0.6
     kappa = np.divide(1, (1- eta) )
     nu = 1 + np.multiply(alfa, np.multiply(varphi, kappa)) - np.divide(kappa, theta)
     pi = 1 - np.multiply(np.multiply( (1 - alfa), varphi), kappa )    
     sig = np.divide(np.multiply(eta, kappa), pi )
     psi = np.multiply(np.power(eta, eta), np.power( (1-eta), (1-eta) ) )
+    #psi = 1
     i = 7
     r = 27
     gamma1 = gamma(   1 - np.multiply( np.divide(1, np.multiply(theta, (1-rho)) ), np.divide(1, (1 - eta) ) ) )   
@@ -173,7 +174,7 @@ def obj2(x1):
     x1 = x1.reshape((3, i, r)) 
     x1[0, 0, : ] = x1[0, 0, 0]    
     x1[1, 0, :] = 0
-    x1[2, :, 6] = 1
+    x1[2, :, 0] = 7
     x1[2, 0:7, :] = x1[2, 0, :]
     W, p_ir = Wf(x1)    
     p_ir = p_ir[0:6]
