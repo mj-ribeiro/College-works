@@ -297,3 +297,4 @@ as.factor(crise2) ~ rexc   + oil +  cdi + cb + embi + gold, data=df)
 
 
 
+roc_curve

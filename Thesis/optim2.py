@@ -75,11 +75,10 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 6)}, iter: {cc}') 
 
  
-%time sol2 = minimize(obj2, ff,  method='Nelder-Mead', callback=callback, options={'maxiter':2e6})
+%time sol2 = minimize(obj2, ff,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
 
- 
-
-tt=sol2.x
+  
+ff=sol2.x
 sol2.fun
 sol2.success
 

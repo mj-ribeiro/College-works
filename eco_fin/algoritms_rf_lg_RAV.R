@@ -143,9 +143,12 @@ roc1 = ggplot(m_sav, aes(FPR, SENS, colour=feature)) +
                 legend.title=element_blank(),
                 legend.text = element_text(colour="black", size = 17),
                 plot.title = element_text(hjust = 0.5, size=19)) +
-          xlab('CPI') + 
-          ylab('EPC') +
+          xlab('1 - Especificidade') + 
+          ylab('Sensibilidade') +
           ggtitle('Sem AV')
+
+
+
 
 
 
@@ -236,11 +239,10 @@ roc2 = ggplot(m_sav2, aes(FPR, SENS, colour=feature)) +
                 legend.title=element_blank(),
                 legend.text = element_text(colour="black", size = 17),
                 plot.title = element_text(hjust = 0.5, size=19) )  + 
-          xlab('CPI') + 
-          ylab('EPC') +
+          xlab('1 - Especificidade') + 
+          ylab('Sensibilidade') +
           ggtitle('Com AV')
-        
-
+    
 
 ############# create dataframe
 
@@ -327,8 +329,8 @@ roc3 = ggplot(m_sav3, aes(FPR, SENS, colour=feature)) +
         legend.title=element_blank(),
         legend.text = element_text(colour="black", size = 17),
         plot.title = element_text(hjust = 0.5, size=19)) + 
-  xlab('CPI') + 
-  ylab('EPC') +
+  xlab('1 - Especificidade') + 
+  ylab('Sensibilidade') +
   ggtitle('Somente AV')
 
 
@@ -392,7 +394,7 @@ g_roc = ggarrange(roc1, roc2, roc3, nrow=1,
 
 saveRDS(g_roc, 'roc_curve.rds')
 
-
+g_roc
 #### Logit traditional
 
 
