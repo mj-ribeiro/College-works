@@ -46,6 +46,8 @@ keep = c('crise2', 'gold',  'embi',  'oil', 'cb', 'rexc',  'cdi')
 df6 = df1[,keep]
 
 
+library(xlsx)
+write.xlsx(df6, 'data.xlsx')
 
 ### correlation
 

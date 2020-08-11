@@ -5,7 +5,7 @@
 
 setwd("D:/Git projects/college_works/eco_fin")
 
-
+library(latex2exp)
 library(ggplot2)
 library(reshape2)
 
@@ -112,12 +112,14 @@ g4 = ggplot(data = df4, aes(x = data1, y = value, colour = variable)) +
 
 
 g5 = g4  + scale_colour_discrete(name="Variáveis",
-                         breaks=c("crise", "rexc"),
-                         labels=c(expression(D[t]), "AV")) 
+                         breaks=c("crise2", "rexc"),
+                         labels= unname( TeX(c("D_t", "AV"))) )
 
 windows()
 g5
 
+
+library(latex2exp)
 
 
 
