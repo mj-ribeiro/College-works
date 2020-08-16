@@ -96,8 +96,8 @@ def p_trf(x1):
   
 def H_trf(x1):    
     p_tr = p_trf(x1)  
-    A = np.power(np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ), sig )    
-    A = A[i-1]     
+    A = np.power(np.multiply( np.divide( (1 - x1[0]), (1 + x1[1]) ), x1[2] ), sig )         
+    A = np.array(A[i-1, :])
     P = np.multiply(np.power(p_tr, ( np.divide(nu, pi) )), np.power(eta, sig ) )
     g = np.divide(np.multiply(phi[i-1], kappa ), pi )
     C = np.multiply( np.power(s[i-1], g ), np.power(gamma1, np.divide(1, pi) ) )
@@ -174,7 +174,7 @@ def obj2(x1):
     x1 = x1.reshape((3, i, r)) 
     x1[0, 0, : ] = x1[0, 0, 0]    
     x1[1, 0, :] = 0
-    x1[2, :, 16] = 8.1
+    x1[2, :, 16] = 8
     x1[2, 0:7, :] = x1[2, 0, :]
     W, p_ir = Wf(x1)    
     p_ir = p_ir[0:6]

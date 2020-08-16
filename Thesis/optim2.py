@@ -39,6 +39,8 @@ tt.reshape(3, i, r)[0, 1,:]
 
 # L-BFGS-B
 
+z1 = taus2()
+
 cc = 0
 def callback(x):
     global cc
@@ -47,7 +49,8 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
     
-%time sol= minimize(obj2, ff,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-20, options={'maxiter':1e4, 'maxfun':1e100,  'maxcor': 100, 'eps': 1e-08,})
+%time sol= minimize(obj2, z1,  method='L-BFGS-B', bounds = Bd, callback=callback, tol=1e-20, options={'maxiter':1e4, 'maxfun':1e100,  'maxcor': 100, 'eps': 1e-08,})
+
 
 
 
@@ -98,7 +101,32 @@ tt.to_excel('teste.xlsx')
 
 
 
+####
 
 
 
+cc = 0
+def callback(x):
+    global cc
+    cc += 1
+    fobj = obj2(x)
+    print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
+
+    
+def obj3(x1):
+    x1 = x1.reshape((3, i, r)) 
+    x1[2] = x1[2]
+    M = -1*Y_f(x1).sum()
+    return M
+
+%time sol= minimize(obj3, x1, bounds=Bd, method='L-BFGS-B', callback=callback, options={'maxiter':1e4, 'maxfun':1e100})
+
+
+xx = sol.x
+xx.reshape(3, i, r)[0, :,:]
+
+
+H_trf(x1)
+
+H_irf(x1) 
 
