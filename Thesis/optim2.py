@@ -103,6 +103,12 @@ tt.to_excel('teste.xlsx')
 
 ####
 
+    
+def obj3(x1):
+    x1 = x1.reshape((3, i, r)) 
+    x1[2] = x1[2]
+    M = -1*Y_f(x1).sum()
+    return M
 
 
 cc = 0
@@ -112,21 +118,35 @@ def callback(x):
     fobj = obj2(x)
     print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
-    
-def obj3(x1):
-    x1 = x1.reshape((3, i, r)) 
-    x1[2] = x1[2]
-    M = -1*Y_f(x1).sum()
-    return M
 
-%time sol= minimize(obj3, x1, bounds=Bd, method='L-BFGS-B', callback=callback, options={'maxiter':1e4, 'maxfun':1e100})
+%time sol= minimize(obj3, xx, bounds=Bd, method='L-BFGS-B', callback=callback, options={'maxiter':1e4, 'maxfun':1e100})
 
 
 xx = sol.x
-xx.reshape(3, i, r)[0, :,:]
 
 
-H_trf(x1)
+# tau_h
 
-H_irf(x1) 
+xx.reshape(3, i, r)[1, i-1,:]
+
+# tau_w
+
+xx.reshape(3, i, r)[0, i-1,:]
+
+# value of max GDP
+
+Y_f(xx.reshape(3, i, r)).sum()
+
+xx = pd.DataFrame(xx)
+
+xx.to_excel("xx.xlsx")  
+
+
+
+
+
+
+
+
+
 
