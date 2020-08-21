@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sat Aug 15 12:40:17 2020
-
 @author: Marcos J Ribeiro
 """
 
@@ -64,6 +63,7 @@ def f_obj(V):
 ## TV
 
 def TV_TG(obj):
+    global T_iG, TV
     TV = np.zeros( (n_y, n_a) )
     T_iG = np.zeros( (n_y, n_a) , dtype=np.int )
     for i_y in range(n_y):
@@ -89,9 +89,9 @@ def compute_V_and_G():
         cont = cont + 1
         
         if cont%10 == 0:
-            print(f'\033[1;033mnorma = {norm}, iter = {cont}')
+            print(f'\033[1;033mnorma = {np.around(norm, 4)}, iter = {cont}')
             print('  ')
-            print('TV= ', TV)
+            print('TV= ', np.around(TV, 4))
             print('  ')
     return V, iG
 
@@ -101,3 +101,24 @@ def compute_V_and_G():
 
 pars()
 compute_V_and_G()
+
+
+
+## Policy function
+
+"""
+a: quantity of assets
+g(a): policy function    
+"""
+
+    
+for ii in range(n_y):
+    print('='*50)
+    print(' {:>20} {:>1} '.format('y =', y_grid[ii]) )
+    print('='*50)
+    for tt, vv in enumerate(T_iG[ii,:]):
+        print(f'a = {a_grid[tt]:.<31} g(a) = { np.around(a_grid[vv], 4 )} ')
+
+
+
+
