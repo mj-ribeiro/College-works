@@ -100,7 +100,7 @@ def compute_V_and_G():
 ## Run
 
 pars()
-compute_V_and_G()
+%time compute_V_and_G()
 
 
 
@@ -113,7 +113,7 @@ g(a): policy function
 
     
 for ii in range(n_y):
-    print('='*50)
+    print('\033[1;033m='*50)
     print(' {:>20} {:>1} '.format('y =', y_grid[ii]) )
     print('='*50)
     for tt, vv in enumerate(T_iG[ii,:]):
@@ -122,3 +122,45 @@ for ii in range(n_y):
 
 
 
+### Vectorize code
+
+
+
+## Objective
+
+def f_obj2(V):   
+    
+    Tv = np.array(())
+    
+    a = np.array(a_grid).repeat(n_a).reshape(n_a, n_a)
+    aa = np.array(a_grid).repeat(n_a).reshape(n_a, n_a).T
+    
+    for i_y, kk in enumerate(y_grid):
+        y = kk
+        c = y + a - np.multiply(q, aa)
+        
+        obj = util(c) + beta*(np.dot(pi[i_y, :], V ))
+        
+        max_row = np.amax(obj, axis=1)         
+        
+        Tv = np.concatenate((Tv, max_row), axis=0 )
+    Tv = Tv.reshape(n_y, n_a)
+        
+    return Tv   
+
+
+
+### Solve
+
+pars()
+
+def sol():
+    global V
+    norma, tol = 1, 1e-5    
+    while norma>tol:
+        Tv = f_obj2(V)
+        norma = np.max(abs(Tv - V))
+        V = np.copy(Tv)
+        print('norma=', norma)
+
+%time sol()     #more faster
