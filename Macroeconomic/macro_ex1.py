@@ -15,17 +15,12 @@ def pars():
     global sig, beta, pi, a_max, a_min, n_a, a_grid,  y_min, y_max, n_y, y_grid, V
     sig = 2
     beta = 0.99
-    pi = np.array(([2/3, 1/3], [1/3, 2/3]))
-
-    
+    pi = np.array(([2/3, 1/3], [1/3, 2/3]))    
     a_min, a_max, n_a =  -0, 5, 5
-    a_grid = np.linspace(a_min, a_max, n_a)
-    
+    a_grid = np.linspace(a_min, a_max, n_a)    
     y_min, y_max, n_y = 10, 20, 2
-    y_grid = np.linspace(y_min, y_max, n_y)
-    
+    y_grid = np.linspace(y_min, y_max, n_y)    
     V = np.zeros( (n_y, n_a) )
-
     
 pars()
 
