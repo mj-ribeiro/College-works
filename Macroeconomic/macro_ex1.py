@@ -159,3 +159,12 @@ def sol():
         print('norma=', norma)
 
 %time sol()     #more faster
+
+
+
+
+
+
+
+
+
