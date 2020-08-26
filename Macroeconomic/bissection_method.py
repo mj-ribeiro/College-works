@@ -5,6 +5,7 @@ Created on Wed Aug 26 10:42:12 2020
 @author: Marcos J Ribeiro
 """
 
+from time import sleep
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
@@ -50,7 +51,6 @@ c_grid[pos]
 
 c_L, c_H = 0.0, y
 
-
 norma, tol = 1.0, 1e-10
 
 while norma > tol:
@@ -61,6 +61,7 @@ while norma > tol:
     else:
         c_H = c_hat
     norma = abs(c_L - c_H) 
+#    sleep(0.5)
     print(f'\033[1;033mInterval [ {c_L:.6}, {c_H:.6} ], norm = {np.around(norma, 6)} ')
 
 
