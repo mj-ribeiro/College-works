@@ -7,6 +7,8 @@ Created on Wed Aug 26 10:42:12 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.optimize import minimize
+
 
 # I will define parameters
 
@@ -16,7 +18,7 @@ def pars():
     sig = 2
     y = 1.0 
     n_c = 30
-    c_grid = np.linspace(0, y, n_c)
+    c_grid = np.arange(0, y, 0.001)
 
 
 # Objective function
@@ -30,7 +32,7 @@ pars()
 # plots
 
 plt.plot(c_grid, F(c_grid) )
-plt.plot( c_grid, np.zeros(n_c), 'r--')
+plt.plot( c_grid, np.zeros(len(c_grid)), 'r--')
 plt.title('Optimization in grid search', fontsize=20)
 plt.xticks(fontsize = 20)
 plt.yticks(fontsize = 20)
@@ -64,11 +66,14 @@ while norma > tol:
 
 
 
-F(c_H)
+F2  = lambda c: abs( c**(-sig) - beta*( (y-c)**(-sig) ) )
 
 
 
+## Using scipy
 
+
+print(f'\033[1;033m {minimize(F2, 0.7)}')
 
 
 
