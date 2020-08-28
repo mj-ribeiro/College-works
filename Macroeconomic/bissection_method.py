@@ -9,6 +9,9 @@ from time import sleep
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import minimize
+import os
+
+os.chdir('D:/Git projects/college_works/Macroeconomic')
 
 
 # I will define parameters

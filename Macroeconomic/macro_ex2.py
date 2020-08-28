@@ -12,6 +12,11 @@ import numpy as np
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 
+import os
+os.chdir('D:/Git projects/college_works/Macroeconomic')
+
+
+
 
 # define parameters
 

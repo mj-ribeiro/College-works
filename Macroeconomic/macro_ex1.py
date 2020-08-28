@@ -7,6 +7,9 @@ Created on Sat Aug 15 12:40:17 2020
 import numpy as np
 import matplotlib.pyplot as plt
 
+import os
+os.chdir('D:/Git projects/college_works/Macroeconomic')
+
 
 
 # Define parameters
@@ -16,7 +19,7 @@ def pars():
     sig = 2
     beta = 0.99
     pi = np.array(([2/3, 1/3], [1/3, 2/3]))    
-    a_min, a_max, n_a =  -0, 5, 5
+    a_min, a_max, n_a =  -5, 5, 5
     a_grid = np.linspace(a_min, a_max, n_a)    
     y_min, y_max, n_y = 10, 20, 2
     y_grid = np.linspace(y_min, y_max, n_y)    
@@ -66,7 +69,6 @@ def TV_TG(obj):
             TV[i_y, i_a] = np.max(obj[i_y, i_a, :])
             T_iG[i_y, i_a] = np.argmax(obj[i_y, i_a, :])
     return TV, T_iG
-
 
 
 ## Convergence

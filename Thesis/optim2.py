@@ -119,23 +119,29 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
 
-%time sol= minimize(obj3, xx, bounds=Bd, method='L-BFGS-B', callback=callback, options={'maxiter':1e4, 'maxfun':1e100})
+%time sol= minimize(obj3, z1, bounds=Bd, method='L-BFGS-B', callback=callback, options={'maxiter':1e4, 'maxfun':1e100})
 
 
 xx = sol.x
 
+xx = pd.read_excel('xx.xlsx')
+xx = np.array(xx)
 
 # tau_h
 
 xx.reshape(3, i, r)[1, i-1,:]
 
+
 # tau_w
+
 
 xx.reshape(3, i, r)[0, i-1,:]
 
 # value of max GDP
 
 Y_f(xx.reshape(3, i, r)).sum()
+
+
 
 xx = pd.DataFrame(xx)
 
