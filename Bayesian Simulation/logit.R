@@ -95,8 +95,8 @@ summary(mod1_sim)
 
 
 
-glm(r ~ X, data=df, family=binomial(link = logit))
-
+reg = glm(r ~ X, data=df, family=binomial(link = 'logit'))
+summary(reg)
 
 
 
