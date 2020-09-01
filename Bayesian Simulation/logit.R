@@ -1,6 +1,6 @@
-#------------------------------------------------------------------------------------------------
-#                                  Logit         
-#==============================================================================================
+#**************************************************************************************
+#                                     Logit         
+#**************************************************************************************
 
 #see: https://d3c33hcgiwev3.cloudfront.net/_d181a1c584869f3756752c70046374d3_lesson_05.html?Expires=1594512000&Signature=Fn0KJ01ZI7P69g6I9dYF46eNSLnm8HUigGUKxG7Txw9uYTE7Ci1WKHU17RLrLvR1SoLoYaGp9whG0olHOkpxGNltyKd7GyAJMKcsl~PFQcgRi4vr-3gKZHED6PSIzue3ldu3CBywKvsR9DT1l1yDZw~4RPWMHx9wltLyC82FYpk_&Key-Pair-Id=APKAJLTNE6QMUY6HBC5A
 
@@ -81,7 +81,7 @@ model_csim = as.mcmc(do.call(rbind, mod1_sim))
 
 # diagnostic
 
-
+windows()
 plot(mod1_sim, ask = T)
 
 gelman.diag(mod1_sim)
@@ -95,17 +95,31 @@ summary(mod1_sim)
 
 
 
+
+
+# frequentist estimation
+
 reg = glm(r ~ X, data=df, family=binomial(link = 'logit'))
 summary(reg)
 
 
 
+# prediction
+
+
+coef =  colMeans(model_csim)
+
+y_hat = 1/(1 + exp(-coef['int'] - X%*%coef[-7]) )    
 
 
 
 
+plot(y_hat, jitter(df$r))
 
 
+tab = table(y_hat>0.5, df$r)
+
+sum(diag(tab))/sum(tab)
 
 
 
