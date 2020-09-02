@@ -134,7 +134,7 @@ def barM_f(M):            # distribuição estacionária de pessoas
     return barM
 
 
-
+ 
 
 ## poupança agregada
 

@@ -32,16 +32,18 @@ def bissec(f, x_l, x_h, tol):
     while norma>tol:
         x_bar = (x_l + x_h)/2 
         
-        if f(x_bar)<0:
+        if f(x_bar)*f(x_h)<0:
             x_l = x_bar
         else:
             x_h = x_bar
         norma = abs(x_l - x_h)
         print(f'\033[1;033mNorma = {norma:.6f}, f = {f(x_bar):.6f}')
-    
+    return x_bar
 
-bissec(f, -10, 20, 1e-10)
+bissec(f, 0, 1, 1e-10)
 
+
+x_h
 f(x_h) 
 
 
@@ -56,7 +58,7 @@ def bissec2(f, x_l, x_h, tol, step=100):
 
         x_bar = (x_l + x_h)/2 
         
-        if f(x_bar)<0:
+        if f(x_bar)*f(x_h)<0:
             x_l = x_bar
         else:
             x_h = x_bar
@@ -65,8 +67,9 @@ def bissec2(f, x_l, x_h, tol, step=100):
 
         if norma<tol:
             break
-        
-bissec2(f, -10, 20, 1e-10)
+    return x_bar 
+       
+bissec2(f, 0, 1, 1e-10)
  
 
 # SECOND
@@ -76,10 +79,9 @@ from scipy.optimize import brentq
 from scipy.optimize import newton
 
 
-a = brentq(f, -10, 10)   # brentq find zeros of function
 
-
-newton(f, 230)   # newton method
+a = brentq(f, 0, 1)   # brentq find zeros of function
+a
 
 
  

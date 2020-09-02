@@ -93,30 +93,8 @@ pmed
 
 
 
-PG = function(){
-k = 1
-pg = c(1)
-for (i in 1:6) {
-  pg[i+1] = k*10
-  k = pg[i+1]
-}
-return(pg)
-
-}
 
 
-pg = PG()
-
-sum( (log(pg))^(1/2) )
-
-
-seq(2, 100,  )
-
-
-
-x = c(1, 2, 5, 4)
-
-gamma(x+1)
 
 
 
