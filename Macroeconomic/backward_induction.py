@@ -70,10 +70,10 @@ V1 = np.amax(obj1, axis=1)
 ### Problem in t=10
 
 T=10
-y_grid = np.ones(T)
-y_grid[-1] = 0
-y_grid[-2] = 0
-y_grid[-3] = 0
+y_grid = np.ones(T)/0.25
+y_grid[-1] = 10
+y_grid[-2] = 5
+y_grid[-3] = 1
 
 
 
@@ -93,14 +93,14 @@ for i_y in range(T, 0, -1):
     V[i_y-1] = np.amax(obj, axis=1)
     iG[i_y-1] = np.argmax(obj, axis=1) 
 
-V 
 
 
 V
-iG
+a_grid[iG]
 
 
 
+## Plots
 
 for i in range(T):
     plt.plot(a_grid, V[i], label=f'V_{i}')
@@ -112,10 +112,9 @@ plt.yticks(fontsize=18)
 ## path
 
 G = a_grid[iG]
+a_grid.shape
 
-
-
-for t in range(n_y-1):
+for t in range(T):
     plt.plot(a_grid, G[t, :],label=f'$g_{t+1}(a)$')
 plt.plot(a_grid, a_grid, label='45o')
 plt.legend(fontsize=15)
@@ -124,7 +123,6 @@ plt.yticks(fontsize=18)
 plt.show()
 
 
-T = 10
 
 ia_t = np.zeros( T+1, dtype=np.int )
 a_t = np.zeros( T+1 )
@@ -147,7 +145,7 @@ for i in range(T):
 
 
 figure, ax = plt.subplots()
-plt.plot(range(T+1), a_t, label='riqueza')
+plt.plot(range(T), a_t[0:10], label='riqueza')
 plt.plot(range(T), y_grid, 'o',label='renda')
 plt.plot(range(T), c_t, '--',label='consumo', color='green')
 plt.legend(loc='best', fontsize=15)
@@ -156,5 +154,11 @@ plt.yticks(fontsize=18)
 plt.show()
 
 
-c_t
+
+
+
+
+
+
+
 
