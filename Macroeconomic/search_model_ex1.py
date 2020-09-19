@@ -62,7 +62,7 @@ def Bellman_op():
     return v, s
            
 
-Bellman_op()
+Bellman_op() 
 
 
 # plot solution
