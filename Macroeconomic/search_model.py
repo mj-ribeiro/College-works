@@ -5,6 +5,9 @@ Created on Thu Sep 17 15:18:09 2020
 @author: Marcos J Ribeiro
 """
 
+import os
+os.chdir('D:/Git projects/college_works/Macroeconomic')
+
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -16,7 +19,7 @@ def u(c):
     assert sigma < 1
     return ( c**(1-sigma) - 1 ) / (1-sigma)
 ###############################################################################
-def f_aux(w):
+def f_aux(w):                                                                    
     return ( alpha*w_min**alpha ) / ( w**(alpha+1) )
 ###############################################################################
 def f(w):
@@ -172,6 +175,8 @@ plt.legend(loc='lower center', fontsize=15)
 
 
 
+
+  
 
 
 
