@@ -104,6 +104,8 @@ def construa_M(g):
                 #     #     M[i, j] = 0
     return M
 #########################
+
+
 # Invariant distribution
 def construa_barM(M):
     barM = np.ones( n_w )/n_w
@@ -113,6 +115,8 @@ def construa_barM(M):
         norm_barM = np.max( abs(new_barM - barM ) )
         barM = new_barM
     return barM
+
+
 ###############################################################################
 defina_parametros_objetos()
 calcule_v_g()
