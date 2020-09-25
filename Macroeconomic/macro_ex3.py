@@ -120,22 +120,6 @@ def M_f(iG):
 M = M_f(iG)
 M
 
-M_100 = M
-
-for i in range(100):
-    
-    M_100 = np.dot(M_100, M)
-    
-M_100[1,:]
-
-
-np.sum(M_f(iG), axis=1) 
-
-a_grid[iG]
-
-a_grid[iG] == a_grid
-
-
 
 
 ## BarM
@@ -150,10 +134,6 @@ def barM_f(M):
         barM = np.copy(TbarM)
     return barM
 
-
-M = M_f(iG)
-
-np.around(barM_f(M), 3) == np.around(M_100[1,:], 3)
 
 
 barM = barM_f(M)
