@@ -94,12 +94,9 @@ def Tv_f(obj):
             Tv[i_y, i_a] = np.max(obj[i_y, i_a, :])
             Tg[i_y, i_a] = np.argmax(obj[i_y, i_a, :])
     return Tv, Tg
-    
-
-   
-                
                     
-### Solve
+                    
+### Solve 1
 
 def solve1():
     global V
@@ -114,8 +111,6 @@ def solve1():
         iG = np.copy(Tg)
     
     return V, iG
-
-
 
 
 # Transition matrix
@@ -165,29 +160,30 @@ def Ea_f(barM):
 
 
 
+# barPI
 
+def barPI_f():
+    pi_100 = pi
+    for i in range(100):
+        pi_100 = np.dot(pi_100, pi)
+    return pi_100[0, :]
 
 
 # Trabalho
 
 
-def L_f(barM):
+def L_f(barPI):
     E_y = 0 
-    
-    for i_y in range(n_y):
-        for i_a in range(n_a):
-            trabalho = y_grid[i_y]
-            
-            t_ind = i_y*n_a + i_a
-            dist = barM[t_ind]
-            
-            E_y += dist*trabalho
+    for i_y, y in enumerate(y_grid):
+        dist = barPI[i_y] 
+        E_y += dist*y
     return E_y
             
             
 ### Solve 2 - Find r
 
 def main(r):
+    global barM, M, iG, T, tau, L, K
     k = compute_k(r)
     w = compute_w(k)        
     
@@ -230,6 +226,8 @@ def solve2():
 
 ## SS inicial
 
+print('\033[1;033m Calculando o SS inicial...')
+
 pars()
 
 V_0 = np.copy(V)
@@ -255,8 +253,7 @@ plt.show()
 
 ##  SS final
 
-
-print('\nCalculando o SS final')
+print('\033[1;033mCalculando o SS final...')
 tau = 0.05
 solve2()
 Phi_inf = np.copy(barM)
