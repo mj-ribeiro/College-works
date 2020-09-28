@@ -41,8 +41,10 @@ def pars():
 pars()
 
 
-def Bellman_op():
+def Bellman_op(N, y, beta, theta, p):
     global s, v
+    
+    w_grid = [i*y/N for i in range (N)]
     Tv = np.zeros(N)
     norm, tol = 1, 1e-6    
     while norm > tol:
@@ -53,17 +55,17 @@ def Bellman_op():
             reject = util((1-a[1])*w) + beta*sum([p[i_ww]*v[i_ww] for i_ww in range(N)])
             
             if accept>reject:
-                s[i_w] = 1
+                s[i_w] = 0
                 Tv[i_w] = accept
             else:
-                s[i_w] = 0
+                s[i_w] = 1
                 Tv[i_w] = reject
-            norm = np.abs(np.max(Tv - v))
-            v = np.copy(Tv)
+        norm = np.abs(np.max(Tv - v))
+        v = np.copy(Tv)
     return v, s
            
 
-Bellman_op() 
+Bellman_op(4, 50,0.9, 0.2, p) 
 
 
 # plot solution
@@ -118,7 +120,7 @@ def M_f(s):
                     M[t, n] = p[n]*np.sum(s * M[t-1,:] ) + (1 - theta)*(1 - s[n])*M[t-1, n]
     return M            
       
-
+ 
 
 np.sum(M_f(s), axis=1)
 

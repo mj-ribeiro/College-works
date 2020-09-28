@@ -133,7 +133,7 @@ def barM_f(M):
         norma_m = np.max(abs(TbarM-barM))
         barM = np.copy(TbarM)
     return barM
-
+ 
 
 
 barM = barM_f(M)
