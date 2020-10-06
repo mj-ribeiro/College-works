@@ -228,8 +228,9 @@ while norma2>tol2:
         r_h = r_bar  
         
     norma2 = abs(r_l - r_h)
-    print(f'norma2 = {norma2}')
+    print(f'norma2 = {norma2}, r_l = {r_l}')
     
+
 
 
 main2(r_l)
