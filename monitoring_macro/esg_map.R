@@ -1,5 +1,5 @@
 
-setwd("D:/Git projects/ceper_san")
+setwd("D:/Git projects/college_works/monitoring_macro")
 
 
 
@@ -93,9 +93,7 @@ sp$idn = id_n
 
 
 
-data = merge(df_00, sp, by.x="idn", by.y="idn")
-
-
+d_00 = merge(df_00, sp, by.x="idn", by.y="idn")
 
 
 
@@ -106,17 +104,109 @@ data = merge(df_00, sp, by.x="idn", by.y="idn")
 pnames()
 
 
-ggplot(data= data, aes(geometry=geom)) +
-  geom_sf(aes( fill=ite) ) +
-  scale_fill_gradient(low="white", high="green",
-                      na.value = "red", 
-                      ) +
-  scale_colour_manual(values=NA)
+install.packages('ggspatial')
+library(ggspatial)
+
+d_00$na = is.na(d_00$ite)
+
+
+ggplot(data= d_00, aes(geometry=geom)) +
+  geom_sf(aes(fill=ite) ) +
+  scale_fill_viridis_c(direction = -1, limits = c(0, 150), na.value = "red") + # Escala de cores
+  labs(fill = "ITE",
+       title = "Índice de tratamento de esgoto, por município",
+       subtitle = "Dados da SNIS, para o ano de 2000.") +
+  annotation_north_arrow(
+    style = north_arrow_nautical()
+  ) +
+  ggspatial::annotation_scale(plot_unit = 'km', location='br') +
+  theme_void()
+  
+
+
+  
+  
+
+ggplot(data= d_00, aes(geometry=geom)) +
+  geom_sf(aes(fill=ite) ) +
+  scale_fill_viridis_c(direction = -1, limits = c(0, 100)) 
+  
+  
+
+  
+
+d_00$bug = ifelse(d_00$na==T, 1, 0)
+
+d_00$bug = as.factor(d_00$bug)
+
+
+d_00$test = ifelse(is.na(d_00$ite)==T,100, d_00$ite)
+
+
+ggplot(data=d_00, aes(geometry=geom)) + 
+  geom_sf(aes(fill=ite)) 
 
 
 
 
-summary(data$ite)
+## 2007
+
+
+f_07 = df$ano == 2007
+
+df_07 = df[f_07,]
+
+
+df_07$idn = id_n
+
+
+
+d_07 = merge(df_07, sp, by.x="idn", by.y="idn")
+
+
+
+ggplot(data= d_07, aes(geometry=geom)) +
+  geom_sf(aes(fill=ite) ) +
+  scale_fill_viridis_c(direction = -1, limits = c(0, 150), na.value = "red") + # Escala de cores
+  labs(fill = "ITE",
+       title = "Índice de tratamento de esgoto, por município",
+       subtitle = "Dados da SNIS, para o ano de 2007.") +
+  annotation_north_arrow(
+    style = north_arrow_nautical()
+  ) +
+  ggspatial::annotation_scale(plot_unit = 'km', location='br') +
+  theme_void()
+
+
+## 2018
+
+
+f_18 = df$ano == 2018
+
+df_18 = df[f_18,]
+
+
+df_18$idn = id_n
+
+
+
+d_18 = merge(df_18, sp, by.x="idn", by.y="idn")
+
+
+
+
+ggplot(data= d_18, aes(geometry=geom)) +
+  geom_sf(aes(fill=ite) ) +
+  scale_fill_viridis_c(direction = 1, limits = c(0, 150), na.value = "red") + # Escala de cores
+  labs(fill = "ITE",
+       title = "Índice de tratamento de esgoto, por município",
+       subtitle = "Dados da SNIS, para o ano de 2018.") +
+  annotation_north_arrow(
+    style = north_arrow_nautical()
+  ) +
+  ggspatial::annotation_scale(plot_unit = 'km', location='br') +
+  theme_void()
+
 
 
 
