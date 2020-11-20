@@ -7,6 +7,11 @@ library(sf)
 library(geobr)
 library(ggplot2)
 library(readxl)
+library(ggspatial)
+library(magrittr)
+library(raster)
+library(tmap)
+
 
 
 
@@ -104,17 +109,13 @@ d_00 = merge(df_00, sp, by.x="idn", by.y="idn")
 pnames()
 
 
-install.packages('ggspatial')
-library(ggspatial)
-
-d_00$na = is.na(d_00$ite)
 
 
 ggplot(data= d_00, aes(geometry=geom)) +
   geom_sf(aes(fill=ite) ) +
-  scale_fill_viridis_c(direction = -1, limits = c(0, 150), na.value = "red") + # Escala de cores
+  scale_fill_viridis_c(direction = -1, limits = c(0, 150), na.value = "white") + # Escala de cores
   labs(fill = "ITE",
-       title = "Õndice de tratamento de esgoto, por municÌpio",
+       title = "?ndice de tratamento de esgoto, por munic?pio",
        subtitle = "Dados da SNIS, para o ano de 2000.") +
   annotation_north_arrow(
     style = north_arrow_nautical()
@@ -124,27 +125,38 @@ ggplot(data= d_00, aes(geometry=geom)) +
   
 
 
-  
-  
-
-ggplot(data= d_00, aes(geometry=geom)) +
-  geom_sf(aes(fill=ite) ) +
-  scale_fill_viridis_c(direction = -1, limits = c(0, 100)) 
-  
-  
-
-  
-
-d_00$bug = ifelse(d_00$na==T, 1, 0)
-
-d_00$bug = as.factor(d_00$bug)
 
 
-d_00$test = ifelse(is.na(d_00$ite)==T,100, d_00$ite)
 
 
-ggplot(data=d_00, aes(geometry=geom)) + 
-  geom_sf(aes(fill=ite)) 
+sp$ite = d_00$ite
+
+
+library(magrittr)
+
+box = st_bbox(sp$geom)
+
+xrange <- box$xmax - box$xmin # range of x values
+yrange <- box$ymax - box$ymin # range of y value
+
+box[1] <- box[1] - (0.1 * xrange) # xmin - left
+box[3] <- box[3] + (0.1 * xrange) # xmax - right
+box[2] <- box[2] - (0.1 * yrange) # ymin - bottom
+box[4] <- box[4] + (0.1 * yrange) # ymax - top
+
+box =  box  %>% st_as_sfc()
+
+
+tm_shape(sp, bbox = box) +
+  tm_polygons('ite', title='ITE',  textNA = 'Sem dados') +
+  tm_compass(type = "8star", position = c("right", "top")) +
+  tm_scale_bar(breaks = c(0, 100, 200), text.size = 0.6) +
+  tm_layout(title = "?ndice de tratamento de esgoto, por munic?pio, em 2000",
+            title.position = c(0,0.95),
+            legend.text.size = 0.8,
+            frame = F,
+            legend.format = list(text.separator = "-"))
+
 
 
 
@@ -160,22 +172,25 @@ df_07 = df[f_07,]
 df_07$idn = id_n
 
 
-
-d_07 = merge(df_07, sp, by.x="idn", by.y="idn")
-
+sp$ite07 = df_07$ite
 
 
-ggplot(data= d_07, aes(geometry=geom)) +
-  geom_sf(aes(fill=ite) ) +
-  scale_fill_viridis_c(direction = -1, limits = c(0, 150), na.value = "red") + # Escala de cores
-  labs(fill = "ITE",
-       title = "Õndice de tratamento de esgoto, por municÌpio",
-       subtitle = "Dados da SNIS, para o ano de 2007.") +
-  annotation_north_arrow(
-    style = north_arrow_nautical()
-  ) +
-  ggspatial::annotation_scale(plot_unit = 'km', location='br') +
-  theme_void()
+tm_shape(sp, bbox = box) + 
+  tm_polygons('ite07', title='ITE',  textNA = 'Sem dados') +
+  tm_compass(type = "8star", position = c("right", "top")) +
+  tm_scale_bar(breaks = c(0, 100, 200), text.size = 0.6) +
+  tm_layout(title = "?ndice de tratamento de esgoto, por munic?pio, em 2007",
+            title.position = c(0,0.95),
+            legend.text.size = 0.8,
+            frame = F,
+            legend.format = list(text.separator = "-"))
+
+
+
+
+
+
+
 
 
 ## 2018
@@ -190,22 +205,48 @@ df_18$idn = id_n
 
 
 
-d_18 = merge(df_18, sp, by.x="idn", by.y="idn")
+
+sp$ite18 = df_18$ite
+
+summary(sp$ite)
+
+summary(sp$ite07)
+
+summary(sp$ite18)
+
+
+
+tm_shape(sp, bbox = box) + 
+  tm_polygons('ite18', title='ITE', textNA = 'Sem dados') +
+  tm_compass(type = "8star", position = c("right", "top")) +
+  tm_scale_bar(breaks = c(0, 100, 200), text.size = 0.6) +
+  tm_layout(title = "?ndice de tratamento de esgoto, por munic?pio, em 2018",
+            title.position = c(0,0.95),
+            legend.text.size = 0.8,
+            frame = F, 
+            legend.format = list(text.separator = "-"))
 
 
 
 
-ggplot(data= d_18, aes(geometry=geom)) +
-  geom_sf(aes(fill=ite) ) +
-  scale_fill_viridis_c(direction = 1, limits = c(0, 150), na.value = "red") + # Escala de cores
-  labs(fill = "ITE",
-       title = "Õndice de tratamento de esgoto, por municÌpio",
-       subtitle = "Dados da SNIS, para o ano de 2018.") +
-  annotation_north_arrow(
-    style = north_arrow_nautical()
-  ) +
-  ggspatial::annotation_scale(plot_unit = 'km', location='br') +
-  theme_void()
+
+### hist
+
+df2 = df[is.na(df$ite)==F, ]
+df2$ano = as.factor(df2$ano)
+
+
+t = ggplot(data = df2, aes(x=`ite`)) 
+
+t +  geom_histogram(binwidth = 10,  aes(fill=ano),  
+                    colour='black', position = 'stack') +
+  ylab('Quantidade de munic√≠pios') +
+  xlab('√çndice de Tratamento de Esgoto')
+
+
+
+
+
 
 
 

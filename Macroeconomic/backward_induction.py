@@ -157,7 +157,8 @@ plt.show()
 
 
 
-
+for i in range(10):
+    print('oi')
 
 
 
