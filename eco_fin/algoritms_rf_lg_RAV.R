@@ -9,7 +9,7 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 
 metrics = function(cm){
-  acurácia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
+  acurÃ¡cia = (cm[["table"]][1,1] + cm[["table"]][2,2])/sum(cm[["table"]])
   sensibilidade = cm[["table"]][1,1] / ( cm[["table"]][1,1] + cm[["table"]][2,1] )  
   especificidade = cm[["table"]][2,2] /( cm[["table"]][2,2] + cm[["table"]][1,2] )
   G = sqrt(sensibilidade*especificidade)
@@ -18,7 +18,7 @@ metrics = function(cm){
   DP = sqrt(pi)/3 * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
   gamma = sensibilidade - (1 - especificidade)
   BA = (1/2) * (sensibilidade + especificidade)
-  métricas = data.frame(acurácia, cpc, epc, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
+  mÃ©tricas = data.frame(acur?cia, cpc, epc, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
 }
 
 
@@ -159,19 +159,19 @@ roc1 = ggplot(m_sav, aes(FPR, SENS, colour=feature)) +
 
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=9))
-row.names(métricas) = c('Logit',  'FA')
-colnames(métricas) = c("Acurácia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+m?tricas = data.frame(matrix(, nrow=2, ncol=9))
+row.names(m?tricas) = c('Logit',  'FA')
+colnames(m?tricas) = c("Acur?cia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
-métricas[1, ] = metrics(cm_lg1)
-métricas[2, ] = metrics(cm_rf1)
+m?tricas[1, ] = metrics(cm_lg1)
+m?tricas[2, ] = metrics(cm_rf1)
 
 
-métricas = round( métricas, 4)
+m?tricas = round( m?tricas, 4)
 
-semrav = t(métricas)
+semrav = t(m?tricas)
 
 
 
@@ -249,19 +249,19 @@ roc2 = ggplot(m_sav2, aes(FPR, SENS, colour=feature)) +
 ############# create dataframe
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=9))
-row.names(métricas) = c('Logit',  'FA')
-colnames(métricas) = c("Acurácia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+m?tricas = data.frame(matrix(, nrow=2, ncol=9))
+row.names(m?tricas) = c('Logit',  'FA')
+colnames(m?tricas) = c("Acur?cia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
-métricas[1, ] = metrics(cm_lg2)
-métricas[2, ] = metrics(cm_rf2)
+m?tricas[1, ] = metrics(cm_lg2)
+m?tricas[2, ] = metrics(cm_rf2)
 
 
-métricas = round( métricas, 4)
+m?tricas = round( m?tricas, 4)
 
-comrav = t(métricas)
+comrav = t(m?tricas)
 
 
 
@@ -341,19 +341,19 @@ roc3 = ggplot(m_sav3, aes(FPR, SENS, colour=feature)) +
 
 
 
-métricas = data.frame(matrix(, nrow=2, ncol=9))
-row.names(métricas) = c('Logit',  'FA')
-colnames(métricas) = c("Acurácia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
+m?tricas = data.frame(matrix(, nrow=2, ncol=9))
+row.names(m?tricas) = c('Logit',  'FA')
+colnames(m?tricas) = c("Acur?cia", "Sensibilidade", "Especificidade", "G", "LP", "LR", "DP", "gamma", "BA")          
 
 
 
-métricas[1, ] = metrics(cm_lg3)
-métricas[2, ] = metrics(cm_rf3)
+m?tricas[1, ] = metrics(cm_lg3)
+m?tricas[2, ] = metrics(cm_rf3)
 
 
-métricas = round( métricas, 4)
+m?tricas = round( m?tricas, 4)
 
-sorav = t(métricas)
+sorav = t(m?tricas)
 
 
 
@@ -423,7 +423,7 @@ rf
 imp = rf$importance
 
 imp[1, 4] = 19.5254
-r_names = c('AV', 'Petróleo', 'CDI', 'INPC', 'EMBI', 'Ouro')
+r_names = c('AV', 'Petr?leo', 'CDI', 'INPC', 'EMBI', 'Ouro')
 
 length(imp)
 length(r_names)
@@ -434,10 +434,10 @@ imp = imp[,4]
 
 
 imp = data.frame(imp)
-colnames(imp) = 'variáveis'
+colnames(imp) = 'vari?veis'
 
 
-vimp = ggplot(imp, aes(variáveis, r_names) ) +
+vimp = ggplot(imp, aes(vari?veis, r_names) ) +
         geom_point(size=2, col='blue') +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
@@ -447,8 +447,8 @@ vimp = ggplot(imp, aes(variáveis, r_names) ) +
         legend.title=element_blank(),
         legend.text = element_text(colour="black", size = 17),
         legend.position="bottom" ) + 
-  xlab('Diminuição média no Gini') + 
-  ylab('Variáveis')  
+  xlab('Diminui??o m?dia no Gini') + 
+  ylab('Vari?veis')  
 
 vimp
 

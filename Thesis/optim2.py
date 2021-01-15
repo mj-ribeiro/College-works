@@ -78,7 +78,8 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 6)}, iter: {cc}') 
 
  
-%time sol2 = minimize(obj2, ff,  method='Nelder-Mead', callback=callback, options={'maxiter':1e6})
+%time sol2 = minimize(obj2, ff,  method='Nelder-Mead', callback=callback, 
+                      options={'maxiter':1e6})
 
   
 ff=sol2.x
@@ -111,6 +112,8 @@ def obj3(x1):
     return M
 
 
+
+
 cc = 0
 def callback(x):
     global cc
@@ -119,7 +122,16 @@ def callback(x):
     print(f'\033[1;033mObjetivo: {np.around(fobj, 5)}, iter: {cc}') 
 
 
+cc=0
 %time sol= minimize(obj3, z1, bounds=Bd, method='L-BFGS-B', callback=callback, options={'maxiter':1e4, 'maxfun':1e100})
+
+
+
+
+sol.x.reshape(3, i, r)[2, i-2, :]
+
+
+
 
 
 xx = sol.x
