@@ -7,9 +7,9 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 #------------- CMAX Function
 
-# w é o tamanho da janela
-# n é a quantidade de janelas
-# s é o vetor que vou passar a função
+# w e o tamanho da janela
+# n e a quantidade de janelas
+# s e o vetor que vou passar a funcao
 
 
 CMAX = function(w, n, s){
@@ -70,7 +70,7 @@ library(data.table)
 
 ibov = getSymbols('^BVSP', src='yahoo', 
                   from= '1999-01-01', 
-                  to = '2020-05-01',
+                  to = '2021-02-01',
                   periodicity = "monthly",    # IBOV mensal
                   auto.assign = F)[,4]
 
@@ -85,7 +85,7 @@ ibov = ibov[is.na(ibov)==F]
 vix = getSymbols('^VIX', src='yahoo', 
                  periodicity = "monthly",
                  from= '2000-01-01', 
-                 to = '2020-05-01',
+                 to = '2021-01-01',
                  auto.assign = F)[,4]
 
 colnames(vix) = 'vix'
@@ -93,13 +93,14 @@ colnames(vix) = 'vix'
 rvix = diff(log(vix))
 colnames(rvix) =  'rvix'
 
+
 # Oil price
 
 
 oil = getSymbols('CL=F', src='yahoo', 
                  periodicity = "monthly",
                  from= '2000-01-01', 
-                 to = '2020-05-01',
+                 to = '2021-01-01',
                  auto.assign = F)[,4]
 
 colnames(oil) = 'oil'
@@ -112,7 +113,7 @@ colnames(oil) = 'oil'
 gold = getSymbols('GC=F', src='yahoo', 
                  periodicity = "monthly",
                  from= '2000-01-01', 
-                 to = '2020-05-01',
+                 to = '2021-01-01',
                  auto.assign = F)[,4]
 
 colnames(gold) = 'gold'
@@ -120,17 +121,17 @@ colnames(gold) = 'gold'
 
 
 
-# 11768 - Índice da taxa de câmbio real (INPC)
+# 11768 - indice da taxa de cambio real (INPC)
 
 
-cb = gbcbd_get_series(11768, first.date= '2000-01-01', last.date = '2020-05-01',  
+cb = gbcbd_get_series(11768, first.date= '2000-01-01', last.date = '2021-01-01',  
                       format.data = "long", be.quiet = FALSE)[ ,1:2]
 
 data = cb$ref.date
 cb[,1]=NULL
 cb = xts(cb, order.by = data)
 
-rownames(cb) = data    # colocar a data como índice
+rownames(cb) = data    # colocar a data como indice
 
 colnames(cb) = 'cb'
 
@@ -138,14 +139,16 @@ colnames(cb) = 'cb'
 # cdi
 
 
-cdi = gbcbd_get_series(4391, first.date= '2000-01-01', last.date = '2020-05-01',  
+cdi = gbcbd_get_series(4391, first.date= '2000-01-01', last.date = '2021-01-01',  
                        format.data = "long", be.quiet = FALSE)[ ,1:2]
 
 data = cdi$ref.date
 cdi[,1]= NULL
 cdi = xts(cdi, order.by = data)
 
-rownames(cdi) = data    # colocar a data como índice
+
+
+rownames(cdi) = data    # colocar a data como indice
 
 colnames(cdi) = 'cdi'
 
@@ -192,58 +195,6 @@ embi = embi[,-1]
 
 
 
-
-
-# risk aversion
-
-
-rav = read.csv('kalman.csv', header = T, sep = ',', )[,1:2]
-rav$data = as.Date(rav$data, format = '%m/%d/%Y')
-colnames(rav) = c('date', 'rav')
-
-
-s = firstDayMonth(rav$date)
-s = data.frame(s)
-
-colnames(s) = c('date')
-
-
-
-setDT(rav)
-setDT(s)
-
-
-rav = rav[s, on = c('date')]
-
-
-
-mday(rav$date) = 1   # transformar os dias do vetor de datas  em 1 (lubridate)
-
-
-rav = xts(rav, order.by = rav$date)
-rav = rav[,-1]
-
-
-
-# AV
-
-
-
-av = read.csv('av.csv', header = T, sep = ';', )[,1:2]
-colnames(av) = c('date', 'av')
-av$av = as.numeric(av$av)
-av$date = as.Date(av$date, format = '%d/%m/%Y')
-
-
-a = av$date  
-
-av = xts(av, order.by = a)
-
-
-av = av[ ,'av', drop=F]
-
-
-
 # returns
 
 
@@ -253,9 +204,6 @@ ret = diff(log(ibov))
 
 ret = ret[is.na(ret)==F]
 colnames(ret) = 'ret'
-
-
-
 
 
 
@@ -274,10 +222,7 @@ rexc$date = as.Date(rexc$date)
 a = rexc$date  
 
 
-rexc = xts(rexc, order.by = a)
-
-
-rexc = rexc[ ,'rexc', drop=F]
+rexc = xts(rexc$rexc, order.by = a)
 
 
 
@@ -321,7 +266,7 @@ crise = matrix(nrow = length(cmts))
 
 crise = ifelse(cm2<var1, 1, 0)
 
-pos0 = which(crise==1)   # pegar a posição onde crise== 1
+pos0 = which(crise==1)   # pegar a posicao onde crise== 1
 pos0
 
 
@@ -330,7 +275,7 @@ for(i in 2:length(pos0)){
 }
 
 
-pos1 = which(crise==1)   # pegar a posição onde crise== 1
+pos1 = which(crise==1)   # pegar a posicao onde crise== 1
 pos1
 
 
@@ -350,7 +295,7 @@ crise2 = matrix(nrow = length(cmts))
 
 crise2 = ifelse(cm2<var2, 1, 0)
 
-pos2 = which(crise2==1)   # pegar a posição onde crise== 1
+pos2 = which(crise2==1)   # pegar a posicao onde crise== 1
 pos2
 
 
@@ -363,7 +308,7 @@ for(i in 1:length(pos2)){
 }
 
 
-pos3 = which(crise2==1)   # pegar a posição onde crise== 1
+pos3 = which(crise2==1)   # pegar a posicao onde crise== 1
 pos3
 
 
@@ -371,23 +316,25 @@ pos3
 
 #---- create data frame
 
-data = index(cmts)
+data = index(oil)
 data = data[-c(1, 2)]
 
 
+View(data)
 
-crise = xts(crise[-c(1, 2)], order.by = data)
-crise2 = xts(crise2[-c(1, 2)], order.by = data)
+crise = xts(crise[-seq(1,11)], order.by = data)
+crise2 = xts(crise2[-seq(1,11)], order.by = data)
 
-av = av$av[data]
+
+
 rvix = rvix[data]
-rav = rav[data]
 cb = cb[data]
 vix = vix[data]
 data = index(cb)
 oil =oil[data]
 vix = vix[data]
 crise = crise[data] 
+crise2 = crise2[data] 
 cdi = cdi[data]
 ret = ret[data]
 gold = gold[data]
@@ -397,7 +344,8 @@ rexc = rexc[data]
 
 # transform data in data frame
 
-df = data.frame(ret, vix, cb, crise, cdi, embi, crise2, oil, gold, rav, rvix, av, cmts, rexc)
+df = data.frame(ret, vix, cb, crise, cdi, embi,
+                crise2, oil, gold, rvix, cmts, rexc)
 
 
 ### save in rds file
