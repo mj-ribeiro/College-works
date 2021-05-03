@@ -9,13 +9,13 @@ setwd("D:/Git projects/college_works/eco_fin")
 
 
 mom = function(x){
-  M·ximo = max(x)
-  MÌnimo = min(x)
-  MÈdia = mean(x)
-  Vari‚ncia = sd(x)
+  M√°ximo = max(x)
+  M√≠nimo = min(x)
+  M√©dia = mean(x)
+  Vari√¢ncia = sd(x)
   Curtose = kurtosis(x)
   Assimetria = skewness(x)
-  rmom = data.frame(M·ximo, MÌnimo, MÈdia, Vari‚ncia, Assimetria, Curtose)
+  rmom = data.frame(M√°ximo, M√≠nimo, M√©dia, Vari√¢ncia, Assimetria, Curtose)
   
 }
 
@@ -58,7 +58,7 @@ df5 = df[,keep]
 df5$cdi = df5$cdi/100
 
 
-vna = c('PÈtroleo', 'Ouro', 'AV', 'EMBI', 'CDI', 'INPC')
+vna = c('Petr√≥leo', 'Ouro', 'AV', 'EMBI', 'CDI', 'INPC')
 
 
 
@@ -83,6 +83,24 @@ round(sda,4)
 
 print(xtable(sda, type = "latex", digits=4), file = "sda.tex")
 
+
+
+
+
+keep =  c('oil',  'gold', 'rexc',  'embi','cdi', 'cb')
+df5 = df[,keep]
+
+
+
+
+print(xtable(
+  round(cor(df5), 4),
+  type = "latex", digits=4), file = "cor.tex")
+
+
+
+
+roc_curve
 
 
 

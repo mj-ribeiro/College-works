@@ -122,7 +122,7 @@ colnames(gold) = 'gold'
 
 
 # 11768 - indice da taxa de cambio real (INPC)
-
+library(GetBCBData)
 
 cb = gbcbd_get_series(11768, first.date= '2000-01-01', last.date = '2021-01-01',  
                       format.data = "long", be.quiet = FALSE)[ ,1:2]

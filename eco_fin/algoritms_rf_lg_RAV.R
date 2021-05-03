@@ -15,7 +15,7 @@ metrics = function(cm){
   G = sqrt(sensibilidade*especificidade)
   LP = sensibilidade/(1 - especificidade)
   LR = (1 - sensibilidade)/(especificidade)
-  DP = sqrt(pi)/3 * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
+  DP = sqrt(3)/pi * ( log(sensibilidade/(1 - sensibilidade) ) + log( especificidade/(1 - especificidade) )  )
   gamma = sensibilidade - (1 - especificidade)
   BA = (1/2) * (sensibilidade + especificidade)
   métricas = data.frame(acurácia, sensibilidade, especificidade, G, LP, LR, DP, gamma, BA)
@@ -138,8 +138,10 @@ m_sav = rbind(roc_lg1, roc_rf1)
 
 roc1 = ggplot(m_sav, aes(FPR, SENS, colour=feature)) +
           geom_line(size=0.8) +
+  scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark = ",", scientific = FALSE)) +
+  scale_x_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark = ",", scientific = FALSE)) +
           theme_minimal() +
-          theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+          theme(axis.text.x = element_text(hjust = 1, size=17), 
                 axis.text.y = element_text(size=17), 
                 axis.title.x = element_text(colour = 'black', size=17),
                 axis.title.y = element_text(colour = 'black', size=17),
@@ -234,8 +236,10 @@ m_sav2 = rbind(roc_lg2, roc_rf2)
 
 roc2 = ggplot(m_sav2, aes(FPR, SENS, colour=feature)) +
           geom_line(size=0.8) +
+          scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark = ",", scientific = FALSE)) +
+          scale_x_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark = ",", scientific = FALSE)) +
           theme_minimal() +
-          theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+          theme(axis.text.x = element_text(hjust = 1, size=17), 
                 axis.text.y = element_text(size=17), 
                 axis.title.x = element_text(colour = 'black', size=17),
                 axis.title.y = element_text(colour = 'black', size=17),
@@ -324,8 +328,10 @@ m_sav3 = rbind(roc_lg3, roc_rf3)
 
 roc3 = ggplot(m_sav3, aes(FPR, SENS, colour=feature)) +
   geom_line(size=0.8) +
+  scale_y_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark = ",", scientific = FALSE)) +
+  scale_x_continuous(labels=function(x) format(x, big.mark = ".", decimal.mark = ",", scientific = FALSE)) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, size=17), 
+  theme(axis.text.x = element_text( hjust = 1, size=17), 
         axis.text.y = element_text(size=17), 
         axis.title.x = element_text(colour = 'black', size=17),
         axis.title.y = element_text(colour = 'black', size=17),
@@ -397,7 +403,12 @@ g_roc = ggarrange(roc1, roc2, roc3, nrow=1,
 
 saveRDS(g_roc, 'roc_curve.rds')
 
+
+ggsave(g_roc, file="fig4.eps", device="eps", height=8, width=12)
+
 g_roc
+
+
 #### Logit traditional
 
 
@@ -405,13 +416,13 @@ m1 = glm(crise2~as.numeric(df6$rexc), data=df6, family = 'binomial')
 
 summary(m1)
 
+plot(df6$rexc, type = 'l')
 
-m2 = glm(crise2~as.numeric(df6$rexc) + gold + cdi + cb + oil + as.numeric(embi), data=df6, family = 'binomial')
+m2 = glm(crise2~as.numeric(df6$rexc) + gold + cdi + cb + oil + as.numeric(embi) - 1, data=df6, family = 'binomial')
 
 summary(m2)
 
 print(xtable(m2, type = "latex", digits=4), file = "reg1.tex")
-
 
 
 #### Importance plots
@@ -458,5 +469,5 @@ vimp
 
 
 
-
+df3
 
